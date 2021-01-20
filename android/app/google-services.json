@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "995062735917",
+    "project_id": "caps-5e7c7",
+    "storage_bucket": "caps-5e7c7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:995062735917:android:42e6d24b4fd0c516e744a4",
+        "android_client_info": {
+          "package_name": "com.lescapseurs.caps_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "995062735917-h3248stu9or2ffgqa4ct0kaij9krqlat.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-EBNbl_fE93UAQjAZIVq_D3x239xqKuw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "995062735917-h3248stu9or2ffgqa4ct0kaij9krqlat.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
