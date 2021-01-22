@@ -1,4 +1,5 @@
-import 'package:caps_app/capseur.dart';
+import 'package:caps_app/models/basicUser.dart';
+import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/pages/authenticate.dart';
 import 'package:caps_app/pages/homePage.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ class Wrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<Capseur>(context);
+    final user = Provider.of<BasicUser>(context);
 
     return user == null ? AuthenticatePage() : HomePage();
   }
