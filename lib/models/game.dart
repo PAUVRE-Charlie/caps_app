@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:caps_app/components/rankingList.dart';
 import 'package:caps_app/pages/matchPage.dart';
-import 'package:caps_app/player.dart';
+import 'package:caps_app/models/player.dart';
+import 'package:caps_app/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'capseur.dart';
 
@@ -78,35 +81,58 @@ class Game {
       BuildContext context, String title, Capseur capseur) async {
     List<int> values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-    GlobalKey<_DropDownAlertState> bottlesNumberKey =
-        new GlobalKey<_DropDownAlertState>();
-    GlobalKey<_DropDownAlertState> pointsPerBottleKey =
-        new GlobalKey<_DropDownAlertState>();
+    final _bottlesNumberKey = GlobalKey<_DropDownAlertState>();
+    final _pointsPerBottleKey = GlobalKey<_DropDownAlertState>();
 
     DropDownAlert bottlesNumberDialog = new DropDownAlert(
-      key: bottlesNumberKey,
+      key: _bottlesNumberKey,
       initialValue: 3,
       values: values,
     );
     DropDownAlert pointsPerBottleDialog = new DropDownAlert(
-      key: pointsPerBottleKey,
+      key: _pointsPerBottleKey,
       initialValue: 4,
       values: values,
     );
 
-    int getBottlesNumber() => bottlesNumberKey.currentState._value;
-    int getPointsPerBottle() => pointsPerBottleKey.currentState._value;
+    int getBottlesNumber() => _bottlesNumberKey.currentState._value;
+    int getPointsPerBottle() => _pointsPerBottleKey.currentState._value;
+
+    void _showUserList({Function selectOpponent}) {
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return StreamProvider<List<Capseur>>.value(
+                value: DatabaseService().capseurs,
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
+                  child: RankingList(onPressed: selectOpponent),
+                ));
+          });
+    }
 
     return showDialog<void>(
         context: context,
         builder: (BuildContext context) {
+          Capseur opponent;
+
           return AlertDialog(
             title: Text(title),
             content: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("Selectionne ton adversaire"),
+                  TextButton(
+                    child: Text("Selectionne ton adversaire"),
+                    onPressed: () {
+                      _showUserList(selectOpponent: (Capseur _opponent) {
+                        if (_opponent.uid != capseur.uid) {
+                          opponent = _opponent;
+                          Navigator.of(context).pop();
+                        }
+                      });
+                    },
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [Text("Nombre de kros:"), bottlesNumberDialog],
@@ -118,19 +144,19 @@ class Game {
                   /* Validation button */
                   FlatButton(
                     onPressed: () async {
-                      Capseur capseur2 = Capseur(
-                          'Pierre', 'Schmutz', 2, 156, 136, 589, 241, 'b');
-                      //Navigator.of(context).pop();
-                      Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (ctxt) => new MatchPage(
-                                title: title,
-                                capseur1: capseur,
-                                capseur2: capseur2,
-                                bottlesNumber: getBottlesNumber(),
-                                pointsPerBottle: getPointsPerBottle())),
-                      );
+                      if (opponent != null) {
+                        //Navigator.of(context).pop();
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (ctxt) => new MatchPage(
+                                  title: title,
+                                  capseur1: capseur,
+                                  capseur2: opponent,
+                                  bottlesNumber: getBottlesNumber(),
+                                  pointsPerBottle: getPointsPerBottle())),
+                        );
+                      }
                     },
                     child: Text("validate"),
                   )

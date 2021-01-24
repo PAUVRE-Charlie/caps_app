@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../data.dart';
-import '../game.dart';
-import '../capseur.dart';
-import '../player.dart';
+import '../models/game.dart';
+import '../models/capseur.dart';
+import '../models/player.dart';
 
 class MatchPage extends StatefulWidget {
   MatchPage(
