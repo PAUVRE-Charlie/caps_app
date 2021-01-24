@@ -73,8 +73,7 @@ class _MatchPageState extends State<MatchPage> {
             icon: Icon(Icons.arrow_back, color: kSecondaryColor),
             onPressed: () {
               Navigator.of(context).pop();
-              Navigator.of(context)
-                  .pop(); // delete this line when finish editing it and decomment the one in the onConfirm of startMatchMethod
+              Navigator.of(context).pop(); // delete this line when finish editing it and decomment the one in the onConfirm of startMatchMethod
             },
           ),
           title: Text(
@@ -121,9 +120,9 @@ class _MatchPageState extends State<MatchPage> {
                               IconButton(
                                   icon: Icon(
                                     Icons.thumb_up,
-                                    color: kSecondaryColor,
-                                    size: 50,
+                                    color: Colors.green,
                                   ),
+                                  iconSize: 50,
                                   onPressed: () {
                                     setState(() {
                                       gameLastTurn = copyGame(game);
@@ -137,9 +136,9 @@ class _MatchPageState extends State<MatchPage> {
                               IconButton(
                                   icon: Icon(
                                     Icons.thumb_down,
-                                    color: kSecondaryColor,
-                                    size: 50,
+                                    color: kPrimaryColor,
                                   ),
+                                  iconSize: 50,
                                   onPressed: () {
                                     setState(() {
                                       gameLastTurn = copyGame(game);
@@ -171,9 +170,10 @@ class _MatchPageState extends State<MatchPage> {
                             opacity: canRevert ? 1 : 0.2,
                             child: IconButton(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 0, vertical: 30),
+                                    horizontal: 0, vertical: 15),
                                 icon: Icon(Icons.undo,
-                                    color: kPrimaryColor, size: 40),
+                                    color: kPrimaryColor),
+                                iconSize: 40,
                                 onPressed: canRevert
                                     ? () {
                                         setState(() {
