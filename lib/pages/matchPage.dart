@@ -1,9 +1,11 @@
+import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 
 import '../data.dart';
 import '../models/game.dart';
 import '../models/capseur.dart';
 import '../models/player.dart';
+import 'dart:math';
 
 class MatchPage extends StatefulWidget {
   MatchPage(
@@ -31,6 +33,8 @@ class _MatchPageState extends State<MatchPage> {
   Capseur capseur1;
   Capseur capseur2;
   bool canRevert;
+
+  final audioplayer = AudioCache();
 
   Game copyGame(Game gameToCopy) {
     return Game(
@@ -129,6 +133,8 @@ class _MatchPageState extends State<MatchPage> {
                                   iconSize: 50,
                                   onPressed: () {
                                     setState(() {
+                                      int n = Random().nextInt(10);
+                                      audioplayer.play('sounds/sonCapsule'+(n+1).toString()+'.wav');
                                       gameLastTurn = copyGame(game);
                                       game.nextTurn(true);
                                       canRevert = true;
