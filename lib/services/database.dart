@@ -21,7 +21,8 @@ class DatabaseService {
       int matchsPlayed,
       int matchsWon,
       int capsHit,
-      int bottlesEmptied) async {
+      int bottlesEmptied,
+      double points) async {
     return await capseursCollection.doc(_uid).set({
       'firstname': firstname,
       'lastname': lastname,
@@ -30,6 +31,7 @@ class DatabaseService {
       'matchsWon': matchsWon,
       'capsHit': capsHit,
       'bottlesEmptied': bottlesEmptied,
+      'points' : points,
     });
   }
 
@@ -55,7 +57,8 @@ class DatabaseService {
           doc.data()['matchsWon'] ?? '',
           doc.data()['capsHit'] ?? '',
           doc.data()['bottlesEmptied'] ?? '',
-          doc.id ?? '');
+          doc.id ?? '',
+          doc.data()['points'] ?? '',);
     }).toList();
   }
 
@@ -80,7 +83,8 @@ class DatabaseService {
         snapshot.data()['matchsWon'] ?? '',
         snapshot.data()['capsHit'] ?? '',
         snapshot.data()['bottlesEmptied'] ?? '',
-        uid);
+        uid,
+        snapshot.data()['points'] ?? '',);
   }
 
   // get capseurs stream

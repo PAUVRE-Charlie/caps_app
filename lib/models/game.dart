@@ -67,6 +67,16 @@ class Game {
         this.player2.capseur.uid, this.player1.score, this.player2.score);
     Capseur capseur1 = this.player1.capseur;
     Capseur capseur2 = this.player2.capseur;
+    Capseur winner;
+    Capseur loser;
+    if (this.player1.score > this.player2.score){
+      winner = capseur1;
+      loser = capseur2;
+    }else {
+      winner = capseur2;
+      loser = capseur1;
+    }
+
     DatabaseService().updateCapseurData(
         capseur1.uid,
         capseur1.firstname,
@@ -75,7 +85,8 @@ class Game {
         capseur1.matchsPlayed + 1,
         capseur1.matchsWon + (this.player1.score > this.player2.score ? 1 : 0),
         capseur1.capsHit + this.player1.capsHitInThisGame,
-        capseur1.bottlesEmptied + this.player2.score ~/ this.pointsPerBottle);
+        capseur1.bottlesEmptied + this.player2.score ~/ this.pointsPerBottle,
+        capseur1.points + updatePointsWinner(winner, loser));
     DatabaseService().updateCapseurData(
         capseur2.uid,
         capseur2.firstname,
@@ -84,10 +95,54 @@ class Game {
         capseur2.matchsPlayed + 1,
         capseur2.matchsWon + (this.player2.score > this.player1.score ? 1 : 0),
         capseur2.capsHit + this.player2.capsHitInThisGame,
-        capseur2.bottlesEmptied + this.player1.score ~/ this.pointsPerBottle);
+        capseur2.bottlesEmptied + this.player1.score ~/ this.pointsPerBottle,
+        capseur2.points + updatePointsloser(winner, loser));
     Navigator.of(this.context).pop();
     Navigator.of(this.context).pop();
   }
+
+  double updatePointsWinner(Capseur winner, Capseur loser){
+    double gapPointsATP = winner.points - loser.points;
+    double addToWinner = theWinningAlgo(gapPointsATP);
+    double reliabilityCoeff = theBonusAlgo(this.pointsRequired);
+    return addToWinner*reliabilityCoeff;
+  }
+
+  double updatePointsloser(Capseur winner, Capseur loser){
+    double gapPointsATP = winner.points - loser.points;
+    double removeToLoser = theLoosingAlgo(gapPointsATP);
+    double reliabilityCoeff = theBonusAlgo(this.pointsRequired);
+    return removeToLoser*reliabilityCoeff;
+  }
+
+  double theWinningAlgo(double gapATP){
+    if (gapATP<-100){
+      return 1;
+    }else if (-100<=gapATP && gapATP<-50){
+      return 1/50*gapATP + 3;
+    }else if (-50<=gapATP && gapATP<0){
+      return 3/50*gapATP + 5;
+    }else if (0<=gapATP && gapATP<50){
+      return 15/50*gapATP + 5;
+    }else if (50<=gapATP && gapATP<100){
+      return 10/50*gapATP + 10;
+    }else{
+      return pow(gapATP,1/200)*log(gapATP-97) + 29.5;
+    }
+  }
+
+  double theLoosingAlgo(double gapATP){
+    return theWinningAlgo(gapATP)*0.8;
+  }
+
+  double theBonusAlgo(int pointsRequired){ //correspond to the coefficient of reliability. If the game is played in 4 points it doesn't have the same importance than a game played in 16 points (coeff 1) or in 32 (coeff 2)
+    if (4<=pointsRequired && pointsRequired<32){
+      return 1/16*pointsRequired;
+    }else {
+      return 2;
+    }
+  }
+
 
   nextTurn(bool capsHit) {
     if (capsHit) {
