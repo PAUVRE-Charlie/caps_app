@@ -40,14 +40,16 @@ class _MatchPageState extends State<MatchPage> {
             gameToCopy.player1.bottlesLeftNumber,
             gameToCopy.player1.currentBottlePointsLeft,
             gameToCopy.player1.topPlayerBool,
-            gameToCopy.player1.playing),
+            gameToCopy.player1.playing,
+            gameToCopy.player1.capsHitInThisGame),
         Player(
             capseur2,
             gameToCopy.player2.score,
             gameToCopy.player2.bottlesLeftNumber,
             gameToCopy.player2.currentBottlePointsLeft,
             gameToCopy.player2.topPlayerBool,
-            gameToCopy.player2.playing),
+            gameToCopy.player2.playing,
+            gameToCopy.player2.capsHitInThisGame),
         gameToCopy.reverseCount,
         gameToCopy.pointsRequired,
         gameToCopy.pointsPerBottle);
@@ -65,6 +67,7 @@ class _MatchPageState extends State<MatchPage> {
 
   @override
   Widget build(BuildContext context) {
+    game.setContext(context);
     return Scaffold(
         appBar: AppBar(
           backgroundColor: kBackgroundBaseColor,
@@ -73,7 +76,8 @@ class _MatchPageState extends State<MatchPage> {
             icon: Icon(Icons.arrow_back, color: kSecondaryColor),
             onPressed: () {
               Navigator.of(context).pop();
-              Navigator.of(context).pop(); // delete this line when finish editing it and decomment the one in the onConfirm of startMatchMethod
+              Navigator.of(context)
+                  .pop(); // delete this line when finish editing it and decomment the one in the onConfirm of startMatchMethod
             },
           ),
           title: Text(
@@ -171,8 +175,7 @@ class _MatchPageState extends State<MatchPage> {
                             child: IconButton(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 0, vertical: 15),
-                                icon: Icon(Icons.undo,
-                                    color: kPrimaryColor),
+                                icon: Icon(Icons.undo, color: kPrimaryColor),
                                 iconSize: 40,
                                 onPressed: canRevert
                                     ? () {

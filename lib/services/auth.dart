@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:caps_app/models/basicUser.dart';
-import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -58,7 +57,7 @@ class AuthService {
 
       // create a new document for the user with the uid
       await DatabaseService(uid: user.uid).updateCapseurData(
-          firstname, lastname, Random().nextInt(100000), 0, 0, 0, 0);
+          user.uid, firstname, lastname, Random().nextInt(100000), 0, 0, 0, 0);
 
       return _userFromFirebaseUser(user);
     } catch (e) {

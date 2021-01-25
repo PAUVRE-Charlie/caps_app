@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'capseur.dart';
 
 class Game {
+  BuildContext _context;
   Player _player1;
   Player _player2;
   int _reverseCount;
@@ -29,16 +30,22 @@ class Game {
     _reverseCount = 0;
     _pointsRequired = pointsPerBottle * bottlesNumber;
     _pointsPerBottle = pointsPerBottle;
+    _context = context;
   }
 
   Game(this._player1, this._player2, this._reverseCount, this._pointsRequired,
       this._pointsPerBottle);
 
+  BuildContext get context => _context;
   Player get player1 => _player1;
   Player get player2 => _player2;
   int get reverseCount => _reverseCount;
   int get pointsRequired => _pointsRequired;
   int get pointsPerBottle => _pointsPerBottle;
+
+  setContext(BuildContext context) {
+    _context = context;
+  }
 
   setReverseCount(int value) {
     _reverseCount = value;
@@ -55,12 +62,39 @@ class Game {
   }
 
   endGame(Player winner) {
-    print("${winner.capseur.firstname} won");
     /* UPDATE ALL THE VARIABLES OF BOTH CAPSEURS IN THE SERVER */
+    DatabaseService().updateMatchData(this.player1.capseur.uid,
+        this.player2.capseur.uid, this.player1.score, this.player2.score);
+    Capseur capseur1 = this.player1.capseur;
+    Capseur capseur2 = this.player2.capseur;
+    DatabaseService().updateCapseurData(
+        capseur1.uid,
+        capseur1.firstname,
+        capseur1.lastname,
+        capseur1.rank,
+        capseur1.matchsPlayed + 1,
+        capseur1.matchsWon + (this.player1.score > this.player2.score ? 1 : 0),
+        capseur1.capsHit + this.player1.capsHitInThisGame,
+        capseur1.bottlesEmptied + this.player2.score ~/ this.pointsPerBottle);
+    DatabaseService().updateCapseurData(
+        capseur2.uid,
+        capseur2.firstname,
+        capseur2.lastname,
+        capseur2.rank,
+        capseur2.matchsPlayed + 1,
+        capseur2.matchsWon + (this.player2.score > this.player1.score ? 1 : 0),
+        capseur2.capsHit + this.player2.capsHitInThisGame,
+        capseur2.bottlesEmptied + this.player1.score ~/ this.pointsPerBottle);
+    Navigator.of(this.context).pop();
+    Navigator.of(this.context).pop();
   }
 
   nextTurn(bool capsHit) {
     if (capsHit) {
+      if (_player1.playing)
+        this.player1.addCapsHit();
+      else
+        this.player2.addCapsHit();
       setReverseCount(this.reverseCount + 1);
     } else {
       if (this.reverseCount > 0) {

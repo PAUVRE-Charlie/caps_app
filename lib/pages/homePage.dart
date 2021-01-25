@@ -1,8 +1,8 @@
 import 'package:caps_app/models/basicUser.dart';
 import 'package:caps_app/models/capseur.dart';
+import 'package:caps_app/pages/lastMatchs.dart';
 import 'package:caps_app/pages/profilePage.dart';
 import 'package:caps_app/pages/rankingPage.dart';
-import 'package:caps_app/services/auth.dart';
 import 'package:caps_app/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -120,10 +120,19 @@ class _HomePageState extends State<HomePage> {
                                         ));
                                   },
                                 ),
-                                TextButtonMenu(text: "Derniers matchs"),
+                                TextButtonMenu(
+                                  text: "Derniers matchs",
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        new MaterialPageRoute(
+                                          builder: (ctxt) => new LastMatchs(),
+                                        ));
+                                  },
+                                ),
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     )

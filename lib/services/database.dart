@@ -1,4 +1,5 @@
 import 'package:caps_app/models/capseur.dart';
+import 'package:caps_app/models/matchEnded.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
@@ -9,9 +10,19 @@ class DatabaseService {
   final CollectionReference capseursCollection =
       FirebaseFirestore.instance.collection('capseurs');
 
-  Future updateCapseurData(String firstname, String lastname, int rank,
-      int matchsPlayed, int matchsWon, int capsHit, int bottlesEmptied) async {
-    return await capseursCollection.doc(uid).set({
+  final CollectionReference matchsCollection =
+      FirebaseFirestore.instance.collection('matchs');
+
+  Future updateCapseurData(
+      String _uid,
+      String firstname,
+      String lastname,
+      int rank,
+      int matchsPlayed,
+      int matchsWon,
+      int capsHit,
+      int bottlesEmptied) async {
+    return await capseursCollection.doc(_uid).set({
       'firstname': firstname,
       'lastname': lastname,
       'rank': rank,
@@ -19,6 +30,17 @@ class DatabaseService {
       'matchsWon': matchsWon,
       'capsHit': capsHit,
       'bottlesEmptied': bottlesEmptied,
+    });
+  }
+
+  Future updateMatchData(String uidCapseur1, String uidCapseur2,
+      int scorePlayer1, int scorePlayer2) async {
+    return await matchsCollection.doc().set({
+      'capseur1': uidCapseur1,
+      'capseur2': uidCapseur2,
+      'date': Timestamp.now(),
+      'scorePlayer1': scorePlayer1,
+      'scorePlayer2': scorePlayer2
     });
   }
 
@@ -34,6 +56,18 @@ class DatabaseService {
           doc.data()['capsHit'] ?? '',
           doc.data()['bottlesEmptied'] ?? '',
           doc.id ?? '');
+    }).toList();
+  }
+
+  List<MatchEnded> _matchListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return MatchEnded(
+          doc.id,
+          doc.data()['capseur1'] ?? '',
+          doc.data()['capseur2'] ?? '',
+          doc.data()['date'] ?? Timestamp.now(),
+          doc.data()['scorePlayer1'] ?? 0,
+          doc.data()['scorePlayer2'] ?? 0);
     }).toList();
   }
 
@@ -54,6 +88,12 @@ class DatabaseService {
     return capseursCollection
         .snapshots()
         .map((snapshot) => _capseurListFromSnapshot(snapshot));
+  }
+
+  Stream<List<MatchEnded>> get matchs {
+    return matchsCollection
+        .snapshots()
+        .map((snapshot) => _matchListFromSnapshot(snapshot));
   }
 
   // get user doc stream
