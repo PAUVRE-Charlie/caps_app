@@ -1,5 +1,7 @@
 import 'package:caps_app/models/basicUser.dart';
 import 'package:caps_app/pages/homePage.dart';
+import 'package:caps_app/pages/profilePage.dart';
+import 'package:caps_app/pages/rankingPage.dart';
 import 'package:caps_app/services/auth.dart';
 import 'package:caps_app/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -27,6 +29,8 @@ class MyApp extends StatelessWidget {
               fontFamily: 'NotoSansJP'),
           routes: {
             '/home': (context) => HomePage(),
+            '/profile': (context) => ProfilePage(),
+            '/ranking': (context) => RankingPage(),
             '/': (context) => Wrapper(),
           },
         ));

@@ -30,7 +30,7 @@ class _RankingListState extends State<RankingList> {
           Capseur capseur = capseurs[index];
           return GestureDetector(
             onTap: () {
-              widget.onPressed(capseur);
+              if (widget.onPressed != null) widget.onPressed(capseur);
             },
             child: ListTile(
               title: Text(capseur.firstname),

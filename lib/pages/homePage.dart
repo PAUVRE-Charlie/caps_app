@@ -1,5 +1,6 @@
 import 'package:caps_app/models/basicUser.dart';
 import 'package:caps_app/models/capseur.dart';
+import 'package:caps_app/pages/profilePage.dart';
 import 'package:caps_app/pages/rankingPage.dart';
 import 'package:caps_app/services/auth.dart';
 import 'package:caps_app/services/database.dart';
@@ -16,8 +17,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final AuthService _auth = AuthService();
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<BasicUser>(context);
@@ -45,8 +44,14 @@ class _HomePageState extends State<HomePage> {
                           color: kSecondaryColor,
                           size: 30,
                         ),
-                        onPressed: () async {
-                          await _auth.signOut();
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                builder: (ctxt) => new ProfilePage(
+                                  capseur: snapshot.data,
+                                ),
+                              ));
                         })
                   ],
                 ),

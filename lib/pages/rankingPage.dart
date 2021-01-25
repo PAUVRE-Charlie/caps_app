@@ -1,5 +1,6 @@
 import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/components/rankingList.dart';
+import 'package:caps_app/pages/profilePage.dart';
 import 'package:caps_app/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -40,7 +41,15 @@ class RankingPage extends StatelessWidget {
                       colors: [kBackgroundBaseColor, kBackgroundSecondColor]),
                 ),
               ),
-              RankingList(),
+              RankingList(onPressed: (Capseur capseur) {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                      builder: (ctxt) => new ProfilePage(
+                        capseur: capseur,
+                      ),
+                    ));
+              }),
             ],
           ),
         ));
