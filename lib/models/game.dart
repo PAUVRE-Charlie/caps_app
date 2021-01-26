@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:caps_app/components/rankingList.dart';
+import 'package:caps_app/data.dart';
 import 'package:caps_app/pages/matchPage.dart';
 import 'package:caps_app/models/player.dart';
 import 'package:caps_app/services/database.dart';
@@ -188,74 +189,16 @@ class Game {
       values: values,
     );
 
-    int getBottlesNumber() => _bottlesNumberKey.currentState._value;
-    int getPointsPerBottle() => _pointsPerBottleKey.currentState._value;
-
-    void _showUserList({Function selectOpponent}) {
-      showModalBottomSheet(
-          context: context,
-          builder: (context) {
-            return StreamProvider<List<Capseur>>.value(
-                value: DatabaseService().capseurs,
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
-                  child: RankingList(onPressed: selectOpponent),
-                ));
-          });
-    }
-
     return showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          Capseur opponent;
-
-          return AlertDialog(
-            title: Text(title),
-            content: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  TextButton(
-                    child: Text("Selectionne ton adversaire"),
-                    onPressed: () {
-                      _showUserList(selectOpponent: (Capseur _opponent) {
-                        if (_opponent.uid != capseur.uid) {
-                          opponent = _opponent;
-                          Navigator.of(context).pop();
-                        }
-                      });
-                    },
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [Text("Nombre de kros:"), bottlesNumberDialog],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [Text("Points par kro:"), pointsPerBottleDialog],
-                  ),
-                  /* Validation button */
-                  FlatButton(
-                    onPressed: () async {
-                      if (opponent != null) {
-                        //Navigator.of(context).pop();
-                        Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (ctxt) => new MatchPage(
-                                  title: title,
-                                  capseur1: capseur,
-                                  capseur2: opponent,
-                                  bottlesNumber: getBottlesNumber(),
-                                  pointsPerBottle: getPointsPerBottle())),
-                        );
-                      }
-                    },
-                    child: Text("validate"),
-                  )
-                ],
-              ),
-            ),
+          return AlertDialogNewMatch(
+            title: title,
+            capseur: capseur,
+            bottlesNumberKey: _bottlesNumberKey,
+            pointsPerBottleKey: _pointsPerBottleKey,
+            bottlesNumberDialog: bottlesNumberDialog,
+            pointsPerBottleDialog: pointsPerBottleDialog,
           );
         });
   }
@@ -295,6 +238,128 @@ class _DropDownAlertState extends State<DropDownAlert> {
           child: Text(value.toString()),
         );
       }).toList(),
+    );
+  }
+}
+
+class AlertDialogNewMatch extends StatefulWidget {
+  AlertDialogNewMatch(
+      {Key key,
+      this.title,
+      this.capseur,
+      this.bottlesNumberKey,
+      this.pointsPerBottleKey,
+      this.bottlesNumberDialog,
+      this.pointsPerBottleDialog})
+      : super(key: key);
+
+  final String title;
+  final Capseur capseur;
+  final GlobalKey<_DropDownAlertState> bottlesNumberKey;
+  final GlobalKey<_DropDownAlertState> pointsPerBottleKey;
+  final DropDownAlert bottlesNumberDialog;
+  final DropDownAlert pointsPerBottleDialog;
+
+  @override
+  _AlertDialogNewMatchState createState() => _AlertDialogNewMatchState();
+}
+
+class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
+  Capseur opponent;
+
+  void _showUserList({Function selectOpponent}) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return StreamProvider<List<Capseur>>.value(
+              value: DatabaseService().capseurs,
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
+                child: RankingList(onPressed: selectOpponent),
+              ));
+        });
+  }
+
+  int getBottlesNumber() => widget.bottlesNumberKey.currentState._value;
+  int getPointsPerBottle() => widget.pointsPerBottleKey.currentState._value;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Center(
+        child: Text(widget.title),
+      ),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            SizedBox(
+              height: 20,
+            ),
+            Text(opponent != null
+                ? ("Contre: " + opponent.firstname + ' ' + opponent.lastname)
+                : ""),
+            SizedBox(
+              height: 10,
+            ),
+            RaisedButton(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Text(
+                "Selectionne ton adversaire",
+                style: TextStyle(color: kWhiteColor),
+              ),
+              color: kSecondaryColor,
+              onPressed: () {
+                _showUserList(selectOpponent: (Capseur _opponent) {
+                  if (_opponent.uid != widget.capseur.uid) {
+                    setState(() {
+                      opponent = _opponent;
+                    });
+                    Navigator.of(context).pop();
+                  }
+                });
+              },
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [Text("Nombre de kros:"), widget.bottlesNumberDialog],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [Text("Points par kro:"), widget.pointsPerBottleDialog],
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            /* Validation button */
+            RaisedButton(
+              onPressed: () async {
+                if (opponent != null) {
+                  //Navigator.of(context).pop();
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (ctxt) => new MatchPage(
+                            title: widget.title,
+                            capseur1: widget.capseur,
+                            capseur2: opponent,
+                            bottlesNumber: getBottlesNumber(),
+                            pointsPerBottle: getPointsPerBottle())),
+                  );
+                }
+              },
+              child: Text(
+                "Valider",
+                style: TextStyle(color: kWhiteColor),
+              ),
+              color: kPrimaryColor,
+            )
+          ],
+        ),
+      ),
     );
   }
 }
