@@ -23,7 +23,7 @@ class _RankingListState extends State<RankingList> {
 
     if (capseurs == null) return LoadingWidget();
 
-    capseurs.sort(((x, y) => x.rank.compareTo(y.rank)));
+    capseurs.sort(((x, y) => y.points.compareTo(x.points)));
 
     return ListView.builder(
         itemBuilder: (BuildContext context, int index) {
@@ -34,7 +34,7 @@ class _RankingListState extends State<RankingList> {
             },
             child: ListTile(
               title: Text(capseur.firstname),
-              trailing: Text(capseur.rank.toString()),
+              trailing: Text((index + 1).toString()),
               tileColor: capseur.uid == user.uid
                   ? kPrimaryColor.withOpacity(0.3)
                   : Colors.transparent,

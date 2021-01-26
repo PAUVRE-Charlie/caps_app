@@ -72,11 +72,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 20,
                         ),
                         DataItemProfile(
-                            dataName: 'Classement',
-                            dataValue: widget.capseur.rank.toString()),
-                        DataItemProfile(
                             dataName: 'Points',
-                            dataValue: widget.capseur.points.toString()),
+                            dataValue:
+                                widget.capseur.points.round().toString()),
                         DataItemProfile(
                             dataName: 'Matchs gagnés',
                             dataValue: widget.capseur.matchsWon.toString()),

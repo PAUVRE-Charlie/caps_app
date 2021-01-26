@@ -56,8 +56,8 @@ class AuthService {
       User user = result.user;
 
       // create a new document for the user with the uid
-      await DatabaseService(uid: user.uid).updateCapseurData(
-          user.uid, firstname, lastname, Random().nextInt(100000), 0, 0, 0, 0, 100);
+      await DatabaseService(uid: user.uid)
+          .updateCapseurData(user.uid, firstname, lastname, 0, 0, 0, 0, 100);
 
       return _userFromFirebaseUser(user);
     } catch (e) {
