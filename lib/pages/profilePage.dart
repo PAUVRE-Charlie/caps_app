@@ -65,7 +65,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           ]),
                     ),
                   ),
-                  SingleChildScrollView(
+                  Container(
+                    height: MediaQuery.of(context).size.height,
                     child: Column(
                       children: [
                         SizedBox(
@@ -113,12 +114,13 @@ class _ProfilePageState extends State<ProfilePage> {
                           style:
                               TextStyle(fontFamily: 'PirataOne', fontSize: 25),
                         ),
-                        Container(
-                            height: 500,
-                            padding: EdgeInsets.symmetric(vertical: 20),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Expanded(
                             child: MatchList(
-                              capseur: widget.capseur,
-                            )),
+                          capseur: widget.capseur,
+                        )),
                       ],
                     ),
                   )
