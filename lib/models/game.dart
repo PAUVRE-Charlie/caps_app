@@ -344,8 +344,8 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
                     new MaterialPageRoute(
                         builder: (ctxt) => new MatchPage(
                             title: widget.title,
-                            capseur1: widget.capseur,
-                            capseur2: opponent,
+                            capseur2: widget.capseur,
+                            capseur1: opponent,
                             bottlesNumber: getBottlesNumber(),
                             pointsPerBottle: getPointsPerBottle())),
                   );
