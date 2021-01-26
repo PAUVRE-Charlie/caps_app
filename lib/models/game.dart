@@ -107,17 +107,17 @@ class Game {
   }
 
   double updatePointsWinner(Capseur winner, Capseur loser) {
-    double gapPointsATP = winner.points - loser.points;
+    double gapPointsATP = loser.points - winner.points;
     double addToWinner = theWinningAlgo(gapPointsATP);
     double reliabilityCoeff = theBonusAlgo(this.pointsRequired);
     return addToWinner * reliabilityCoeff;
   }
 
   double updatePointsloser(Capseur winner, Capseur loser) {
-    double gapPointsATP = winner.points - loser.points;
+    double gapPointsATP = loser.points - winner.points;
     double removeToLoser = theLoosingAlgo(gapPointsATP);
     double reliabilityCoeff = theBonusAlgo(this.pointsRequired);
-    return removeToLoser * reliabilityCoeff;
+    return - removeToLoser * reliabilityCoeff;
   }
 
   double theWinningAlgo(double gapATP) {
