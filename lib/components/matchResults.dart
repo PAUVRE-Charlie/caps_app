@@ -3,6 +3,7 @@ import 'package:caps_app/data.dart';
 import 'package:caps_app/models/basicUser.dart';
 import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/models/matchEnded.dart';
+import 'package:caps_app/pages/profilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,21 +35,39 @@ class _MatchResultsState extends State<MatchResults> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(capseur1.firstname + ' ' + capseur1.lastname,
-                    style: TextStyle(
-                        color: widget.match.player1Won
-                            ? kPrimaryColor
-                            : Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w300)),
+                TextButton(
+                  child: Text(capseur1.firstname + ' ' + capseur1.lastname,
+                      style: TextStyle(
+                          color: widget.match.player1Won
+                              ? kPrimaryColor
+                              : Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w300)),
+                  onPressed: (){
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(builder: (context) => new ProfilePage(capseur: capseur1),
+                        ),
+                    );
+                  },
+                ),
                 Text(' - '),
-                Text(capseur2.firstname + ' ' + capseur2.lastname,
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w300,
-                        color: widget.match.player1Won
-                            ? Colors.black
-                            : kPrimaryColor)),
+                TextButton(
+                  child: Text(capseur2.firstname + ' ' + capseur2.lastname,
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w300,
+                          color: widget.match.player1Won
+                              ? Colors.black
+                              : kPrimaryColor)),
+                  onPressed: (){
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(builder: (context) => new ProfilePage(capseur: capseur2),
+                        ),
+                    );
+                  },
+                ),
               ],
             ),
             SizedBox(
