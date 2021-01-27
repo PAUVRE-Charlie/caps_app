@@ -99,17 +99,17 @@ class _HomePageState extends State<HomePage> {
                             child: Column(
                               children: [
                                 TextButtonMenu(
-                                    text: "Match amical",
+                                    text: "Jouer",
                                     onPressed: () {
-                                      Game.startMatch(context, "Match Amical",
+                                      Game.startMatch(context, "Match",
                                           snapshot.data);
                                     }),
-                                TextButtonMenu(
+                                /*TextButtonMenu(
                                     text: "Match officiel",
                                     onPressed: () {
                                       Game.startMatch(context, "Match Officiel",
                                           snapshot.data);
-                                    }),
+                                    }),*/
                                 TextButtonMenu(
                                   text: "Classements",
                                   onPressed: () {

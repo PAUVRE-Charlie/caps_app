@@ -110,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 30,
                         ),
                         Text(
-                          'DERNIERS MATCHS',
+                          'MES DERNIERS MATCHS',
                           style:
                               TextStyle(fontFamily: 'PirataOne', fontSize: 25),
                         ),

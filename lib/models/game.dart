@@ -144,7 +144,9 @@ class Game {
 
   double theBonusAlgo(int pointsRequired) {
     //correspond to the coefficient of reliability. If the game is played in 4 points it doesn't have the same importance than a game played in 16 points (coeff 1) or in 32 (coeff 2)
-    if (4 <= pointsRequired && pointsRequired < 32) {
+    if (pointsRequired<4) {
+      return 0.25;
+    }else if (4 <= pointsRequired && pointsRequired < 32) {
       return 1 / 16 * pointsRequired;
     } else {
       return 2;
@@ -168,7 +170,6 @@ class Game {
         setReverseCount(0);
       }
     }
-    // Switch turn
     switchTurns();
   }
 
