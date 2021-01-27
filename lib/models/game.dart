@@ -18,16 +18,17 @@ class Game {
   int _reverseCount;
   int _pointsRequired;
   int _pointsPerBottle;
+  bool _player1starting;
 
   Game.initial(Capseur capseur1, Capseur capseur2, int bottlesNumber,
       int pointsPerBottle) {
     //reset or new game
-    bool player1starting = Random().nextBool();
+    _player1starting = Random().nextBool();
 
     _player1 = Player.initial(
-        capseur1, true, bottlesNumber, pointsPerBottle, player1starting);
+        capseur1, true, bottlesNumber, pointsPerBottle, _player1starting);
     _player2 = Player.initial(
-        capseur2, false, bottlesNumber, pointsPerBottle, !player1starting);
+        capseur2, false, bottlesNumber, pointsPerBottle, !_player1starting);
     _reverseCount = 0;
     _pointsRequired = pointsPerBottle * bottlesNumber;
     _pointsPerBottle = pointsPerBottle;
@@ -35,7 +36,7 @@ class Game {
   }
 
   Game(this._player1, this._player2, this._reverseCount, this._pointsRequired,
-      this._pointsPerBottle);
+      this._pointsPerBottle, this._player1starting);
 
   BuildContext get context => _context;
   Player get player1 => _player1;
@@ -43,6 +44,7 @@ class Game {
   int get reverseCount => _reverseCount;
   int get pointsRequired => _pointsRequired;
   int get pointsPerBottle => _pointsPerBottle;
+  bool get player1starting => _player1starting;
 
   setContext(BuildContext context) {
     _context = context;
@@ -167,6 +169,10 @@ class Game {
       }
     }
     // Switch turn
+    switchTurns();
+  }
+
+  void switchTurns(){
     _player1.setPlaying(!_player1.playing);
     _player2.setPlaying(!_player2.playing);
   }

@@ -38,33 +38,19 @@ class _MatchPageState extends State<MatchPage> {
 
   Game copyGame(Game gameToCopy) {
     return Game(
-        Player(
-            capseur1,
-            gameToCopy.player1.score,
-            gameToCopy.player1.bottlesLeftNumber,
-            gameToCopy.player1.currentBottlePointsLeft,
-            gameToCopy.player1.topPlayerBool,
-            gameToCopy.player1.playing,
-            gameToCopy.player1.capsHitInThisGame),
-        Player(
-            capseur2,
-            gameToCopy.player2.score,
-            gameToCopy.player2.bottlesLeftNumber,
-            gameToCopy.player2.currentBottlePointsLeft,
-            gameToCopy.player2.topPlayerBool,
-            gameToCopy.player2.playing,
-            gameToCopy.player2.capsHitInThisGame),
+        gameToCopy.player1,
+        gameToCopy.player2,
         gameToCopy.reverseCount,
         gameToCopy.pointsRequired,
-        gameToCopy.pointsPerBottle);
+        gameToCopy.pointsPerBottle,
+        gameToCopy.player1starting);
   }
 
   @override
   void initState() {
     game = Game.initial(widget.capseur1, widget.capseur2, widget.bottlesNumber,
         widget.pointsPerBottle);
-    gameLastTurn = Game.initial(widget.capseur1, widget.capseur2,
-        widget.bottlesNumber, widget.pointsPerBottle);
+    gameLastTurn = copyGame(game);
     canRevert = false;
     super.initState();
   }
@@ -187,6 +173,7 @@ class _MatchPageState extends State<MatchPage> {
                                     ? () {
                                         setState(() {
                                           game = copyGame(gameLastTurn);
+                                          game.switchTurns();
                                           canRevert = false;
                                         });
                                       }
