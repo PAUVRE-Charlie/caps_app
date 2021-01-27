@@ -45,6 +45,17 @@ class LastMatchs extends StatelessWidget {
                         colors: [kBackgroundBaseColor, kBackgroundSecondColor]),
                   ),
                 ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Opacity(
+                    opacity: 0.3,
+                    child: Image(
+                      height: MediaQuery.of(context).size.height,
+                      fit: BoxFit.cover,
+                      image: AssetImage("assets/images/bottle_-15deg.png"),
+                    ),
+                  ),
+                ),
                 MatchList(),
               ],
             ),

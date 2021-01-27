@@ -4,6 +4,7 @@ import 'package:caps_app/components/matchsList.dart';
 import 'package:caps_app/models/basicUser.dart';
 import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/models/matchEnded.dart';
+import 'package:caps_app/pages/lastMatchs.dart';
 import 'package:caps_app/services/auth.dart';
 import 'package:caps_app/services/database.dart';
 import 'package:flutter/material.dart';
@@ -65,6 +66,17 @@ class _ProfilePageState extends State<ProfilePage> {
                           ]),
                     ),
                   ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Opacity(
+                      opacity: 0.3,
+                      child: Image(
+                        height: MediaQuery.of(context).size.height,
+                        fit: BoxFit.cover,
+                        image: AssetImage("assets/images/bottle_32deg.png"),
+                      ),
+                    ),
+                  ),
                   Container(
                     height: MediaQuery.of(context).size.height,
                     child: Column(
@@ -76,6 +88,22 @@ class _ProfilePageState extends State<ProfilePage> {
                             dataName: 'Points',
                             dataValue:
                                 widget.capseur.points.round().toString()),
+                        RaisedButton(
+                            onPressed: () async {
+                              Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                  builder: (context) => new LastMatchs(),
+                                ),
+                              );
+                            },
+                            color: kSecondaryColor,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 30, vertical: 10),
+                            child: Text(
+                              "Voir les classements",
+                              style: TextStyle(color: kWhiteColor),
+                            )),
                         DataItemProfile(
                             dataName: 'Matchs gagnés',
                             dataValue: widget.capseur.matchsWon.toString()),
