@@ -33,11 +33,12 @@ class _RankingListState extends State<RankingList> {
               if (widget.onPressed != null) widget.onPressed(capseur);
             },
             child: ListTile(
-              leading: Text((index + 1).toString(), style: TextStyle(fontSize: 20)),
+              leading:
+                  Text((index + 1).toString(), style: TextStyle(fontSize: 20)),
               title: Text(capseur.firstname),
               trailing: Text(capseur.points.round().toString()),
               tileColor: capseur.uid == user.uid
-                  ? kPrimaryColor.withOpacity(0.3)
+                  ? kSecondaryColor.withOpacity(0.3)
                   : Colors.transparent,
             ),
           );

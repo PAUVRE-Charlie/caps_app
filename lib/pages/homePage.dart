@@ -3,6 +3,7 @@ import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/pages/lastMatchs.dart';
 import 'package:caps_app/pages/profilePage.dart';
 import 'package:caps_app/pages/rankingPage.dart';
+import 'package:caps_app/pages/tournamentsMenuPage.dart';
 import 'package:caps_app/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -99,17 +100,21 @@ class _HomePageState extends State<HomePage> {
                             child: Column(
                               children: [
                                 TextButtonMenu(
-                                    text: "Jouer",
+                                    text: "Match amical",
                                     onPressed: () {
-                                      Game.startMatch(context, "Match",
+                                      Game.startMatch(context, "Match amical",
                                           snapshot.data);
                                     }),
-                                /*TextButtonMenu(
-                                    text: "Match officiel",
+                                TextButtonMenu(
+                                    text: "Tournois",
                                     onPressed: () {
-                                      Game.startMatch(context, "Match Officiel",
-                                          snapshot.data);
-                                    }),*/
+                                      Navigator.push(
+                                          context,
+                                          new MaterialPageRoute(
+                                            builder: (ctxt) =>
+                                                new TournamentsMenuPage(),
+                                          ));
+                                    }),
                                 TextButtonMenu(
                                   text: "Classements",
                                   onPressed: () {

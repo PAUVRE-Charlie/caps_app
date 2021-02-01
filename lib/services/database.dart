@@ -1,5 +1,6 @@
 import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/models/matchEnded.dart';
+import 'package:caps_app/models/tournamentInfo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
@@ -12,6 +13,12 @@ class DatabaseService {
 
   final CollectionReference matchsCollection =
       FirebaseFirestore.instance.collection('matchs');
+
+  final CollectionReference tournamentsCollection =
+      FirebaseFirestore.instance.collection('tournaments');
+
+  final CollectionReference capseursInTournamentsCollection =
+      FirebaseFirestore.instance.collection('capseursInTournaments');
 
   Future updateCapseurData(
       String _uid,
@@ -44,6 +51,24 @@ class DatabaseService {
     });
   }
 
+  Future updateTournamentData(String name, int numberMaxPlayers,
+      int numberPlayersGettingOutOfEachPool) async {
+    return await tournamentsCollection.doc().set({
+      'name': name,
+      'numberMaxPlayers': numberMaxPlayers,
+      'numberPlayersGettingOutOfEachPool': numberPlayersGettingOutOfEachPool
+    });
+  }
+
+  Future updateCapseursInTournamentsData(
+      String tournamentUid, String poolUid, String capseurUid) async {
+    return await capseursInTournamentsCollection.doc().set({
+      'tournamentUid': tournamentUid,
+      'poolUid': poolUid,
+      'capseurUid': capseurUid
+    });
+  }
+
   // Capseur list from snapshot
   List<Capseur> _capseurListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
@@ -62,14 +87,42 @@ class DatabaseService {
 
   List<MatchEnded> _matchListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return MatchEnded(
+      return MatchEnded.official(
           doc.id,
           doc.data()['capseur1'] ?? '',
           doc.data()['capseur2'] ?? '',
           doc.data()['date'] ?? Timestamp.now(),
           doc.data()['scorePlayer1'] ?? 0,
-          doc.data()['scorePlayer2'] ?? 0);
+          doc.data()['scorePlayer2'] ?? 0,
+          doc.data()['uidTournament'] ?? '',
+          doc.data()['uidPool'] ?? '');
     }).toList();
+  }
+
+  List<TournamentInfo> _tournamentListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return TournamentInfo(
+          doc.id,
+          doc.data()['name'] ?? '',
+          doc.data()['numberMaxPlayers'] ?? 0,
+          doc.data()['numberPlayersGettingOutOfEachPool'] ?? 0);
+    }).toList();
+  }
+
+  Map<String, Map<String, String>> _capseursInTournamentsMapFromSnapshot(
+      QuerySnapshot snapshot) {
+    Map<String, Map<String, String>> listOfPoolsAndCapseursInTournaments =
+        new Map();
+    // tournamentUid: poolUid: capseurUid
+    snapshot.docs.forEach((doc) {
+      Map<String, String> tournamentMap =
+          listOfPoolsAndCapseursInTournaments[doc.data()['tournamentUid']] ??
+              new Map();
+      tournamentMap[doc.data()['capseurUid']] = doc.data()['poolUid'];
+      listOfPoolsAndCapseursInTournaments[doc.data()['tournamentUid']] =
+          tournamentMap;
+    });
+    return listOfPoolsAndCapseursInTournaments;
   }
 
   Capseur _userDataFromSnapshot(DocumentSnapshot snapshot) {
@@ -96,6 +149,18 @@ class DatabaseService {
     return matchsCollection
         .snapshots()
         .map((snapshot) => _matchListFromSnapshot(snapshot));
+  }
+
+  Stream<List<TournamentInfo>> get tournaments {
+    return tournamentsCollection
+        .snapshots()
+        .map((snapshot) => _tournamentListFromSnapshot(snapshot));
+  }
+
+  Stream<Map<String, Map<String, String>>> get capseursInTournaments {
+    return capseursInTournamentsCollection
+        .snapshots()
+        .map((snapshot) => _capseursInTournamentsMapFromSnapshot(snapshot));
   }
 
   // get user doc stream
