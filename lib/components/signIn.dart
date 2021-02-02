@@ -33,67 +33,71 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return loading
         ? LoadingWidget()
-        : Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 20,
-                ),
-                MyTextFormField(
-                  hintText: 'Email',
-                  validator: (val) {
-                    return val.isEmpty ? 'Entre ton mail' : null;
-                  },
-                  onChanged: (val) {
-                    email = val;
-                  },
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                MyTextFormField(
-                  hintText: 'Password',
-                  validator: (val) {
-                    return val.length < 6
-                        ? 'Entre un mot de passe de 6 lettres ou plus'
-                        : null;
-                  },
-                  obscureText: true,
-                  onChanged: (val) {
-                    password = val;
-                  },
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                RaisedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      setState(() {
-                        loading = true;
-                      });
-                      dynamic result = await _auth.signInWithEmailAndPassword(
-                          email, password);
-                      if (result == null) {
+        : SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  MyTextFormField(
+                    hintText: 'Email',
+                    textInputType: TextInputType.emailAddress,
+                    validator: (val) {
+                      return val.isEmpty ? 'Entre ton mail' : null;
+                    },
+                    onChanged: (val) {
+                      email = val;
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  MyTextFormField(
+                    hintText: 'Password',
+                    validator: (val) {
+                      return val.length < 6
+                          ? 'Entre un mot de passe de 6 lettres ou plus'
+                          : null;
+                    },
+                    obscureText: true,
+                    onChanged: (val) {
+                      password = val;
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  RaisedButton(
+                    onPressed: () async {
+                      if (_formKey.currentState.validate()) {
                         setState(() {
-                          loading = false;
-                          error = 'Email ou mot de passe incorrect';
+                          loading = true;
                         });
+                        dynamic result = await _auth.signInWithEmailAndPassword(
+                            email, password);
+                        if (result == null) {
+                          setState(() {
+                            loading = false;
+                            error = 'Email ou mot de passe incorrect';
+                          });
+                        }
                       }
-                    }
-                  },
-                  color: kPrimaryColor,
-                  child: Text('Sign in', style: TextStyle(color: kWhiteColor)),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  error,
-                  style: TextStyle(color: kPrimaryColor),
-                )
-              ],
+                    },
+                    color: kPrimaryColor,
+                    child:
+                        Text('Sign in', style: TextStyle(color: kWhiteColor)),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    error,
+                    style: TextStyle(color: kPrimaryColor),
+                  )
+                ],
+              ),
             ),
           );
   }

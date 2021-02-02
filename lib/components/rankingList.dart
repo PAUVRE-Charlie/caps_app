@@ -7,9 +7,16 @@ import '../models/capseur.dart';
 import '../data.dart';
 
 class RankingList extends StatefulWidget {
-  RankingList({Key key, this.onPressed(Capseur capseur)}) : super(key: key);
+  RankingList(
+      {Key key,
+      this.onPressed(Capseur capseur),
+      this.noShowCapseurs,
+      this.justThemCapseurs})
+      : super(key: key);
 
   final Function onPressed;
+  final List<Capseur> noShowCapseurs;
+  final List<Capseur> justThemCapseurs;
 
   @override
   _RankingListState createState() => _RankingListState();
@@ -19,9 +26,22 @@ class _RankingListState extends State<RankingList> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<BasicUser>(context);
-    final capseurs = Provider.of<List<Capseur>>(context);
+    var capseurs = Provider.of<List<Capseur>>(context);
 
     if (capseurs == null) return LoadingWidget();
+
+    if (widget.justThemCapseurs != null) {
+      capseurs = widget.justThemCapseurs;
+    }
+
+    if (widget.noShowCapseurs != null) {
+      capseurs = capseurs.where((capseur) {
+        for (Capseur capseur2 in widget.noShowCapseurs) {
+          if (capseur2.uid == capseur.uid) return false;
+        }
+        return true;
+      }).toList();
+    }
 
     capseurs.sort(((x, y) => y.points.compareTo(x.points)));
 

@@ -1,3 +1,4 @@
+import 'package:caps_app/components/background.dart';
 import 'package:caps_app/models/basicUser.dart';
 import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/pages/lastMatchs.dart';
@@ -58,27 +59,9 @@ class _HomePageState extends State<HomePage> {
                 ),
                 body: Stack(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                            kBackgroundBaseColor,
-                            kBackgroundSecondColor
-                          ])),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Opacity(
-                        opacity: 0.7,
-                        child: Image(
-                          height: MediaQuery.of(context).size.height * 3 / 5,
-                          fit: BoxFit.fill,
-                          image:
-                              AssetImage("assets/images/bottle_homePage.png"),
-                        ),
-                      ),
+                    Background(
+                      image: "assets/images/bottle_homePage.png",
+                      height: MediaQuery.of(context).size.height * 2 / 3,
                     ),
                     Center(
                       child: Column(

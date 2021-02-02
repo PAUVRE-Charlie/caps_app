@@ -119,7 +119,7 @@ class Game {
     double gapPointsATP = loser.points - winner.points;
     double removeToLoser = theLoosingAlgo(gapPointsATP);
     double reliabilityCoeff = theBonusAlgo(this.pointsRequired);
-    return - removeToLoser * reliabilityCoeff;
+    return -removeToLoser * reliabilityCoeff;
   }
 
   double theWinningAlgo(double gapATP) {
@@ -144,9 +144,9 @@ class Game {
 
   double theBonusAlgo(int pointsRequired) {
     //correspond to the coefficient of reliability. If the game is played in 4 points it doesn't have the same importance than a game played in 16 points (coeff 1) or in 32 (coeff 2)
-    if (pointsRequired<4) {
+    if (pointsRequired < 4) {
       return 0.25;
-    }else if (4 <= pointsRequired && pointsRequired < 32) {
+    } else if (4 <= pointsRequired && pointsRequired < 32) {
       return 1 / 16 * pointsRequired;
     } else {
       return 2;
@@ -173,7 +173,7 @@ class Game {
     switchTurns();
   }
 
-  void switchTurns(){
+  void switchTurns() {
     _player1.setPlaying(!_player1.playing);
     _player2.setPlaying(!_player2.playing);
   }
@@ -345,7 +345,7 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
             RaisedButton(
               onPressed: () async {
                 if (opponent != null) {
-                  //Navigator.of(context).pop();
+                  Navigator.of(context).pop();
                   Navigator.push(
                     context,
                     new MaterialPageRoute(

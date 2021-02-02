@@ -9,9 +9,7 @@ import 'package:flutter/material.dart';
 import 'MyTextFormField.dart';
 
 class Register extends StatefulWidget {
-  Register({Key key, this.setLoadingView}) : super(key: key);
-
-  final Function setLoadingView;
+  Register({Key key}) : super(key: key);
 
   @override
   _RegisterState createState() => _RegisterState();
@@ -50,6 +48,7 @@ class _RegisterState extends State<Register> {
                   ),
                   MyTextFormField(
                     hintText: 'Email',
+                    textInputType: TextInputType.emailAddress,
                     validator: (val) {
                       return val.isEmpty ? 'Entre ton mail' : null;
                     },

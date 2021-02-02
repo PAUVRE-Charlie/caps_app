@@ -1,4 +1,6 @@
 import 'package:audioplayers/audio_cache.dart';
+import 'package:caps_app/components/arrowBackAppBar.dart';
+import 'package:caps_app/components/background.dart';
 import 'package:flutter/material.dart';
 
 import '../data.dart';
@@ -62,14 +64,7 @@ class _MatchPageState extends State<MatchPage> {
         appBar: AppBar(
           backgroundColor: kBackgroundBaseColor,
           shadowColor: Colors.transparent,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: kSecondaryColor),
-            onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.of(context)
-                  .pop(); // delete this line when finish editing it and decomment the one in the onConfirm of startMatchMethod
-            },
-          ),
+          leading: ArrowBackAppBar(),
           title: Text(
             widget.title,
             style: TextStyle(
@@ -78,13 +73,7 @@ class _MatchPageState extends State<MatchPage> {
         ),
         body: Stack(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [kBackgroundBaseColor, kBackgroundSecondColor])),
-            ),
+            Background(),
             Container(
               margin: EdgeInsets.only(right: 20),
               child: Column(
@@ -120,7 +109,9 @@ class _MatchPageState extends State<MatchPage> {
                                   onPressed: () {
                                     setState(() {
                                       int n = Random().nextInt(10);
-                                      audioplayer.play('sounds/sonCapsule'+(n+1).toString()+'.wav');
+                                      audioplayer.play('sounds/sonCapsule' +
+                                          (n + 1).toString() +
+                                          '.wav');
                                       gameLastTurn = copyGame(game);
                                       game.nextTurn(true);
                                       canRevert = true;

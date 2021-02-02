@@ -1,3 +1,5 @@
+import 'package:caps_app/components/arrowBackAppBar.dart';
+import 'package:caps_app/components/background.dart';
 import 'package:caps_app/components/loading.dart';
 import 'package:caps_app/components/matchResults.dart';
 import 'package:caps_app/components/matchsList.dart';
@@ -37,13 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
               appBar: AppBar(
                 backgroundColor: kBackgroundBaseColor,
                 shadowColor: Colors.transparent,
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back, color: kSecondaryColor),
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pop(); // delete this line when finish editing it and decomment the one in the onConfirm of startMatchMethod
-                  },
-                ),
+                leading: ArrowBackAppBar(),
                 centerTitle: true,
                 title: Text(
                   widget.capseur.firstname + ' ' + widget.capseur.lastname,
@@ -55,27 +51,8 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               body: Stack(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            kBackgroundBaseColor,
-                            kBackgroundSecondColor
-                          ]),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Opacity(
-                      opacity: 0.3,
-                      child: Image(
-                        height: MediaQuery.of(context).size.height,
-                        fit: BoxFit.cover,
-                        image: AssetImage("assets/images/bottle_32deg.png"),
-                      ),
-                    ),
+                  Background(
+                    image: "assets/images/bottle_32deg.png",
                   ),
                   Container(
                     height: MediaQuery.of(context).size.height,

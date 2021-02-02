@@ -2,6 +2,8 @@ import 'package:caps_app/components/loading.dart';
 import 'package:caps_app/components/matchResults.dart';
 import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/models/matchEnded.dart';
+import 'package:caps_app/models/matchsOfTournament.dart';
+import 'package:caps_app/models/pool.dart';
 import 'package:caps_app/models/tournamentInfo.dart';
 import 'package:caps_app/pages/tournamentPage.dart';
 import 'package:caps_app/pages/tournamentsMenuPage.dart';
@@ -40,9 +42,12 @@ class _MatchListState extends State<TournamentList> {
                     value: DatabaseService().capseursInTournaments,
                     child: StreamProvider<List<Capseur>>.value(
                       value: DatabaseService().capseurs,
-                      child: StreamProvider<List<MatchEnded>>.value(
-                        value: DatabaseService().matchs,
-                        child: TournamentPage(tournamentInfo: tournament),
+                      child: StreamProvider<List<MatchOfTournament>>.value(
+                        value: DatabaseService().matchsOfTournaments,
+                        child: StreamProvider<List<Pool>>.value(
+                          value: DatabaseService().pools,
+                          child: TournamentPage(tournamentInfo: tournament),
+                        ),
                       ),
                     ),
                   ),

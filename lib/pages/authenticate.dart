@@ -1,3 +1,4 @@
+import 'package:caps_app/components/background.dart';
 import 'package:caps_app/components/register.dart';
 import 'package:caps_app/components/signIn.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
               style: TextStyle(
                   color: kPrimaryColor, fontFamily: 'PirataOne', fontSize: 40)),
           bottom: TabBar(
+            indicatorColor: kPrimaryColor,
             tabs: [
               Tab(
                 child: Text('Sign in', style: TextStyle(color: kPrimaryColor)),
@@ -45,13 +47,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
         ),
         body: Stack(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [kBackgroundBaseColor, kBackgroundSecondColor])),
-            ),
+            Background(),
             Container(
               padding: EdgeInsets.all(30),
               child: TabBarView(

@@ -1,5 +1,7 @@
 import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/models/matchEnded.dart';
+import 'package:caps_app/models/matchsOfTournament.dart';
+import 'package:caps_app/models/pool.dart';
 import 'package:caps_app/models/tournamentInfo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -14,8 +16,14 @@ class DatabaseService {
   final CollectionReference matchsCollection =
       FirebaseFirestore.instance.collection('matchs');
 
+  final CollectionReference matchsOfTournamentsCollection =
+      FirebaseFirestore.instance.collection('matchsOfTournaments');
+
   final CollectionReference tournamentsCollection =
       FirebaseFirestore.instance.collection('tournaments');
+
+  final CollectionReference poolsCollection =
+      FirebaseFirestore.instance.collection('pools');
 
   final CollectionReference capseursInTournamentsCollection =
       FirebaseFirestore.instance.collection('capseursInTournaments');
@@ -51,13 +59,33 @@ class DatabaseService {
     });
   }
 
-  Future updateTournamentData(String name, int numberMaxPlayers,
-      int numberPlayersGettingOutOfEachPool) async {
-    return await tournamentsCollection.doc().set({
-      'name': name,
-      'numberMaxPlayers': numberMaxPlayers,
-      'numberPlayersGettingOutOfEachPool': numberPlayersGettingOutOfEachPool
+  Future updateMatchOfTournamentData(String uidCapseur1, String uidCapseur2,
+      int scorePlayer1, int scorePlayer2, String tournamentUid,
+      {String poolUid, int finalBoardPosition}) async {
+    return await matchsCollection.doc().set({
+      'capseur1': uidCapseur1,
+      'capseur2': uidCapseur2,
+      'date': Timestamp.now(),
+      'scorePlayer1': scorePlayer1,
+      'scorePlayer2': scorePlayer2,
+      'tournamentUid': tournamentUid,
+      'poolUid': poolUid,
+      'finalBoardPosition': finalBoardPosition
     });
+  }
+
+  Future updateTournamentData(
+      String _uid, String name, int numberPlayerGettingOutOfEachPool) async {
+    return await tournamentsCollection.doc(_uid).set({
+      'name': name,
+      'numberPlayerGettingOutOfEachPool': numberPlayerGettingOutOfEachPool
+    });
+  }
+
+  Future updatePoolData(String _uid, String tournamentUid, String name) async {
+    return await poolsCollection
+        .doc(_uid)
+        .set({'tournamentUid': tournamentUid, 'name': name});
   }
 
   Future updateCapseursInTournamentsData(
@@ -87,25 +115,44 @@ class DatabaseService {
 
   List<MatchEnded> _matchListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return MatchEnded.official(
+      return MatchEnded(
           doc.id,
           doc.data()['capseur1'] ?? '',
           doc.data()['capseur2'] ?? '',
           doc.data()['date'] ?? Timestamp.now(),
           doc.data()['scorePlayer1'] ?? 0,
-          doc.data()['scorePlayer2'] ?? 0,
-          doc.data()['uidTournament'] ?? '',
-          doc.data()['uidPool'] ?? '');
+          doc.data()['scorePlayer2'] ?? 0);
+    }).toList();
+  }
+
+  List<MatchOfTournament> _matchsOfTournamentsListFromSnapshot(
+      QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return MatchOfTournament(
+          MatchEnded(
+              doc.id,
+              doc.data()['capseur1'] ?? '',
+              doc.data()['capseur2'] ?? '',
+              doc.data()['date'] ?? Timestamp.now(),
+              doc.data()['scorePlayer1'] ?? 0,
+              doc.data()['scorePlayer2'] ?? 0),
+          doc.data()['tournamentUid'] ?? '',
+          doc.data()['poolUid'] ?? '',
+          doc.data()['finalBoardPosition'] ?? 0);
     }).toList();
   }
 
   List<TournamentInfo> _tournamentListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return TournamentInfo(
-          doc.id,
-          doc.data()['name'] ?? '',
-          doc.data()['numberMaxPlayers'] ?? 0,
+      return TournamentInfo(doc.id, doc.data()['name'] ?? '',
           doc.data()['numberPlayersGettingOutOfEachPool'] ?? 0);
+    }).toList();
+  }
+
+  List<Pool> _poolListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return Pool(
+          doc.id, doc.data()['tournamentUid'] ?? '', doc.data()['name'] ?? '');
     }).toList();
   }
 
@@ -151,10 +198,22 @@ class DatabaseService {
         .map((snapshot) => _matchListFromSnapshot(snapshot));
   }
 
+  Stream<List<MatchOfTournament>> get matchsOfTournaments {
+    return matchsOfTournamentsCollection
+        .snapshots()
+        .map((snapshot) => _matchsOfTournamentsListFromSnapshot(snapshot));
+  }
+
   Stream<List<TournamentInfo>> get tournaments {
     return tournamentsCollection
         .snapshots()
         .map((snapshot) => _tournamentListFromSnapshot(snapshot));
+  }
+
+  Stream<List<Pool>> get pools {
+    return poolsCollection
+        .snapshots()
+        .map((snapshot) => _poolListFromSnapshot(snapshot));
   }
 
   Stream<Map<String, Map<String, String>>> get capseursInTournaments {
