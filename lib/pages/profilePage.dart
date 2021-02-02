@@ -54,8 +54,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Background(
                     image: "assets/images/bottle_32deg.png",
                   ),
-                  Container(
-                    height: MediaQuery.of(context).size.height,
+                  SingleChildScrollView(
                     child: Column(
                       children: [
                         SizedBox(
@@ -122,10 +121,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         SizedBox(
                           height: 30,
                         ),
-                        Expanded(
-                            child: MatchList(
+                        MatchList(
                           capseur: widget.capseur,
-                        )),
+                        ),
                       ],
                     ),
                   )

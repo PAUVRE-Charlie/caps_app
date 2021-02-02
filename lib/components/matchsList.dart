@@ -8,7 +8,8 @@ import 'package:provider/provider.dart';
 class MatchList extends StatefulWidget {
   MatchList({Key key, this.capseur}) : super(key: key);
 
-  final Capseur capseur; // not mandatory, but if not null, the list will only contain matchs of this player
+  final Capseur
+      capseur; // not mandatory, but if not null, the list will only contain matchs of this player
 
   @override
   _MatchListState createState() => _MatchListState();
@@ -31,11 +32,12 @@ class _MatchListState extends State<MatchList> {
           .toList();
     }
 
-    return ListView.builder(
-        itemBuilder: (BuildContext context, int index) {
-          MatchEnded match = matchs[index];
-          return MatchResults(match: match, capseurs: capseurs, capseur : widget.capseur);
-        },
-        itemCount: matchs.length);
+    return Column(
+      children: [
+        for (MatchEnded match in matchs)
+          MatchResults(
+              match: match, capseurs: capseurs, capseur: widget.capseur)
+      ],
+    );
   }
 }

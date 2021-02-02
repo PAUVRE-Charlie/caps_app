@@ -36,7 +36,9 @@ class LastMatchs extends StatelessWidget {
                 Background(
                   image: "assets/images/bottle_-15deg.png",
                 ),
-                MatchList(),
+                SingleChildScrollView(
+                  child: MatchList(),
+                )
               ],
             ),
           ),
