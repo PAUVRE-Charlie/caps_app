@@ -28,6 +28,8 @@ class _MatchListState extends State<TournamentList> {
 
     if (tournaments == null) return LoadingWidget();
 
+    DatabaseService db = new DatabaseService();
+
     return ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           TournamentInfo tournament = tournaments[index];
@@ -39,14 +41,17 @@ class _MatchListState extends State<TournamentList> {
                 new MaterialPageRoute(
                   builder: (ctxt) =>
                       StreamProvider<Map<String, Map<String, String>>>.value(
-                    value: DatabaseService().capseursInTournaments,
+                    value: db.capseursInTournaments,
                     child: StreamProvider<List<Capseur>>.value(
-                      value: DatabaseService().capseurs,
+                      value: db.capseurs,
                       child: StreamProvider<List<MatchOfTournament>>.value(
-                        value: DatabaseService().matchsOfTournaments,
+                        value: db.matchsOfTournaments,
                         child: StreamProvider<List<Pool>>.value(
-                          value: DatabaseService().pools,
-                          child: TournamentPage(tournamentInfo: tournament),
+                          value: db.pools,
+                          child: StreamProvider<List<MatchEnded>>.value(
+                            value: db.matchs,
+                            child: TournamentPage(tournamentInfo: tournament),
+                          ),
                         ),
                       ),
                     ),

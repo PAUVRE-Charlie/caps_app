@@ -23,7 +23,8 @@ class TournamentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var matchs = Provider.of<List<MatchOfTournament>>(context);
+    var matchsOfTournaments = Provider.of<List<MatchOfTournament>>(context);
+    var matchs = Provider.of<List<MatchEnded>>(context);
     var pools = Provider.of<List<Pool>>(context);
     var capseurs = Provider.of<List<Capseur>>(context);
     var capseursInTournaments =
@@ -33,26 +34,35 @@ class TournamentPage extends StatelessWidget {
 
     if (capseurs == null ||
         matchs == null ||
+        matchsOfTournaments == null ||
         capseursInTournaments == null ||
         pools == null) {
       widgetToShow = new LoadingWidget();
     } else {
-      matchs = matchs
+      matchsOfTournaments = matchsOfTournaments
           .where((match) => match.tournamentUid == tournamentInfo.uid)
           .toList();
+
+      matchs = matchs.where((match) {
+        for (MatchOfTournament matchOfTournament in matchsOfTournaments) {
+          if (matchOfTournament.match == match.uid) return true;
+        }
+        return false;
+      });
 
       pools = pools
           .where((pool) => pool.tournamentUid == tournamentInfo.uid)
           .toList();
 
-      matchs.forEach((matchofTournament) {
+      matchsOfTournaments.forEach((matchofTournament) {
         if (matchofTournament.poolUid != null) {
           pools
               .firstWhere((pool) => pool.uid == matchofTournament.poolUid)
               .addMatch(matchofTournament);
         } else {}
       });
-      Tournament tournament = new Tournament(tournamentInfo, pools, matchs);
+      Tournament tournament =
+          new Tournament(tournamentInfo, pools, matchsOfTournaments, matchs);
 
       Map<String, String> tournamentAssociation =
           capseursInTournaments[tournamentInfo.uid];
@@ -65,16 +75,16 @@ class TournamentPage extends StatelessWidget {
 
       for (Pool pool in pools) {
         for (MatchOfTournament matchOfTournament in pool.matchs) {
+          MatchEnded match = matchs
+              .firstWhere((match) => match.uid == matchOfTournament.match);
+
           Participant participant1 = pool.participants.firstWhere(
-              (participant) =>
-                  participant.capseur.uid == matchOfTournament.match.player1);
+              (participant) => participant.capseur.uid == match.player1);
           Participant participant2 = pool.participants.firstWhere(
-              (participant) =>
-                  participant.capseur.uid == matchOfTournament.match.player2);
+              (participant) => participant.capseur.uid == match.player2);
 
           int capsAverageForParticipant1 =
-              matchOfTournament.match.scorePlayer1 -
-                  matchOfTournament.match.scorePlayer2;
+              match.scorePlayer1 - match.scorePlayer2;
 
           participant1.addCapsAverage(capsAverageForParticipant1);
           participant2.addCapsAverage(-capsAverageForParticipant1);

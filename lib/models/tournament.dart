@@ -9,9 +9,11 @@ import 'package:caps_app/models/tournamentInfo.dart';
 class Tournament {
   TournamentInfo _tournamentInfo;
   List<Pool> _pools;
-  List<MatchOfTournament> _matchs;
+  List<MatchOfTournament> _matchsOfTournaments;
+  List<MatchEnded> _matchs;
 
-  Tournament(this._tournamentInfo, this._pools, this._matchs);
+  Tournament(this._tournamentInfo, this._pools, this._matchsOfTournaments,
+      this._matchs);
 
   int get numberOfPools => _pools.length;
 
@@ -25,7 +27,8 @@ class Tournament {
 
   TournamentInfo get tournamentInfo => _tournamentInfo;
   List<Pool> get pools => _pools;
-  List<MatchOfTournament> get matchs => _matchs;
+  List<MatchOfTournament> get matchsOfTournaments => _matchsOfTournaments;
+  List<MatchEnded> get matchs => _matchs;
 
   int get numberOfPlayersInFinalBoard =>
       this.numberOfPools *
