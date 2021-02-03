@@ -47,6 +47,7 @@ class DatabaseService {
       snapshot.data()['matchsPlayed'] ?? '',
       snapshot.data()['matchsWon'] ?? '',
       snapshot.data()['capsHit'] ?? '',
+      snapshot.data()['capsThrow'] ?? '',
       snapshot.data()['bottlesEmptied'] ?? '',
       uid,
       snapshot.data()['points'] ?? '',
@@ -75,6 +76,7 @@ class DatabaseService {
       int matchsPlayed,
       int matchsWon,
       int capsHit,
+      int capsThrow,
       int bottlesEmptied,
       double points) async {
     return await capseursCollection.doc(_uid).set({
@@ -83,6 +85,7 @@ class DatabaseService {
       'matchsPlayed': matchsPlayed,
       'matchsWon': matchsWon,
       'capsHit': capsHit,
+      'capsThrow': capsThrow,
       'bottlesEmptied': bottlesEmptied,
       'points': points,
     });
@@ -97,6 +100,7 @@ class DatabaseService {
         doc.data()['matchsPlayed'] ?? '',
         doc.data()['matchsWon'] ?? '',
         doc.data()['capsHit'] ?? '',
+        doc.data()['capsThrow'] ?? '',
         doc.data()['bottlesEmptied'] ?? '',
         doc.id ?? '',
         doc.data()['points'] ?? '',
@@ -164,7 +168,10 @@ class DatabaseService {
       int pointsRequired,
       int pointsPerBottle,
       int capsHitPlayer1,
-      int capsHitPlayer2) async {
+      int capsThrowPlayer1,
+      int capsHitPlayer2,
+      int capsThrowPlayer2,
+      ) async {
     return await matchsWaitingToBeValidatedCollection.doc().set({
       'capseur1': uidCapseur1,
       'capseur2': uidCapseur2,
@@ -174,7 +181,9 @@ class DatabaseService {
       'pointsRequired': pointsRequired,
       'pointsPerBottle': pointsPerBottle,
       'capsHitPlayer1': capsHitPlayer1,
-      'capsHitPlayer2': capsHitPlayer2
+      'capsThrowPlayer1': capsThrowPlayer1,
+      'capsHitPlayer2': capsHitPlayer2,
+      'capsThrowPlayer2': capsThrowPlayer2,
     });
   }
 
@@ -191,7 +200,9 @@ class DatabaseService {
         doc.data()['pointsRequired'] ?? 0,
         doc.data()['pointsPerBottle'] ?? 0,
         doc.data()['capsHitPlayer1'] ?? 0,
+        doc.data()['capsThrowPlayer1'] ?? 0,
         doc.data()['capsHitPlayer2'] ?? 0,
+        doc.data()['capsThrowPlayer2'] ?? 0,
       );
     }).toList();
   }

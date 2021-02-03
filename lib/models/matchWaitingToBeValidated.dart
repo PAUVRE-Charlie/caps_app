@@ -14,6 +14,8 @@ class MatchWaitingToBeValidated {
   int _pointsPerBottle;
   int _player1CapsHitInThisGame;
   int _player2CapsHitInThisGame;
+  int _player1CapsThrowInThisGame;
+  int _player2CapsThrowInThisGame;
 
   MatchWaitingToBeValidated(
       this._uid,
@@ -25,7 +27,9 @@ class MatchWaitingToBeValidated {
       this._pointsRequired,
       this._pointsPerBottle,
       this._player1CapsHitInThisGame,
-      this._player2CapsHitInThisGame);
+      this._player1CapsThrowInThisGame,
+      this._player2CapsHitInThisGame,
+      this._player2CapsThrowInThisGame);
 
   String get uid => _uid;
   String get player1 => _capseur1;
@@ -38,4 +42,6 @@ class MatchWaitingToBeValidated {
   int get pointsPerBottle => _pointsPerBottle;
   int get player1CapsHitInThisGame => _player1CapsHitInThisGame;
   int get player2CapsHitInThisGame => _player2CapsHitInThisGame;
+  int get player1CapsThrowInThisGame => _player1CapsThrowInThisGame;
+  int get player2CapsThrowInThisGame => _player2CapsThrowInThisGame;
 }

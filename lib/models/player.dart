@@ -8,6 +8,7 @@ class Player {
   bool _topPlayerBool;
   bool _playing;
   int _capsHitInThisGame;
+  int _capsThrowInThisGame;
 
   Player.initial(this._capseur, this._topPlayerBool, int initialBottlesNumber,
       int gamePointsPerBottle, bool starting) {
@@ -16,6 +17,7 @@ class Player {
     _currentBottlePointsLeft = gamePointsPerBottle;
     _playing = starting;
     _capsHitInThisGame = 0;
+    _capsThrowInThisGame = 0;
   }
 
   Player(
@@ -25,7 +27,9 @@ class Player {
       this._currentBottlePointsLeft,
       this._topPlayerBool,
       this._playing,
-      this._capsHitInThisGame);
+      this._capsHitInThisGame,
+      this._capsThrowInThisGame,
+      );
 
   Capseur get capseur => _capseur;
   int get score => _score;
@@ -34,6 +38,7 @@ class Player {
   bool get topPlayerBool => _topPlayerBool;
   bool get playing => _playing;
   int get capsHitInThisGame => _capsHitInThisGame;
+  int get capsThrowInThisGame => _capsThrowInThisGame;
 
   setScore(int score) {
     _score = score;
@@ -41,6 +46,10 @@ class Player {
 
   addCapsHit() {
     _capsHitInThisGame++;
+  }
+
+  addCapsThrow() {
+    _capsThrowInThisGame++;
   }
 
   setPlaying(bool playing) {

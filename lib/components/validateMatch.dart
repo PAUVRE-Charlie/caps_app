@@ -40,6 +40,7 @@ class _ValidateMatchState extends State<ValidateMatch> {
         capseur1.matchsPlayed + 1,
         capseur1.matchsWon + (match.scorePlayer1 > match.scorePlayer2 ? 1 : 0),
         capseur1.capsHit + match.player1CapsHitInThisGame,
+        capseur1.capsThrow + match.player1CapsThrowInThisGame,
         capseur1.bottlesEmptied + match.scorePlayer2 ~/ match.pointsPerBottle,
         capseur1.points +
             (match.scorePlayer1 > match.scorePlayer2
@@ -53,6 +54,7 @@ class _ValidateMatchState extends State<ValidateMatch> {
         capseur2.matchsPlayed + 1,
         capseur2.matchsWon + (match.scorePlayer2 > match.scorePlayer1 ? 1 : 0),
         capseur2.capsHit + match.player2CapsHitInThisGame,
+        capseur2.capsThrow + match.player2CapsThrowInThisGame,
         capseur2.bottlesEmptied + match.scorePlayer1 ~/ match.pointsPerBottle,
         capseur2.points +
             (match.scorePlayer2 > match.scorePlayer1

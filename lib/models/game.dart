@@ -74,25 +74,33 @@ class Game {
         this.pointsRequired,
         this.pointsPerBottle,
         this.player1.capsHitInThisGame,
-        this.player2.capsHitInThisGame);
+        this.player1.capsThrowInThisGame,
+        this.player2.capsHitInThisGame,
+        this.player2.capsThrowInThisGame);
 
     Navigator.of(this.context).pop();
   }
 
   nextTurn(bool capsHit) {
     if (capsHit) {
-      if (_player1.playing)
+      if (_player1.playing){
+        this.player1.addCapsThrow();
         this.player1.addCapsHit();
-      else
+      } else{
+        this.player2.addCapsThrow();
         this.player2.addCapsHit();
+      }
       setReverseCount(this.reverseCount + 1);
     } else {
       if (this.reverseCount > 0) {
         if (_player1.playing) {
+          this.player1.addCapsThrow();
           setScoreAndDrink(this.reverseCount, this.player1, this.player2);
         } else {
+          this.player2.addCapsThrow();
           setScoreAndDrink(this.reverseCount, this.player2, this.player1);
         }
+
         setReverseCount(0);
       }
     }

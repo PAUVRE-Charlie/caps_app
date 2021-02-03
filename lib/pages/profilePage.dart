@@ -91,6 +91,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             dataName: 'Caps touchées',
                             dataValue: widget.capseur.capsHit.toString()),
                         DataItemProfile(
+                            dataName: 'Ratio',
+                            dataValue: (widget.capseur.capsThrow != 0) ? (widget.capseur.capsHit/widget.capseur.capsThrow*100).round().toString()+'%' : ''),
+                        DataItemProfile(
                             dataName: 'Kros bues',
                             dataValue:
                                 widget.capseur.bottlesEmptied.toString()),
