@@ -7,6 +7,7 @@ import 'package:caps_app/models/basicUser.dart';
 import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/models/matchEnded.dart';
 import 'package:caps_app/pages/lastMatchs.dart';
+import 'package:caps_app/pages/rankingPage.dart';
 import 'package:caps_app/services/auth.dart';
 import 'package:caps_app/services/database.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               Navigator.push(
                                 context,
                                 new MaterialPageRoute(
-                                  builder: (context) => new LastMatchs(),
+                                  builder: (context) => new RankingPage(),
                                 ),
                               );
                             },

@@ -15,7 +15,7 @@ class RulesPage extends StatelessWidget {
         shadowColor: Colors.transparent,
         leading: ArrowBackAppBar(),
         title: Text(
-          'Classements',
+          'Règles',
           style: TextStyle(
               fontFamily: 'PirataOne', fontSize: 30, color: kSecondaryColor),
         ),
@@ -78,6 +78,13 @@ class RulesPage extends StatelessWidget {
                 TextRules(
                   "je te tiens à signaler à tous les bourrins que le but du jeu n’est pas de faire tomber une caps en jetant sa caps de toute ses forces contre la bouteille (fer contre verre ne compte évidement pas). Un coup est validé si la caps s’est faite éjecter par une caps directement (fer contre fer). Vous entendrez alors ce somptueux son : « POUM! »",
                   textToEmphasize: "ATTENTION : ",
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                TextRules(
+                  " L'aglorithme a été établi de la manière suivante.\nSi vous gagnez un match vous gagnez des points, si vous perdez, vous en perdez, simple.\nMais bien sûr, si vous gagnez contre un joueur mieux classé que vous, vous marquerez plus de points (« perf ») que si vous gagnez un joueur moins bien classé que vous. A contrario si vous perdez contre un joueur moins bien classé que vous, vous perderez plus de points(« contre-perf ») que si vous perdez contre un joueur mieux classé que vous.\nNotez que pour récompensez les joueurs jouant beaucoup, lors d'un match le perdant perds 80% des points gagnés par le gagnant.\nExemple : prenons 2 joueurs avec le même nombre de points. Le gagnant gagnera 5 points et le perdant perdra 4 points. Ainsi, le nombre de point total distribué augmentera avec le combre de match joué",
+                  textToEmphasize: "LE CLASSEMENT : ",
                 ),
                 SizedBox(
                   height: 30,
