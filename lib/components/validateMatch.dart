@@ -109,119 +109,125 @@ class _ValidateMatchState extends State<ValidateMatch> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          padding: EdgeInsets.all(30),
-          child: RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              text: "Si vous avez joué ce match, appuyez sur ",
-              style: TextStyle(
-                  fontSize: 18, color: Colors.black, fontFamily: "NotoSansJP"),
-              children: [
-                TextSpan(
-                  text: "VALIDER",
-                  style: TextStyle(
-                      color: Colors.green,
-                      fontFamily: "PirataOne",
-                      fontSize: 20),
-                ),
-                TextSpan(text: ", sinon appuyer sur "),
-                TextSpan(
-                  text: "REFUSER",
-                  style: TextStyle(
-                      color: kPrimaryColor,
-                      fontFamily: "PirataOne",
-                      fontSize: 20),
-                )
-              ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(
+            height: 50,
+          ),
+          Container(
+            padding: EdgeInsets.all(30),
+            child: RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                text: "Si vous avez joué ce match, appuyez sur ",
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                    fontFamily: "NotoSansJP"),
+                children: [
+                  TextSpan(
+                    text: "VALIDER",
+                    style: TextStyle(
+                        color: Colors.green,
+                        fontFamily: "PirataOne",
+                        fontSize: 20),
+                  ),
+                  TextSpan(text: ", sinon appuyer sur "),
+                  TextSpan(
+                    text: "REFUSER",
+                    style: TextStyle(
+                        color: kPrimaryColor,
+                        fontFamily: "PirataOne",
+                        fontSize: 20),
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-        MatchResults(
-          match: new MatchEnded(
-              widget.matchWaitingToBeValidated.uid,
-              widget.matchWaitingToBeValidated.player1,
-              widget.matchWaitingToBeValidated.player2,
-              widget.matchWaitingToBeValidated.date,
-              widget.matchWaitingToBeValidated.scorePlayer1,
-              widget.matchWaitingToBeValidated.scorePlayer2),
-          capseurs: widget.capseurs,
-        ),
-        SizedBox(
-          height: 50,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                RaisedButton(
-                  onPressed: () {
-                    updateCapseursStats(
-                        widget.matchWaitingToBeValidated,
-                        widget.capseurs.firstWhere((capseur) =>
-                            capseur.uid ==
-                            widget.matchWaitingToBeValidated.player1),
-                        widget.capseurs.firstWhere((capseur) =>
-                            capseur.uid ==
-                            widget.matchWaitingToBeValidated.player2));
-                    DatabaseService().updateMatchData(
-                        widget.matchWaitingToBeValidated.player1,
-                        widget.matchWaitingToBeValidated.player2,
-                        widget.matchWaitingToBeValidated.scorePlayer1,
-                        widget.matchWaitingToBeValidated.scorePlayer2);
+          MatchResults(
+            match: new MatchEnded(
+                widget.matchWaitingToBeValidated.uid,
+                widget.matchWaitingToBeValidated.player1,
+                widget.matchWaitingToBeValidated.player2,
+                widget.matchWaitingToBeValidated.date,
+                widget.matchWaitingToBeValidated.scorePlayer1,
+                widget.matchWaitingToBeValidated.scorePlayer2),
+            capseurs: widget.capseurs,
+          ),
+          SizedBox(
+            height: 50,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  RaisedButton(
+                    onPressed: () {
+                      updateCapseursStats(
+                          widget.matchWaitingToBeValidated,
+                          widget.capseurs.firstWhere((capseur) =>
+                              capseur.uid ==
+                              widget.matchWaitingToBeValidated.player1),
+                          widget.capseurs.firstWhere((capseur) =>
+                              capseur.uid ==
+                              widget.matchWaitingToBeValidated.player2));
+                      DatabaseService().updateMatchData(
+                          widget.matchWaitingToBeValidated.player1,
+                          widget.matchWaitingToBeValidated.player2,
+                          widget.matchWaitingToBeValidated.scorePlayer1,
+                          widget.matchWaitingToBeValidated.scorePlayer2);
 
-                    DatabaseService().deleteMatchWaitingToBeValidated(
-                        widget.matchWaitingToBeValidated.uid);
-                  },
-                  color: Colors.green,
-                  child: Icon(
-                    Icons.check,
-                    color: kWhiteColor,
+                      DatabaseService().deleteMatchWaitingToBeValidated(
+                          widget.matchWaitingToBeValidated.uid);
+                    },
+                    color: Colors.green,
+                    child: Icon(
+                      Icons.check,
+                      color: kWhiteColor,
+                    ),
                   ),
-                ),
-                Text(
-                  "VALIDER",
-                  style: TextStyle(
-                      color: Colors.green,
-                      fontFamily: "PirataOne",
-                      fontSize: 20),
-                )
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                RaisedButton(
-                  onPressed: () {
-                    DatabaseService().deleteMatchWaitingToBeValidated(
-                        widget.matchWaitingToBeValidated.uid);
-                  },
-                  color: kPrimaryColor,
-                  child: Icon(
-                    Icons.cancel,
-                    color: kWhiteColor,
+                  Text(
+                    "VALIDER",
+                    style: TextStyle(
+                        color: Colors.green,
+                        fontFamily: "PirataOne",
+                        fontSize: 20),
+                  )
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  RaisedButton(
+                    onPressed: () {
+                      DatabaseService().deleteMatchWaitingToBeValidated(
+                          widget.matchWaitingToBeValidated.uid);
+                    },
+                    color: kPrimaryColor,
+                    child: Icon(
+                      Icons.cancel,
+                      color: kWhiteColor,
+                    ),
                   ),
-                ),
-                Text(
-                  "REFUSER",
-                  style: TextStyle(
-                      color: kPrimaryColor,
-                      fontFamily: "PirataOne",
-                      fontSize: 20),
-                )
-              ],
-            )
-          ],
-        ),
-        SizedBox(
-          height: 200,
-        )
-      ],
+                  Text(
+                    "REFUSER",
+                    style: TextStyle(
+                        color: kPrimaryColor,
+                        fontFamily: "PirataOne",
+                        fontSize: 20),
+                  )
+                ],
+              )
+            ],
+          ),
+          SizedBox(
+            height: 200,
+          )
+        ],
+      ),
     );
   }
 }
