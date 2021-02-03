@@ -1,10 +1,8 @@
 import 'dart:math';
 
-import 'package:caps_app/components/arrowBackAppBar.dart';
 import 'package:caps_app/components/background.dart';
 import 'package:caps_app/components/loading.dart';
 import 'package:caps_app/models/capseur.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../data.dart';
