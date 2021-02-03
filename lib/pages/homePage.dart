@@ -87,7 +87,15 @@ class _HomePageState extends State<HomePage> {
                       )),
                 ),
               )
-            : LoadingWidget();
+            : Scaffold(
+                body: Stack(
+                children: [
+                  Background(),
+                  Center(
+                    child: LoadingWidget(),
+                  ),
+                ],
+              ));
       },
     );
   }
