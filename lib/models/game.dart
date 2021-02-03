@@ -5,6 +5,7 @@ import 'package:caps_app/components/rankingList.dart';
 import 'package:caps_app/data.dart';
 import 'package:caps_app/pages/matchPage.dart';
 import 'package:caps_app/models/player.dart';
+import 'package:caps_app/pages/randomPickStartPage.dart';
 import 'package:caps_app/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,17 +19,17 @@ class Game {
   int _reverseCount;
   int _pointsRequired;
   int _pointsPerBottle;
-  bool _player1starting;
+  bool _player1Starting;
 
   Game.initial(Capseur capseur1, Capseur capseur2, int bottlesNumber,
-      int pointsPerBottle) {
+      int pointsPerBottle, bool player1Starting) {
     //reset or new game
-    _player1starting = Random().nextBool();
+    _player1Starting = player1Starting;
 
     _player1 = Player.initial(
-        capseur1, true, bottlesNumber, pointsPerBottle, _player1starting);
+        capseur1, true, bottlesNumber, pointsPerBottle, _player1Starting);
     _player2 = Player.initial(
-        capseur2, false, bottlesNumber, pointsPerBottle, !_player1starting);
+        capseur2, false, bottlesNumber, pointsPerBottle, !_player1Starting);
     _reverseCount = 0;
     _pointsRequired = pointsPerBottle * bottlesNumber;
     _pointsPerBottle = pointsPerBottle;
@@ -36,7 +37,7 @@ class Game {
   }
 
   Game(this._player1, this._player2, this._reverseCount, this._pointsRequired,
-      this._pointsPerBottle, this._player1starting);
+      this._pointsPerBottle, this._player1Starting);
 
   BuildContext get context => _context;
   Player get player1 => _player1;
@@ -44,7 +45,7 @@ class Game {
   int get reverseCount => _reverseCount;
   int get pointsRequired => _pointsRequired;
   int get pointsPerBottle => _pointsPerBottle;
-  bool get player1starting => _player1starting;
+  bool get player1starting => _player1Starting;
 
   setContext(BuildContext context) {
     _context = context;
@@ -283,7 +284,7 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
                   Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (ctxt) => new MatchPage(
+                        builder: (ctxt) => new RandomPickStartPage(
                             title: widget.title,
                             capseur2: widget.capseur,
                             capseur1: opponent,

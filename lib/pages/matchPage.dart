@@ -12,11 +12,12 @@ import 'dart:math';
 class MatchPage extends StatefulWidget {
   MatchPage(
       {Key key,
-      this.title,
-      this.capseur1,
-      this.capseur2,
-      this.bottlesNumber,
-      this.pointsPerBottle})
+      @required this.title,
+      @required this.capseur1,
+      @required this.capseur2,
+      @required this.bottlesNumber,
+      @required this.pointsPerBottle,
+      @required this.player1Starting})
       : super(key: key);
 
   final String title;
@@ -24,6 +25,7 @@ class MatchPage extends StatefulWidget {
   final Capseur capseur2;
   final int bottlesNumber;
   final int pointsPerBottle;
+  final bool player1Starting;
 
   @override
   _MatchPageState createState() => _MatchPageState();
@@ -51,7 +53,7 @@ class _MatchPageState extends State<MatchPage> {
   @override
   void initState() {
     game = Game.initial(widget.capseur1, widget.capseur2, widget.bottlesNumber,
-        widget.pointsPerBottle);
+        widget.pointsPerBottle, widget.player1Starting);
     gameLastTurn = copyGame(game);
     canRevert = false;
     super.initState();

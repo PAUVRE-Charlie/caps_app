@@ -156,42 +156,66 @@ class _ValidateMatchState extends State<ValidateMatch> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            RaisedButton(
-              onPressed: () {
-                updateCapseursStats(
-                    widget.matchWaitingToBeValidated,
-                    widget.capseurs.firstWhere((capseur) =>
-                        capseur.uid ==
-                        widget.matchWaitingToBeValidated.player1),
-                    widget.capseurs.firstWhere((capseur) =>
-                        capseur.uid ==
-                        widget.matchWaitingToBeValidated.player2));
-                DatabaseService().updateMatchData(
-                    widget.matchWaitingToBeValidated.player1,
-                    widget.matchWaitingToBeValidated.player2,
-                    widget.matchWaitingToBeValidated.scorePlayer1,
-                    widget.matchWaitingToBeValidated.scorePlayer2);
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                RaisedButton(
+                  onPressed: () {
+                    updateCapseursStats(
+                        widget.matchWaitingToBeValidated,
+                        widget.capseurs.firstWhere((capseur) =>
+                            capseur.uid ==
+                            widget.matchWaitingToBeValidated.player1),
+                        widget.capseurs.firstWhere((capseur) =>
+                            capseur.uid ==
+                            widget.matchWaitingToBeValidated.player2));
+                    DatabaseService().updateMatchData(
+                        widget.matchWaitingToBeValidated.player1,
+                        widget.matchWaitingToBeValidated.player2,
+                        widget.matchWaitingToBeValidated.scorePlayer1,
+                        widget.matchWaitingToBeValidated.scorePlayer2);
 
-                DatabaseService().deleteMatchWaitingToBeValidated(
-                    widget.matchWaitingToBeValidated.uid);
-              },
-              color: Colors.green,
-              child: Icon(
-                Icons.check,
-                color: kWhiteColor,
-              ),
+                    DatabaseService().deleteMatchWaitingToBeValidated(
+                        widget.matchWaitingToBeValidated.uid);
+                  },
+                  color: Colors.green,
+                  child: Icon(
+                    Icons.check,
+                    color: kWhiteColor,
+                  ),
+                ),
+                Text(
+                  "VALIDER",
+                  style: TextStyle(
+                      color: Colors.green,
+                      fontFamily: "PirataOne",
+                      fontSize: 20),
+                )
+              ],
             ),
-            RaisedButton(
-              onPressed: () {
-                DatabaseService().deleteMatchWaitingToBeValidated(
-                    widget.matchWaitingToBeValidated.uid);
-              },
-              color: kPrimaryColor,
-              child: Icon(
-                Icons.cancel,
-                color: kWhiteColor,
-              ),
-            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                RaisedButton(
+                  onPressed: () {
+                    DatabaseService().deleteMatchWaitingToBeValidated(
+                        widget.matchWaitingToBeValidated.uid);
+                  },
+                  color: kPrimaryColor,
+                  child: Icon(
+                    Icons.cancel,
+                    color: kWhiteColor,
+                  ),
+                ),
+                Text(
+                  "REFUSER",
+                  style: TextStyle(
+                      color: kPrimaryColor,
+                      fontFamily: "PirataOne",
+                      fontSize: 20),
+                )
+              ],
+            )
           ],
         ),
         SizedBox(
