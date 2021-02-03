@@ -4,6 +4,7 @@ import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/pages/lastMatchs.dart';
 import 'package:caps_app/pages/profilePage.dart';
 import 'package:caps_app/pages/rankingPage.dart';
+import 'package:caps_app/pages/rulesPage.dart';
 import 'package:caps_app/pages/tournamentsMenuPage.dart';
 import 'package:caps_app/services/database.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,13 @@ class _HomePageState extends State<HomePage> {
                         color: kSecondaryColor,
                         size: 30,
                       ),
-                      onPressed: null),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                              builder: (ctxt) => new RulesPage(),
+                            ));
+                      }),
                   actions: [
                     IconButton(
                         icon: Icon(
