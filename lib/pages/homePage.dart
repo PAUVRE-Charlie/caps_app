@@ -8,6 +8,7 @@ import 'package:caps_app/models/matchEnded.dart';
 import 'package:caps_app/models/matchWaitingToBeValidated.dart';
 import 'package:caps_app/pages/lastMatchs.dart';
 import 'package:caps_app/pages/profilePage.dart';
+import 'package:caps_app/pages/randomPickStartPage.dart';
 import 'package:caps_app/pages/rankingPage.dart';
 import 'package:caps_app/pages/rulesPage.dart';
 import 'package:caps_app/pages/tournamentsMenuPage.dart';
