@@ -172,20 +172,20 @@ class _MenuOrValidateMatchState extends State<MenuOrValidateMatch> {
                   child: Column(
                     children: [
                       TextButtonMenu(
-                          text: "Match amical",
+                          text: "Jouer",
                           onPressed: () {
                             Game.startMatch(
-                                context, "Match amical", widget.capseur);
+                                context, "Match", widget.capseur);
                           }),
-                      TextButtonMenu(
-                          text: "Tournois",
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                  builder: (ctxt) => new TournamentsMenuPage(),
-                                ));
-                          }),
+                      // TextButtonMenu(
+                      //     text: "Tournois",
+                      //     onPressed: () {
+                      //       Navigator.push(
+                      //           context,
+                      //           new MaterialPageRoute(
+                      //             builder: (ctxt) => new TournamentsMenuPage(),
+                      //           ));
+                      //     }),
                       TextButtonMenu(
                         text: "Classements",
                         onPressed: () {
