@@ -49,6 +49,21 @@ class _ProfilePageState extends State<ProfilePage> {
                       fontSize: 30,
                       color: kPrimaryColor),
                 ),
+                actions: [
+                  user.uid == widget.capseur.uid ?
+                  IconButton(
+                      icon: Icon(
+                        Icons.power_settings_new,
+                        color: kSecondaryColor,
+                        size: 30,
+                      ),
+                      onPressed: () async {
+                        Navigator.of(context).pop();
+                        _auth.signOut();
+                        },
+                  )
+
+                :Container()],
               ),
               body: Stack(
                 children: [
@@ -97,23 +112,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             dataName: 'Kros bues',
                             dataValue:
                                 widget.capseur.bottlesEmptied.toString()),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        user.uid == widget.capseur.uid
-                            ? RaisedButton(
-                                onPressed: () async {
-                                  Navigator.of(context).pop();
-                                  _auth.signOut();
-                                },
-                                color: kPrimaryColor,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 30, vertical: 10),
-                                child: Text(
-                                  "Deconnexion",
-                                  style: TextStyle(color: kWhiteColor),
-                                ))
-                            : Container(),
                         SizedBox(
                           height: 30,
                         ),
