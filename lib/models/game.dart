@@ -1,12 +1,17 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui';
 
+import 'package:caps_app/components/matchResults.dart';
 import 'package:caps_app/components/rankingList.dart';
 import 'package:caps_app/data.dart';
+import 'package:caps_app/models/matchEnded.dart';
 import 'package:caps_app/pages/matchPage.dart';
 import 'package:caps_app/models/player.dart';
 import 'package:caps_app/pages/randomPickStartPage.dart';
 import 'package:caps_app/services/database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -50,36 +55,39 @@ class Game {
   setContext(BuildContext context) {
     _context = context;
   }
-
   setReverseCount(int value) {
     _reverseCount = value;
   }
 
-  setScoreAndDrink(int currentReverseCount, Player playerWhoDrinks,
-      Player playerWhoseScoreIncrease) {
-    playerWhoseScoreIncrease
-        .setScore(playerWhoseScoreIncrease.score + currentReverseCount);
-    playerWhoDrinks.drink(currentReverseCount, this.pointsPerBottle);
-    if (playerWhoseScoreIncrease.score >= this.pointsRequired) {
-      endGame(playerWhoseScoreIncrease);
-    }
-  }
+  static Future<void> startMatch(
+      BuildContext context, String title, Capseur capseur) async {
 
-  endGame(Player winner) {
-    /* UPDATE ALL THE VARIABLES OF BOTH CAPSEURS IN THE SERVER */
-    DatabaseService().updateMatchWaitingToBeValidatedData(
-        this.player1.capseur.uid,
-        this.player2.capseur.uid,
-        this.player1.score,
-        this.player2.score,
-        this.pointsRequired,
-        this.pointsPerBottle,
-        this.player1.capsHitInThisGame,
-        this.player1.capsThrowInThisGame,
-        this.player2.capsHitInThisGame,
-        this.player2.capsThrowInThisGame);
+    final _bottlesNumberKey = GlobalKey<_DropDownAlertState>();
+    final _pointsPerBottleKey = GlobalKey<_DropDownAlertState>();
 
-    Navigator.of(this.context).pop();
+    DropDownAlert bottlesNumberDialog = new DropDownAlert(
+      key: _bottlesNumberKey,
+      initialValue: 3,
+      values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+    );
+    DropDownAlert pointsPerBottleDialog = new DropDownAlert(
+      key: _pointsPerBottleKey,
+      initialValue: 4,
+      values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    );
+
+    return showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialogNewMatch(
+            title: title,
+            capseur: capseur,
+            bottlesNumberKey: _bottlesNumberKey,
+            pointsPerBottleKey: _pointsPerBottleKey,
+            bottlesNumberDialog: bottlesNumberDialog,
+            pointsPerBottleDialog: pointsPerBottleDialog,
+          );
+        });
   }
 
   nextTurn(bool capsHit) {
@@ -113,38 +121,104 @@ class Game {
     _player2.setPlaying(!_player2.playing);
   }
 
-  static Future<void> startMatch(
-      BuildContext context, String title, Capseur capseur) async {
-    List<int> values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-    final _bottlesNumberKey = GlobalKey<_DropDownAlertState>();
-    final _pointsPerBottleKey = GlobalKey<_DropDownAlertState>();
-
-    DropDownAlert bottlesNumberDialog = new DropDownAlert(
-      key: _bottlesNumberKey,
-      initialValue: 3,
-      values: values,
-    );
-    DropDownAlert pointsPerBottleDialog = new DropDownAlert(
-      key: _pointsPerBottleKey,
-      initialValue: 4,
-      values: values,
-    );
-
-    return showDialog<void>(
+  AlertDialog setScoreAndDrink(int currentReverseCount, Player playerWhoDrinks,
+      Player playerWhoseScoreIncrease) {
+    playerWhoseScoreIncrease
+        .setScore(playerWhoseScoreIncrease.score + currentReverseCount);
+    playerWhoDrinks.drink(currentReverseCount, this.pointsPerBottle);
+    if (playerWhoseScoreIncrease.score >= this.pointsRequired) {
+      //endGame(playerWhoseScoreIncrease);
+      showDialog(
         context: context,
-        builder: (BuildContext context) {
-          return AlertDialogNewMatch(
-            title: title,
-            capseur: capseur,
-            bottlesNumberKey: _bottlesNumberKey,
-            pointsPerBottleKey: _pointsPerBottleKey,
-            bottlesNumberDialog: bottlesNumberDialog,
-            pointsPerBottleDialog: pointsPerBottleDialog,
-          );
-        });
+        barrierDismissible: false,
+        builder: (context){
+          return endGamePopUp(playerWhoseScoreIncrease);
+        },
+      );
+    }
+  }
+
+  WillPopScope endGamePopUp(Player winner){
+    return WillPopScope(
+      onWillPop: (){
+        return Future.value(false);
+      },
+      child: AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+        content: Container(
+          height: 350.0,
+          child: Column(
+            children: [
+              Icon(Icons.emoji_events, color: Color(0xFFFFD700), size: 80,),
+              Text(winner.capseur.firstname + ' vainqueur !', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500), textAlign: TextAlign.center,),
+              SizedBox(height: 20.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(this.player2.capseur.firstname + ' ' + this.player2.capseur.lastname,
+                      style: TextStyle(
+                          color: this.player2 == winner
+                              ? kPrimaryColor
+                              : Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w300)),
+                  Text(' - '),
+                  Text(this.player1.capseur.firstname + ' ' + this.player1.capseur.lastname,
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w300,
+                          color: this.player2 == winner
+                              ? Colors.black
+                              : kPrimaryColor)),
+                ],
+              ),
+              SizedBox(height: 10,),
+              Text(
+                this.player2.score.toString() +
+                    ' - ' +
+                    this.player1.score.toString(),
+                style: TextStyle(fontFamily: 'PirataOne', fontSize: 30),
+              ),
+              SizedBox(height: 20.0,),
+              RaisedButton(
+                  child: Text(
+                    "Valider",
+                    style: TextStyle(color: kWhiteColor),
+                  ),
+                  color: kPrimaryColor,
+                  onPressed: (){
+                    endGame(winner);
+                  }),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+
+  endGame(Player winner) {
+    /* UPDATE ALL THE VARIABLES OF BOTH CAPSEURS IN THE SERVER */
+    DatabaseService().updateMatchWaitingToBeValidatedData(
+        this.player1.capseur.uid,
+        this.player2.capseur.uid,
+        this.player1.score,
+        this.player2.score,
+        this.pointsRequired,
+        this.pointsPerBottle,
+        this.player1.capsHitInThisGame,
+        this.player1.capsThrowInThisGame,
+        this.player2.capsHitInThisGame,
+        this.player2.capsThrowInThisGame);
+
+    Navigator.of(this.context).pop();
+    Navigator.of(this.context).pop();
   }
 }
+
+
+
+
 
 class DropDownAlert extends StatefulWidget {
   DropDownAlert({Key key, this.values, this.initialValue}) : super(key: key);
