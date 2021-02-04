@@ -250,7 +250,7 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
                 "Selectionne ton adversaire",
                 style: TextStyle(color: kWhiteColor),
               ),
-              color: kSecondaryColor,
+              color: (opponent != null) ? kSecondaryColor : kPrimaryColor,
               onPressed: () {
                 _showUserList(selectOpponent: (Capseur _opponent) {
                   if (_opponent.uid != widget.capseur.uid) {
@@ -297,7 +297,7 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
                 "Valider",
                 style: TextStyle(color: kWhiteColor),
               ),
-              color: kPrimaryColor,
+              color: (opponent != null) ? kPrimaryColor : kPrimaryDisableColor,
             )
           ],
         ),
