@@ -1,8 +1,12 @@
+import 'dart:ui';
+
 import 'package:caps_app/components/arrowBackAppBar.dart';
 import 'package:caps_app/components/background.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../data.dart';
+import 'rulePageEnglish.dart';
 
 class RulesPage extends StatelessWidget {
   const RulesPage({Key key}) : super(key: key);
@@ -19,6 +23,16 @@ class RulesPage extends StatelessWidget {
           style: TextStyle(
               fontFamily: 'PirataOne', fontSize: 30, color: kSecondaryColor),
         ),
+        actions: <Widget>[
+          FlatButton(
+            padding: EdgeInsets.all(15.0),
+            child: Image(image: AssetImage("assets/images/united-kingdom.png")),
+            onPressed: (){
+              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => new RulesPageEnglish()));
+            },
+          )
+        ],
       ),
       body: Stack(
         children: [
@@ -29,7 +43,7 @@ class RulesPage extends StatelessWidget {
             child: Column(
               children: [
                 TextRules(
-                    "Chaque joueur se met en face de l’autre. Pour la distance, il suffit que les deux joueurs s'assoient et tendent leurs jambes.",
+                    "Les 2 joueur s'installent par terre l'un en face de l’autre. Pour la distance, il suffit que les deux joueurs s'assoient et tendent leurs jambes.",
                     index: 1),
                 TextRules(
                     "Chaque joueur décapsule sa bouteille de bière, la pose entre ses jambes, et pose la capsule sur la bouteille, à l'envers.",
@@ -42,10 +56,10 @@ class RulesPage extends StatelessWidget {
                     "pour jouer, il faut au moins une caps en plus de celle des deux bouteilles.",
                     textToEmphasize: "Note: "),
                 TextRules(
-                    "Pour désigner celui qui commence à jouer, vous pouvez vous mettre d'accord ou faire un \"pile ou caps\". C'est comme un pile ou face mais avec une caps.",
+                    "Pour désigner celui qui commence à jouer, un tirage aléatoire \"pile ou caps\" est réalisé au début d'un match",
                     index: 3),
                 TextRules(
-                    "Le joueur désigné lance alors sa caps vers son adversaire en essayant de retirer la caps située sur sa bouteille.\nS'il rate, rien ne se passe et c'est au tour de son adversaire de jouer.",
+                    "Le joueur désigné lance alors sa caps vers son adversaire en essayant de toucher la caps située sur sa bouteille.\nS'il rate, rien ne se passe et c'est au tour de son adversaire de jouer.",
                     index: 4),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 30),
@@ -74,17 +88,23 @@ class RulesPage extends StatelessWidget {
                 ),
                 TextRules(
                     "Pour chaque \"gorgée\" bue par un joueur, son adversaire marque un point. Une fois qu'un joueur a fini de boire toutes ses bouteilles il a perdu.",
-                    index: 7),
+                    index: 6),
                 TextRules(
                   "je te tiens à signaler à tous les bourrins que le but du jeu n’est pas de faire tomber une caps en jetant sa caps de toute ses forces contre la bouteille (fer contre verre ne compte évidement pas). Un coup est validé si la caps s’est faite éjecter par une caps directement (fer contre fer). Vous entendrez alors ce somptueux son : « POUM! »",
                   textToEmphasize: "ATTENTION : ",
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 40,
                 ),
+            Text(
+              "Le classement comment ça marche ?",
+              style: TextStyle(
+                  fontFamily: "PirataOne",
+                  fontSize: 25,
+                  color: kPrimaryColor),
+            ),
                 TextRules(
-                  " L'aglorithme a été établi de la manière suivante.\nSi vous gagnez un match vous gagnez des points, si vous perdez, vous en perdez, simple.\nMais bien sûr, si vous gagnez contre un joueur mieux classé que vous, vous marquerez plus de points (« perf ») que si vous gagnez un joueur moins bien classé que vous. A contrario si vous perdez contre un joueur moins bien classé que vous, vous perderez plus de points(« contre-perf ») que si vous perdez contre un joueur mieux classé que vous.\nNotez que pour récompenser les joueurs jouant beaucoup, lors d'un match le perdant perds 80% des points gagnés par le gagnant.\nExemple : prenons 2 joueurs avec le même nombre de points qui font un match en 16 points. Le gagnant gagnera 5 points et le perdant perdra 4 points. Ainsi, le nombre de point total distribué augmentera avec le combre de match joué. Enfin si le match se joue en 4 il y aura moins de points attribués (coefficient 0.25) qu'un match en 16 (coefficient 1) ou encore plus en 32 (coefficient 2) pour des raisons de fiabilité",
-                  textToEmphasize: "LE CLASSEMENT : ",
+                  "\nL'aglorithme a été établi de la manière suivante.\nChaque nouveau joueur commence initialement avec 100 points. Si vous gagnez un match vous gagnez des points, si vous perdez, vous en perdez, simple.\nMais bien sûr, si vous gagnez contre un joueur mieux classé que vous, vous marquerez plus de points (« perf ») que si vous gagnez un joueur moins bien classé que vous. A contrario si vous perdez contre un joueur moins bien classé que vous, vous perderez plus de points(« contre-perf ») que si vous perdez contre un joueur mieux classé que vous.\nNotez que pour récompenser les joueurs jouant beaucoup, lors d'un match le perdant perds 80% des points gagnés par le gagnant.\nExemple : prenons 2 joueurs avec le même nombre de points qui font un match en 16 points. Le gagnant gagnera 5 points et le perdant perdra 4 points. Ainsi, le nombre de point total distribué augmentera avec le combre de match joué. Enfin si le match se joue en 4 il y aura moins de points attribués (coefficient 0.25) qu'un match en 16 (coefficient 1) ou encore plus en 32 (coefficient 2) pour des raisons de fiabilité",
                 ),
                 SizedBox(
                   height: 30,
@@ -96,9 +116,11 @@ class RulesPage extends StatelessWidget {
                       fontSize: 25,
                       color: kPrimaryColor),
                 ),
+                TextRules("\n(Nous déclinons toute responsabilité en cas de problèmes liés à votre consommation d'alcool)"),
                 SizedBox(
                   height: 50,
-                )
+                ),
+                Text("Créateurs de l'application: Charlie PAUVRE & Pierre SCHMUTZ", style: TextStyle(fontStyle: FontStyle.italic, fontSize: 11.0),),
               ],
             ),
           )
