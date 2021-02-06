@@ -1,6 +1,7 @@
 import 'package:audioplayers/audio_cache.dart';
 import 'package:caps_app/components/arrowBackAppBar.dart';
 import 'package:caps_app/components/background.dart';
+import 'package:caps_app/components/player_side.dart';
 import 'package:flutter/material.dart';
 
 import '../data.dart';
@@ -84,7 +85,8 @@ class _MatchPageState extends State<MatchPage> {
                   PlayerSide(
                       bottlesNumber:
                           game.pointsRequired ~/ game.pointsPerBottle,
-                      player: game.player1),
+                      player: game.player1,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -179,69 +181,12 @@ class _MatchPageState extends State<MatchPage> {
                   PlayerSide(
                       bottlesNumber:
                           game.pointsRequired ~/ game.pointsPerBottle,
-                      player: game.player2),
+                      player: game.player2,
+                  ),
                 ],
               ),
             )
           ],
         ));
-  }
-}
-
-class PlayerSide extends StatefulWidget {
-  PlayerSide({Key key, this.player, this.bottlesNumber}) : super(key: key);
-
-  final Player player;
-  final int bottlesNumber;
-
-  @override
-  _PlayerSideState createState() => _PlayerSideState();
-}
-
-class _PlayerSideState extends State<PlayerSide> {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: widget.player.topPlayerBool
-          ? CrossAxisAlignment.center
-          : CrossAxisAlignment.end,
-      children: [
-        Expanded(
-            child: Column(
-          verticalDirection: widget.player.topPlayerBool
-              ? VerticalDirection.down
-              : VerticalDirection.up,
-          children: [
-            Opacity(
-              opacity: (widget.player.playing) ? 0.2 : 1,
-              child: Image(
-                  height: MediaQuery.of(context).size.height * 1 / 5,
-                  image: AssetImage('assets/images/match_bottle_wcaps.png')),
-            ),
-            Text(
-              widget.player.score.toString(),
-              style: TextStyle(
-                  fontFamily: 'PirataOne', fontSize: 50, color: kPrimaryColor),
-            )
-          ],
-        )),
-        Container(
-            height: MediaQuery.of(context).size.height * 1 / 10,
-            width: MediaQuery.of(context).size.width / 3,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              reverse: true,
-              itemCount: widget.bottlesNumber - 1,
-              itemBuilder: (BuildContext context, int index) {
-                return Opacity(
-                  opacity:
-                      (index >= widget.player.bottlesLeftNumber - 1) ? 0.2 : 1,
-                  child: Image(image: AssetImage('assets/images/bottle.png')),
-                );
-              },
-            ))
-      ],
-    );
   }
 }

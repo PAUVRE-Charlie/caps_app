@@ -302,6 +302,7 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       title: Center(
         child: Text(widget.title),
       ),
