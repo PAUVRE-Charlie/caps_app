@@ -2,6 +2,7 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:caps_app/components/arrowBackAppBar.dart';
 import 'package:caps_app/components/background.dart';
 import 'package:caps_app/components/player_side.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../data.dart';
@@ -94,49 +95,56 @@ class _MatchPageState extends State<MatchPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            "${game.player1.playing ? game.player1.capseur.firstname : game.player2.capseur.firstname} est en train de jouer",
-                            style: TextStyle(
-                                color: kSecondaryColor,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500),
-                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              IconButton(
-                                  icon: Icon(
-                                    Icons.thumb_up,
-                                    color: Colors.green,
-                                  ),
-                                  iconSize: 50,
-                                  onPressed: () {
-                                    setState(() {
-                                      int n = Random().nextInt(10);
-                                      audioplayer.play('sounds/sonCapsule' +
-                                          (n + 1).toString() +
-                                          '.wav');
-                                      gameLastTurn = copyGame(game);
-                                      game.nextTurn(true);
-                                      canRevert = true;
-                                    });
-                                  }),
+                              Column(
+                                children: [
+                                  IconButton(
+                                      icon: Icon(
+                                        Icons.thumb_up,
+                                        color: Colors.green,
+                                      ),
+                                      padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+                                      tooltip: 'touché',
+                                      iconSize: 50,
+                                      onPressed: () {
+                                        setState(() {
+                                          int n = Random().nextInt(10);
+                                          audioplayer.play('sounds/sonCapsule' +
+                                              (n + 1).toString() +
+                                              '.wav');
+                                          gameLastTurn = copyGame(game);
+                                          game.nextTurn(true);
+                                          canRevert = true;
+                                        });
+                                      }),
+                                  Text('touché', style: TextStyle(fontWeight: FontWeight.bold ,color: Colors.green),),
+                                ],
+                              ),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width / 10,
                               ),
-                              IconButton(
-                                  icon: Icon(
-                                    Icons.thumb_down,
-                                    color: kPrimaryColor,
-                                  ),
-                                  iconSize: 50,
-                                  onPressed: () {
-                                    setState(() {
-                                      gameLastTurn = copyGame(game);
-                                      game.nextTurn(false);
-                                      canRevert = true;
-                                    });
-                                  }),
+                              Column(
+                                children: [
+                                  IconButton(
+                                      icon: Icon(
+                                        Icons.thumb_down,
+                                        color: kPrimaryColor,
+                                      ),
+                                      padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+                                      tooltip: 'loupé',
+                                      iconSize: 50,
+                                      onPressed: () {
+                                        setState(() {
+                                          gameLastTurn = copyGame(game);
+                                          game.nextTurn(false);
+                                          canRevert = true;
+                                        });
+                                      }),
+                                  Text('loupé', style: TextStyle(fontWeight: FontWeight.bold, color: kPrimaryColor),),
+                                ],
+                              ),
                             ],
                           ),
                         ],

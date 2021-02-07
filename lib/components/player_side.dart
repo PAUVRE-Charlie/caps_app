@@ -1,4 +1,5 @@
 import 'package:caps_app/models/player.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../data.dart';
@@ -51,22 +52,63 @@ class _PlayerSideState extends State<PlayerSide> {
             ],
           ),
         ),
-        Container(
-            height: MediaQuery.of(context).size.height * 1 / 10,
-            width: MediaQuery.of(context).size.width / 3,
-            child: ListView.
-            builder(
-              scrollDirection: Axis.horizontal,
-              reverse: true,
-              itemCount: widget.bottlesNumber - 1,
-              itemBuilder: (BuildContext context, int index) {
-                return Opacity(
-                  opacity:
-                  (index >= widget.player.bottlesLeftNumber - 1) ? 0.2 : 1,
-                  child: Image(image: AssetImage('assets/images/bottle.png')),
-                );
-              },
-            ))
+        Column(
+          children: [
+            widget.player.topPlayerBool ?
+            Container(
+              height: MediaQuery.of(context).size.height * 1 / 10,
+              width: MediaQuery.of(context).size.width / 3,
+              child: ListView.
+              builder(
+                scrollDirection: Axis.horizontal,
+                reverse: true,
+                itemCount: widget.bottlesNumber - 1,
+                itemBuilder: (BuildContext context, int index) {
+                  return Opacity(
+                    opacity:
+                    (index >= widget.player.bottlesLeftNumber - 1) ? 0.2 : 1,
+                    child: Image(image: AssetImage('assets/images/bottle.png')),
+                  );
+                  },
+              ),
+            ) : Container(
+              height: MediaQuery.of(context).size.height * 1 / 10,
+              width: MediaQuery.of(context).size.width / 3,),
+            Container(
+              height: MediaQuery.of(context).size.height * 1 / 10,
+              width: MediaQuery.of(context).size.width / 3,
+              alignment: AlignmentDirectional.center,
+              child: Text(
+                widget.player.capseur.firstname,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontFamily: 'PirataOne',
+                    fontSize: 30,
+                    color: kPrimaryColor),
+              ),
+            ),
+            !widget.player.topPlayerBool ?
+            Container(
+                height: MediaQuery.of(context).size.height * 1 / 10,
+                width: MediaQuery.of(context).size.width / 3,
+                child: ListView.
+                builder(
+                  scrollDirection: Axis.horizontal,
+                  reverse: true,
+                  itemCount: widget.bottlesNumber - 1,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Opacity(
+                      opacity:
+                      (index >= widget.player.bottlesLeftNumber - 1) ? 0.2 : 1,
+                      child: Image(image: AssetImage('assets/images/bottle.png')),
+                    );
+                  },
+                ),
+            ) : Container(
+              height: MediaQuery.of(context).size.height * 1 / 10,
+              width: MediaQuery.of(context).size.width / 3,),
+          ],
+        )
       ],
     );
   }
@@ -80,9 +122,9 @@ class Arrow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (player.topPlayerBool & player.playing) {
-      return ImageIcon( AssetImage('assets/images/double_arrow_down.png') ,color: kPrimaryColor, size: 100.0,);
+      return ImageIcon( AssetImage('assets/images/double_arrow_down.png') ,color: kSecondaryColor, size: 100.0,);
     }else if (!player.topPlayerBool & player.playing){
-      return ImageIcon( AssetImage('assets/images/double_arrow_up.png') ,color: kPrimaryColor, size: 100.0,);
+      return ImageIcon( AssetImage('assets/images/double_arrow_up.png') ,color: kSecondaryColor, size: 100.0,);
     }else{
       return Container(height: 0, width: 0,);
     }
