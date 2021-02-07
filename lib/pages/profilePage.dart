@@ -50,20 +50,22 @@ class _ProfilePageState extends State<ProfilePage> {
                       color: kPrimaryColor),
                 ),
                 actions: [
-                  user.uid == widget.capseur.uid ?
-                  IconButton(
-                      icon: Icon(
-                        Icons.power_settings_new,
-                        color: kSecondaryColor,
-                        size: 30,
-                      ),
-                      onPressed: () async {
-                        Navigator.of(context).pop();
-                        _auth.signOut();
-                        },
-                  )
-
-                :Container()],
+                  user.uid == widget.capseur.uid
+                      ? IconButton(
+                          icon: Icon(
+                            Icons.power_settings_new,
+                            color: kSecondaryColor,
+                            size: 30,
+                          ),
+                          onPressed: () async {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                '/', (Route<dynamic> route) => false);
+                            Future.delayed(Duration(milliseconds: 600),
+                                () => _auth.signOut());
+                          },
+                        )
+                      : Container()
+                ],
               ),
               body: Stack(
                 children: [
@@ -107,7 +109,14 @@ class _ProfilePageState extends State<ProfilePage> {
                             dataValue: widget.capseur.capsHit.toString()),
                         DataItemProfile(
                             dataName: 'Ratio',
-                            dataValue: (widget.capseur.capsThrow != 0) ? (widget.capseur.capsHit/widget.capseur.capsThrow*100).round().toString()+'%' : ''),
+                            dataValue: (widget.capseur.capsThrow != 0)
+                                ? (widget.capseur.capsHit /
+                                            widget.capseur.capsThrow *
+                                            100)
+                                        .round()
+                                        .toString() +
+                                    '%'
+                                : ''),
                         DataItemProfile(
                             dataName: 'Kros bues',
                             dataValue:

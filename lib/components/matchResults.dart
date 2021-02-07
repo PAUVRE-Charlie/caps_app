@@ -1,14 +1,13 @@
 import 'package:caps_app/components/loading.dart';
 import 'package:caps_app/data.dart';
-import 'package:caps_app/models/basicUser.dart';
 import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/models/matchEnded.dart';
 import 'package:caps_app/pages/profilePage.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class MatchResults extends StatefulWidget {
-  MatchResults({Key key, this.match, this.capseurs, this.capseur}) : super(key: key);
+  MatchResults({Key key, this.match, this.capseurs, this.capseur})
+      : super(key: key);
 
   final MatchEnded match;
   final List<Capseur> capseurs;
@@ -28,8 +27,8 @@ class _MatchResultsState extends State<MatchResults> {
     Capseur capseur2 = widget.capseurs
         .firstWhere((capseur) => capseur.uid == widget.match.player2);
 
-    if (widget.capseur != null){
-      if (capseur2.uid == widget.capseur.uid ){
+    if (widget.capseur != null) {
+      if (capseur2.uid == widget.capseur.uid) {
         capseur1 = widget.capseurs
             .firstWhere((capseur) => capseur.uid == widget.match.player2);
         capseur2 = widget.capseurs
@@ -53,11 +52,13 @@ class _MatchResultsState extends State<MatchResults> {
                               : Colors.black,
                           fontSize: 20,
                           fontWeight: FontWeight.w300)),
-                  onPressed: (){
+                  onPressed: () {
                     Navigator.push(
-                        context,
-                        new MaterialPageRoute(builder: (context) => new ProfilePage(capseur: capseur1),
-                        ),
+                      context,
+                      new MaterialPageRoute(
+                        builder: (context) =>
+                            new ProfilePage(capseur: capseur1),
+                      ),
                     );
                   },
                 ),
@@ -70,11 +71,13 @@ class _MatchResultsState extends State<MatchResults> {
                           color: widget.match.player1Won
                               ? Colors.black
                               : kPrimaryColor)),
-                  onPressed: (){
+                  onPressed: () {
                     Navigator.push(
-                        context,
-                        new MaterialPageRoute(builder: (context) => new ProfilePage(capseur: capseur2),
-                        ),
+                      context,
+                      new MaterialPageRoute(
+                        builder: (context) =>
+                            new ProfilePage(capseur: capseur2),
+                      ),
                     );
                   },
                 ),

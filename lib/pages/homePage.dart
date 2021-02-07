@@ -30,6 +30,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final user = Provider.of<BasicUser>(context);
 
+    if (user == null) return LoadingWidget();
+
     return StreamBuilder<Capseur>(
       stream: DatabaseService(uid: user.uid).userData,
       builder: (context, snapshot) {
@@ -174,8 +176,7 @@ class _MenuOrValidateMatchState extends State<MenuOrValidateMatch> {
                       TextButtonMenu(
                           text: "Jouer",
                           onPressed: () {
-                            Game.startMatch(
-                                context, "Match", widget.capseur);
+                            Game.startMatch(context, "Match", widget.capseur);
                           }),
                       // TextButtonMenu(
                       //     text: "Tournois",
