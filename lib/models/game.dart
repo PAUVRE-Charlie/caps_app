@@ -55,13 +55,14 @@ class Game {
   setContext(BuildContext context) {
     _context = context;
   }
+
   setReverseCount(int value) {
     _reverseCount = value;
   }
 
   static Future<void> startMatch(
-      BuildContext context, String title, Capseur capseur) async {
-
+      BuildContext context, String title, Capseur capseur,
+      {Capseur capseur2}) async {
     final _bottlesNumberKey = GlobalKey<_DropDownAlertState>();
     final _pointsPerBottleKey = GlobalKey<_DropDownAlertState>();
 
@@ -80,22 +81,22 @@ class Game {
         context: context,
         builder: (BuildContext context) {
           return AlertDialogNewMatch(
-            title: title,
-            capseur: capseur,
-            bottlesNumberKey: _bottlesNumberKey,
-            pointsPerBottleKey: _pointsPerBottleKey,
-            bottlesNumberDialog: bottlesNumberDialog,
-            pointsPerBottleDialog: pointsPerBottleDialog,
-          );
+              title: title,
+              capseur: capseur,
+              bottlesNumberKey: _bottlesNumberKey,
+              pointsPerBottleKey: _pointsPerBottleKey,
+              bottlesNumberDialog: bottlesNumberDialog,
+              pointsPerBottleDialog: pointsPerBottleDialog,
+              capseur2: capseur2);
         });
   }
 
   nextTurn(bool capsHit) {
     if (capsHit) {
-      if (_player1.playing){
+      if (_player1.playing) {
         this.player1.addCapsThrow();
         this.player1.addCapsHit();
-      } else{
+      } else {
         this.player2.addCapsThrow();
         this.player2.addCapsHit();
       }
@@ -121,7 +122,7 @@ class Game {
     _player2.setPlaying(!_player2.playing);
   }
 
-  AlertDialog setScoreAndDrink(int currentReverseCount, Player playerWhoDrinks,
+  void setScoreAndDrink(int currentReverseCount, Player playerWhoDrinks,
       Player playerWhoseScoreIncrease) {
     playerWhoseScoreIncrease
         .setScore(playerWhoseScoreIncrease.score + currentReverseCount);
@@ -131,31 +132,43 @@ class Game {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context){
+        builder: (context) {
           return endGamePopUp(playerWhoseScoreIncrease);
         },
       );
     }
   }
 
-  WillPopScope endGamePopUp(Player winner){
+  WillPopScope endGamePopUp(Player winner) {
     return WillPopScope(
-      onWillPop: (){
+      onWillPop: () {
         return Future.value(false);
       },
       child: AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         content: Container(
           height: 350.0,
           child: Column(
             children: [
-              Icon(Icons.emoji_events, color: Color(0xFFFFD700), size: 80,),
-              Text(winner.capseur.firstname + ' vainqueur !', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500), textAlign: TextAlign.center,),
+              Icon(
+                Icons.emoji_events,
+                color: Color(0xFFFFD700),
+                size: 80,
+              ),
+              Text(
+                winner.capseur.firstname + ' vainqueur !',
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
+                textAlign: TextAlign.center,
+              ),
               SizedBox(height: 20.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(this.player2.capseur.firstname + ' ' + this.player2.capseur.lastname,
+                  Text(
+                      this.player2.capseur.firstname +
+                          ' ' +
+                          this.player2.capseur.lastname,
                       style: TextStyle(
                           color: this.player2 == winner
                               ? kPrimaryColor
@@ -163,7 +176,10 @@ class Game {
                           fontSize: 20,
                           fontWeight: FontWeight.w300)),
                   Text(' - '),
-                  Text(this.player1.capseur.firstname + ' ' + this.player1.capseur.lastname,
+                  Text(
+                      this.player1.capseur.firstname +
+                          ' ' +
+                          this.player1.capseur.lastname,
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w300,
@@ -172,21 +188,25 @@ class Game {
                               : kPrimaryColor)),
                 ],
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Text(
                 this.player2.score.toString() +
                     ' - ' +
                     this.player1.score.toString(),
                 style: TextStyle(fontFamily: 'PirataOne', fontSize: 30),
               ),
-              SizedBox(height: 20.0,),
+              SizedBox(
+                height: 20.0,
+              ),
               RaisedButton(
                   child: Text(
                     "Valider",
                     style: TextStyle(color: kWhiteColor),
                   ),
                   color: kPrimaryColor,
-                  onPressed: (){
+                  onPressed: () {
                     endGame(winner);
                   }),
             ],
@@ -195,7 +215,6 @@ class Game {
       ),
     );
   }
-
 
   endGame(Player winner) {
     /* UPDATE ALL THE VARIABLES OF BOTH CAPSEURS IN THE SERVER */
@@ -215,10 +234,6 @@ class Game {
     Navigator.of(this.context).pop();
   }
 }
-
-
-
-
 
 class DropDownAlert extends StatefulWidget {
   DropDownAlert({Key key, this.values, this.initialValue}) : super(key: key);
@@ -266,11 +281,13 @@ class AlertDialogNewMatch extends StatefulWidget {
       this.bottlesNumberKey,
       this.pointsPerBottleKey,
       this.bottlesNumberDialog,
-      this.pointsPerBottleDialog})
+      this.pointsPerBottleDialog,
+      this.capseur2})
       : super(key: key);
 
   final String title;
   final Capseur capseur;
+  final Capseur capseur2;
   final GlobalKey<_DropDownAlertState> bottlesNumberKey;
   final GlobalKey<_DropDownAlertState> pointsPerBottleKey;
   final DropDownAlert bottlesNumberDialog;
@@ -298,6 +315,12 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
 
   int getBottlesNumber() => widget.bottlesNumberKey.currentState._value;
   int getPointsPerBottle() => widget.pointsPerBottleKey.currentState._value;
+
+  @override
+  void initState() {
+    opponent = widget.capseur2 ?? null;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

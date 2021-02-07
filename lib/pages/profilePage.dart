@@ -5,7 +5,9 @@ import 'package:caps_app/components/matchResults.dart';
 import 'package:caps_app/components/matchsList.dart';
 import 'package:caps_app/models/basicUser.dart';
 import 'package:caps_app/models/capseur.dart';
+import 'package:caps_app/models/game.dart';
 import 'package:caps_app/models/matchEnded.dart';
+import 'package:caps_app/pages/homePage.dart';
 import 'package:caps_app/pages/lastMatchs.dart';
 import 'package:caps_app/pages/rankingPage.dart';
 import 'package:caps_app/services/auth.dart';
@@ -75,6 +77,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   SingleChildScrollView(
                     child: Column(
                       children: [
+                        if (user.uid != widget.capseur.uid)
+                          ChallengeButton(
+                            capseurOfProfile: widget.capseur,
+                            userUid: user.uid,
+                          ),
                         SizedBox(
                           height: 20,
                         ),
@@ -164,5 +171,36 @@ class _DataItemProfileState extends State<DataItemProfile> {
       ),
       trailing: Text(widget.dataValue),
     );
+  }
+}
+
+class ChallengeButton extends StatefulWidget {
+  ChallengeButton({Key key, this.capseurOfProfile, this.userUid})
+      : super(key: key);
+
+  final Capseur capseurOfProfile;
+  final String userUid;
+
+  @override
+  _ChallengeButtonState createState() => _ChallengeButtonState();
+}
+
+class _ChallengeButtonState extends State<ChallengeButton> {
+  @override
+  Widget build(BuildContext context) {
+    final capseurs = Provider.of<List<Capseur>>(context);
+
+    return RaisedButton(
+        onPressed: () async {
+          Game.startMatch(context, "Match",
+              capseurs.firstWhere((capseur) => capseur.uid == widget.userUid),
+              capseur2: widget.capseurOfProfile);
+        },
+        color: kPrimaryColor,
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+        child: Text(
+          "Défier !",
+          style: TextStyle(color: kWhiteColor),
+        ));
   }
 }
