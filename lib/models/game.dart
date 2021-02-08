@@ -296,6 +296,7 @@ class AlertDialogNewMatch extends StatefulWidget {
 
 class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
   Capseur opponent;
+  bool showingHelp;
 
   void _showUserList({Function selectOpponent}) {
     showModalBottomSheet(
@@ -316,6 +317,7 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
   @override
   void initState() {
     opponent = widget.capseur2 ?? null;
+    showingHelp = false;
     super.initState();
   }
 
@@ -364,8 +366,33 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [Text("Points par kro:"), widget.pointsPerBottleDialog],
+              children: [
+                Text("Points par kros"),
+                IconButton(
+                    icon: Icon(
+                      showingHelp ? Icons.keyboard_arrow_up : Icons.help,
+                      color: kSecondaryColor,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        showingHelp = !showingHelp;
+                      });
+                    }),
+                widget.pointsPerBottleDialog
+              ],
             ),
+            if (showingHelp)
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Colors.grey[100]),
+                ),
+                padding: EdgeInsets.all(5),
+                child: Text(
+                  "Par exemple, si vous choisissez 4 points par kro, à chaque fois qu'un joueur gagne un point, le joueur adverse doit boire un quart de sa kro. Et donc au bout de 4 points, le joueur doit finir sa kro et en entamer une autre.",
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+              ),
             SizedBox(
               height: 40,
             ),

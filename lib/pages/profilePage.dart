@@ -28,6 +28,26 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final AuthService _auth = AuthService();
+
+  TextEditingController usernameTextFieldController;
+  bool editing;
+  Capseur capseur;
+
+  @override
+  void initState() {
+    capseur = widget.capseur;
+    usernameTextFieldController = TextEditingController(text: capseur.username);
+    editing = false;
+    capseur = widget.capseur;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    usernameTextFieldController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<BasicUser>(context);
@@ -44,15 +64,94 @@ class _ProfilePageState extends State<ProfilePage> {
                 shadowColor: Colors.transparent,
                 leading: ArrowBackAppBar(),
                 centerTitle: true,
-                title: Text(
-                  widget.capseur.username,
-                  style: TextStyle(
-                      fontFamily: 'PirataOne',
-                      fontSize: 30,
-                      color: kPrimaryColor),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    user.uid == capseur.uid && editing
+                        ? Expanded(
+                            child: TextField(
+                              controller: usernameTextFieldController,
+                            ),
+                          )
+                        : Text(
+                            usernameTextFieldController.text ??
+                                capseur.username,
+                            style: TextStyle(
+                                fontFamily: 'PirataOne',
+                                fontSize: 30,
+                                color: kPrimaryColor),
+                          ),
+                    user.uid == capseur.uid
+                        ? (editing
+                            ? Row(
+                                children: [
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.check,
+                                      color: Colors.green,
+                                      size: 30,
+                                    ),
+                                    onPressed: () async {
+                                      setState(() {
+                                        editing = !editing;
+                                        print(usernameTextFieldController
+                                            .value.text.length);
+                                        if (usernameTextFieldController
+                                                .value.text.length <=
+                                            10) {
+                                          DatabaseService().updateCapseurData(
+                                              capseur.uid,
+                                              usernameTextFieldController
+                                                  .value.text,
+                                              capseur.matchsPlayed,
+                                              capseur.matchsWon,
+                                              capseur.capsHit,
+                                              capseur.capsThrow,
+                                              capseur.bottlesEmptied,
+                                              capseur.points);
+                                          capseur.setUsername(
+                                              usernameTextFieldController
+                                                  .value.text);
+                                        } else {
+                                          usernameTextFieldController.text =
+                                              capseur.username;
+                                        }
+                                      });
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.close,
+                                      color: kPrimaryColor,
+                                      size: 30,
+                                    ),
+                                    onPressed: () async {
+                                      setState(() {
+                                        editing = !editing;
+                                        usernameTextFieldController.text =
+                                            capseur.username;
+                                      });
+                                    },
+                                  )
+                                ],
+                              )
+                            : IconButton(
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: kSecondaryColor,
+                                  size: 20,
+                                ),
+                                onPressed: () async {
+                                  setState(() {
+                                    editing = !editing;
+                                  });
+                                },
+                              ))
+                        : Container(),
+                  ],
                 ),
                 actions: [
-                  user.uid == widget.capseur.uid
+                  user.uid == capseur.uid
                       ? IconButton(
                           icon: Icon(
                             Icons.power_settings_new,
@@ -66,7 +165,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 () => _auth.signOut());
                           },
                         )
-                      : Container()
+                      : SizedBox(
+                          width: 55,
+                        ),
                 ],
               ),
               body: Stack(
@@ -77,9 +178,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   SingleChildScrollView(
                     child: Column(
                       children: [
-                        if (user.uid != widget.capseur.uid)
+                        if (user.uid != capseur.uid)
                           ChallengeButton(
-                            capseurOfProfile: widget.capseur,
+                            capseurOfProfile: capseur,
                             userUid: user.uid,
                           ),
                         SizedBox(
@@ -87,8 +188,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         DataItemProfile(
                             dataName: 'Points',
-                            dataValue:
-                                widget.capseur.points.round().toString()),
+                            dataValue: capseur.points.round().toString()),
                         RaisedButton(
                             onPressed: () async {
                               Navigator.pushNamed(context, '/rankings');
@@ -102,27 +202,24 @@ class _ProfilePageState extends State<ProfilePage> {
                             )),
                         DataItemProfile(
                             dataName: 'Matchs gagnés',
-                            dataValue: widget.capseur.matchsWon.toString()),
+                            dataValue: capseur.matchsWon.toString()),
                         DataItemProfile(
                             dataName: 'Matchs joués',
-                            dataValue: widget.capseur.matchsPlayed.toString()),
+                            dataValue: capseur.matchsPlayed.toString()),
                         DataItemProfile(
                             dataName: 'Caps touchées',
-                            dataValue: widget.capseur.capsHit.toString()),
+                            dataValue: capseur.capsHit.toString()),
                         DataItemProfile(
                             dataName: 'Ratio',
-                            dataValue: (widget.capseur.capsThrow != 0)
-                                ? (widget.capseur.capsHit /
-                                            widget.capseur.capsThrow *
-                                            100)
+                            dataValue: (capseur.capsThrow != 0)
+                                ? (capseur.capsHit / capseur.capsThrow * 100)
                                         .round()
                                         .toString() +
                                     '%'
                                 : ''),
                         DataItemProfile(
                             dataName: 'Kros bues',
-                            dataValue:
-                                widget.capseur.bottlesEmptied.toString()),
+                            dataValue: capseur.bottlesEmptied.toString()),
                         SizedBox(
                           height: 30,
                         ),
@@ -135,7 +232,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 30,
                         ),
                         MatchList(
-                          capseur: widget.capseur,
+                          capseur: capseur,
                         ),
                       ],
                     ),

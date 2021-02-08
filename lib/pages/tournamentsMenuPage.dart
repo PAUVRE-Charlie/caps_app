@@ -1,8 +1,6 @@
 import 'package:caps_app/components/arrowBackAppBar.dart';
 import 'package:caps_app/components/background.dart';
 import 'package:caps_app/components/tournamentsList.dart';
-import 'package:caps_app/models/capseur.dart';
-import 'package:caps_app/models/matchEnded.dart';
 import 'package:caps_app/models/tournamentInfo.dart';
 import 'package:caps_app/pages/createTournamentPage.dart';
 import 'package:caps_app/services/database.dart';
