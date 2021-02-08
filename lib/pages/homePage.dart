@@ -52,11 +52,7 @@ class _HomePageState extends State<HomePage> {
                               size: 30,
                             ),
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                    builder: (ctxt) => new RulesPage(),
-                                  ));
+                              Navigator.pushNamed(context, '/rules');
                             }),
                         actions: [
                           IconButton(
@@ -190,21 +186,13 @@ class _MenuOrValidateMatchState extends State<MenuOrValidateMatch> {
                       TextButtonMenu(
                         text: "Classements",
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                builder: (ctxt) => new RankingPage(),
-                              ));
+                          Navigator.pushNamed(context, '/rankings');
                         },
                       ),
                       TextButtonMenu(
                         text: "Derniers matchs",
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                builder: (ctxt) => new LastMatchs(),
-                              ));
+                          Navigator.pushNamed(context, '/lastmatchs');
                         },
                       ),
                     ],

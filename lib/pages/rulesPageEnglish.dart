@@ -26,9 +26,9 @@ class RulesPageEnglish extends StatelessWidget {
           FlatButton(
             padding: EdgeInsets.all(15.0),
             child: Image(image: AssetImage("assets/images/france.png")),
-            onPressed: (){
+            onPressed: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => new RulesPage()));
+              Navigator.pushNamed(context, '/rules');
             },
           )
         ],
@@ -51,8 +51,7 @@ class RulesPageEnglish extends StatelessWidget {
                   "assets/images/match_bottle_wcaps.png",
                   height: MediaQuery.of(context).size.height / 7,
                 ),
-                TextRules(
-                    "in order to play, you need 3 caps at least.",
+                TextRules("in order to play, you need 3 caps at least.",
                     textToEmphasize: "Tips: "),
                 TextRules(
                     "To determine who begins, a random draw \"pile ou caps\" is done",
@@ -115,11 +114,15 @@ class RulesPageEnglish extends StatelessWidget {
                       fontSize: 25,
                       color: kPrimaryColor),
                 ),
-                TextRules("\n(We are not responsable of the issues involved by your alcohol consumption )"),
+                TextRules(
+                    "\n(We are not responsable of the issues involved by your alcohol consumption )"),
                 SizedBox(
                   height: 50,
                 ),
-                Text("Autors of the app : Charlie PAUVRE & Pierre SCHMUTZ", style: TextStyle(fontStyle: FontStyle.italic, fontSize: 11.0),),
+                Text(
+                  "Autors of the app : Charlie PAUVRE & Pierre SCHMUTZ",
+                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 11.0),
+                ),
               ],
             ),
           )
@@ -128,83 +131,3 @@ class RulesPageEnglish extends StatelessWidget {
     );
   }
 }
-
-class TextRules extends StatelessWidget {
-  const TextRules(this.text, {Key key, this.index, this.textToEmphasize})
-      : super(key: key);
-
-  final String text;
-  final String textToEmphasize;
-  final int index;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-      child: textToEmphasize == null
-          ? RichText(
-          textAlign: TextAlign.justify,
-          text: TextSpan(
-              text: (index != null ? index.toString() + ". " : ""),
-              style: TextStyle(
-                  fontSize: 15,
-                  color: kPrimaryColor,
-                  fontFamily: "PirataOne"),
-              children: [
-                TextSpan(
-                  text: text,
-                  style: TextStyle(
-                      color: Colors.black, fontFamily: "NotoSansJP"),
-                )
-              ]))
-          : RichText(
-          textAlign: TextAlign.justify,
-          text: TextSpan(
-              text: (textToEmphasize),
-              style: TextStyle(
-                  fontSize: 20,
-                  color: kPrimaryColor,
-                  fontFamily: "PirataOne"),
-              children: [
-                TextSpan(
-                  text: text,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: "NotoSansJP",
-                    fontSize: 15,
-                  ),
-                )
-              ])),
-    );
-  }
-}
-
-
-
-/*
-"Rules"
-
-
-"1. Both player (aka capseur) situated opposite each other, sit down on the floor. The distance between players is determined by the length of their stretched legs"
-
-"2. Each player open his beer bootle, let down the bootle between his legs and place the cap, on the back, on the top of the bootle"
-
-"TIPS: in order to play, you need 3 caps at least"
-
-"3. To determine who begins, a random draw \"pile ou caps\" is done"
-
-"4. The designated playe throw a cap to try to hit the opponen's cap.\nIf the player miss the cap, nothing appends and it's the other player turn"
-
-"5. When a player 1 hit the player 2's cap and make it droped out of the bottle, the player 2 have to riposte. Thus, player 2 throw a cap and 2 options are offered :\nIf he/she doesn't hit the player 1's cap, then player 2 drinks 1 part of his beer (usually one quarter of the bottle but you can change this value as you want) and player 1 marks 1 point.\nElse, if he/she hits the player 2's cap, then there is now 2 points involved in the riposte.\nThen, repeat the patern as is necessary : player 1 throw a cap and 2 options are offered. If he/she doesn't hit the player 2's cap, then player 1 drinks 2 part of his beer (usually two quarter) and player 2 marks 2 points.\nElse, if he/she hits the player 1's cap, then there is now 3 points involved in the riposte...etc..."
-
-"BE CAREFUL: You are able to choose the number of points per bootle and number of bottles in a match, usually you'll play in 12 or 16 points with 4 points per bottle (so 3 or 4 beer). After it's up to you to play with other configurations."
-
-"6. End of the game : when a player reaches or exceeds the number of point required (without counting the riposte involved), the other player loose and have drink all his beers."
-
-"BE CAREFUL: Some contentious situations could appeared but they are ellucidated in this section.The goal of the game is to hit the oponent's cap and make it drops on othe floor, there is no other way to mark a point. For instance, if you violently hit the bootle which make the cap drop on the floor, it doesn't count (it's call the lumberman shot). As well, if you hit the caps after a bounce on the oponnent's player for instance, it doesn't count. Finally if you just brush the cap without make it quit the top of the bootle, it doesn't count."
-
-"RANKING, how does it works ? \nEach new player begins with 100 points. If you win a match you'll earn points, if you lose you'll lose points, it's easy, isn't it ?\nObviously, if you win against a player with more points than you, you'll earn more points compare to a victory against a player with less points than you. Conversly, if you lose against a player with less points than you, you'll lose more points compare to a defeat against a player which have less points than you.\nIt's importante to notice that in order to reward players who play a lot, at the outcome of a match the looser loses 80% of the points earned by the winner.\nExample: let's take 2 players with the same number of points. They do a match in 16 points. The winner will earn 5 points while the looser will lose 4 points. Thus, the total of points in the whole app increase with each match. Eventually, if the match is played in 4 points, there will have less points attributed to the winner (0.25 coefficient) compare to a match played in 32 points (2 coefficient). These coefficients simulate the reliability of the match score."
-
-"autors of the app : Charlie PAUVRE & Pierre SCHMUTZ"
-
- */

@@ -91,12 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 widget.capseur.points.round().toString()),
                         RaisedButton(
                             onPressed: () async {
-                              Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                  builder: (context) => new RankingPage(),
-                                ),
-                              );
+                              Navigator.pushNamed(context, '/rankings');
                             },
                             color: kSecondaryColor,
                             padding: EdgeInsets.symmetric(

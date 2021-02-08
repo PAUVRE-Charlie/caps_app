@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../data.dart';
-import 'rulePageEnglish.dart';
+import 'rulesPageEnglish.dart';
 
 class RulesPage extends StatelessWidget {
   const RulesPage({Key key}) : super(key: key);
@@ -27,9 +27,9 @@ class RulesPage extends StatelessWidget {
           FlatButton(
             padding: EdgeInsets.all(15.0),
             child: Image(image: AssetImage("assets/images/united-kingdom.png")),
-            onPressed: (){
+            onPressed: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => new RulesPageEnglish()));
+              Navigator.pushNamed(context, '/rulesenglish');
             },
           )
         ],
@@ -96,13 +96,13 @@ class RulesPage extends StatelessWidget {
                 SizedBox(
                   height: 40,
                 ),
-            Text(
-              "Le classement comment ça marche ?",
-              style: TextStyle(
-                  fontFamily: "PirataOne",
-                  fontSize: 25,
-                  color: kPrimaryColor),
-            ),
+                Text(
+                  "Le classement comment ça marche ?",
+                  style: TextStyle(
+                      fontFamily: "PirataOne",
+                      fontSize: 25,
+                      color: kPrimaryColor),
+                ),
                 TextRules(
                   "\nL'aglorithme a été établi de la manière suivante.\nChaque nouveau joueur commence initialement avec 100 points. Si vous gagnez un match vous gagnez des points, si vous perdez, vous en perdez, simple.\nMais bien sûr, si vous gagnez contre un joueur mieux classé que vous, vous marquerez plus de points (« perf ») que si vous gagnez un joueur moins bien classé que vous. A contrario si vous perdez contre un joueur moins bien classé que vous, vous perderez plus de points(« contre-perf ») que si vous perdez contre un joueur mieux classé que vous.\nNotez que pour récompenser les joueurs jouant beaucoup, lors d'un match le perdant perds 80% des points gagnés par le gagnant.\nExemple : prenons 2 joueurs avec le même nombre de points qui font un match en 16 points. Le gagnant gagnera 5 points et le perdant perdra 4 points. Ainsi, le nombre de point total distribué augmentera avec le combre de match joué. Enfin si le match se joue en 4 il y aura moins de points attribués (coefficient 0.25) qu'un match en 16 (coefficient 1) ou encore plus en 32 (coefficient 2) pour des raisons de fiabilité",
                 ),
@@ -116,11 +116,15 @@ class RulesPage extends StatelessWidget {
                       fontSize: 25,
                       color: kPrimaryColor),
                 ),
-                TextRules("\n(Nous déclinons toute responsabilité en cas de problèmes liés à votre consommation d'alcool)"),
+                TextRules(
+                    "\n(Nous déclinons toute responsabilité en cas de problèmes liés à votre consommation d'alcool)"),
                 SizedBox(
                   height: 50,
                 ),
-                Text("Créateurs de l'application: Charlie PAUVRE & Pierre SCHMUTZ", style: TextStyle(fontStyle: FontStyle.italic, fontSize: 11.0),),
+                Text(
+                  "Créateurs de l'application: Charlie PAUVRE & Pierre SCHMUTZ",
+                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 11.0),
+                ),
               ],
             ),
           )

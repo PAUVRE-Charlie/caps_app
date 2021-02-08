@@ -1,7 +1,12 @@
 import 'package:caps_app/models/basicUser.dart';
 import 'package:caps_app/pages/homePage.dart';
+import 'package:caps_app/pages/lastMatchs.dart';
+import 'package:caps_app/pages/matchPage.dart';
 import 'package:caps_app/pages/profilePage.dart';
+import 'package:caps_app/pages/randomPickStartPage.dart';
 import 'package:caps_app/pages/rankingPage.dart';
+import 'package:caps_app/pages/rulesPage.dart';
+import 'package:caps_app/pages/rulesPageEnglish.dart';
 import 'package:caps_app/services/auth.dart';
 import 'package:caps_app/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -35,7 +40,11 @@ class MyApp extends StatelessWidget {
           routes: {
             '/home': (context) => HomePage(),
             '/profile': (context) => ProfilePage(),
-            '/ranking': (context) => RankingPage(),
+            '/rankings': (context) => RankingPage(),
+            '/lastmatchs': (context) => LastMatchs(),
+            '/rules': (context) => RulesPage(),
+            '/rulesenglish': (context) => RulesPageEnglish(),
+            '/randompickstart': (context) => RandomPickStartPage(),
             '/': (context) => Wrapper(),
           },
         ));
