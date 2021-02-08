@@ -32,14 +32,14 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
             indicatorColor: kPrimaryColor,
             tabs: [
               Tab(
-                child: Text('Sign in', style: TextStyle(color: kPrimaryColor)),
+                child: Text('Se connecter', style: TextStyle(color: kPrimaryColor)),
                 icon: Icon(
                   Icons.person,
                   color: kPrimaryColor,
                 ),
               ),
               Tab(
-                child: Text('Register', style: TextStyle(color: kPrimaryColor)),
+                child: Text('S\'inscrire', style: TextStyle(color: kPrimaryColor)),
                 icon: Icon(
                   Icons.person_add,
                   color: kPrimaryColor,

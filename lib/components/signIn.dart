@@ -1,6 +1,8 @@
 import 'package:caps_app/components/loading.dart';
 import 'package:caps_app/data.dart';
+import 'package:caps_app/pages/resetPage.dart';
 import 'package:caps_app/services/auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'MyTextFormField.dart';
@@ -55,7 +57,7 @@ class _SignInState extends State<SignIn> {
                     height: 20,
                   ),
                   MyTextFormField(
-                    hintText: 'Password',
+                    hintText: 'Mot de passe',
                     validator: (val) {
                       return val.length < 6
                           ? 'Entre un mot de passe de 6 lettres ou plus'
@@ -87,10 +89,20 @@ class _SignInState extends State<SignIn> {
                     },
                     color: kPrimaryColor,
                     child:
-                        Text('Sign in', style: TextStyle(color: kWhiteColor)),
+                        Text('Se connecter', style: TextStyle(color: kWhiteColor)),
                   ),
                   SizedBox(
                     height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        child: Text('Mot de passe oublié ?', style: TextStyle(color: kSecondaryColor),),
+                        onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ResetPage()));
+                        },)
+                    ],
                   ),
                   Text(
                     error,
