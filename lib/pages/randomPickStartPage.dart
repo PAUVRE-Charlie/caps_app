@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:caps_app/components/background.dart';
 import 'package:caps_app/components/loading.dart';
-import 'package:caps_app/components/player_side.dart';
+import 'package:caps_app/components/playerSide.dart';
 import 'package:caps_app/models/capseur.dart';
 import 'package:flutter/material.dart';
 

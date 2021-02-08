@@ -1,7 +1,7 @@
 import 'package:audioplayers/audio_cache.dart';
 import 'package:caps_app/components/arrowBackAppBar.dart';
 import 'package:caps_app/components/background.dart';
-import 'package:caps_app/components/player_side.dart';
+import 'package:caps_app/components/playerSide.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -43,9 +43,11 @@ class _MatchPageState extends State<MatchPage> {
   final audioplayer = AudioCache();
 
   Game copyGame(Game gameToCopy) {
+    Player clonePlayer1 = Player(gameToCopy.player1.capseur, gameToCopy.player1.score, gameToCopy.player1.bottlesLeftNumber, gameToCopy.player1.currentBottlePointsLeft, true, gameToCopy.player1starting, gameToCopy.player1.capsHitInThisGame, gameToCopy.player1.capsThrowInThisGame);
+    Player clonePlayer2 = Player(gameToCopy.player2.capseur, gameToCopy.player2.score, gameToCopy.player2.bottlesLeftNumber, gameToCopy.player2.currentBottlePointsLeft, false, !gameToCopy.player1starting, gameToCopy.player2.capsHitInThisGame, gameToCopy.player2.capsThrowInThisGame);
     return Game(
-        gameToCopy.player1,
-        gameToCopy.player2,
+        clonePlayer1,
+        clonePlayer2,
         gameToCopy.reverseCount,
         gameToCopy.pointsRequired,
         gameToCopy.pointsPerBottle,
@@ -175,6 +177,16 @@ class _MatchPageState extends State<MatchPage> {
                                 onPressed: canRevert
                                     ? () {
                                         setState(() {
+
+                                          print('a');
+                                          print(game.player1.score);
+                                          print('b');
+                                          print(gameLastTurn.player1.score);
+                                          print('c');
+                                          print(game.player2.score);
+                                          print('d');
+                                          print(gameLastTurn.player2.score);
+
                                           game = copyGame(gameLastTurn);
                                           game.switchTurns();
                                           canRevert = false;
