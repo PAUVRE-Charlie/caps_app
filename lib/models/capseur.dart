@@ -19,4 +19,8 @@ class Capseur {
   int get bottlesEmptied => _bottlesEmptied;
   String get uid => _uid;
   double get points => _points;
+
+  void setUsername(String newUsername) {
+    _username = newUsername;
+  }
 }
