@@ -67,7 +67,7 @@ class _RegisterState extends State<Register> {
                     height: 20,
                   ),
                   MyTextFormField(
-                    hintText: 'Password',
+                    hintText: 'Mot de passe',
                     validator: (val) {
                       return val.length < 6
                           ? 'Entre un mot de passe de 6 lettres ou plus'
@@ -103,7 +103,6 @@ class _RegisterState extends State<Register> {
                         setState(() {
                           loading = true;
                         });
-
                         for (Capseur capseur in capseurs) {
                           print(capseur.username);
                           if (capseur.username == username)
@@ -127,7 +126,7 @@ class _RegisterState extends State<Register> {
                     },
                     color: kPrimaryColor,
                     child:
-                        Text('Register', style: TextStyle(color: kWhiteColor)),
+                        Text('S\'inscrire', style: TextStyle(color: kWhiteColor)),
                   ),
                   SizedBox(
                     height: 20,
