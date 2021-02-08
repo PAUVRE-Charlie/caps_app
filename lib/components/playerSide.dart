@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:caps_app/models/player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +88,7 @@ class _PlayerSideState extends State<PlayerSide> {
               height: MediaQuery.of(context).size.height * 1 / 10,
               width: MediaQuery.of(context).size.width / 3,
               alignment: AlignmentDirectional.center,
-              child: Text(
+              child: AutoSizeText(
                 widget.player.capseur.username,
                 textAlign: TextAlign.center,
                 style: TextStyle(

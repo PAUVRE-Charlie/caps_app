@@ -60,10 +60,11 @@ class _RandomPickStartPageState extends State<RandomPickStartPage> {
                         child: ImageIcon(
                           AssetImage('assets/images/double_arrow_down.png'),
                           color: kSecondaryColor,
-                          size: 200.0,
+                          size: 100.0,
                         )),
                   )
-                : Container(height: 200.0),
+                : Container(height: 100.0),
+            SizedBox(height: 50.0),
             Padding(
               padding: EdgeInsets.all(20),
               child: Text(
@@ -94,6 +95,7 @@ class _RandomPickStartPageState extends State<RandomPickStartPage> {
                 style: TextStyle(color: kWhiteColor),
               ),
             ),
+            SizedBox(height: 50.0),
             !player1Starting
                 ? Padding(
                     padding: const EdgeInsets.only(top: 20.0),
@@ -102,10 +104,10 @@ class _RandomPickStartPageState extends State<RandomPickStartPage> {
                         child: ImageIcon(
                           AssetImage('assets/images/double_arrow_up.png'),
                           color: kSecondaryColor,
-                          size: 200.0,
+                          size: 100.0,
                         )),
                   )
-                : Container(height: 200.0),
+                : Container(height: 100.0),
           ],
         );
       });

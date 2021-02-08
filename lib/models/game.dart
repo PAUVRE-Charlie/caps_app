@@ -162,25 +162,28 @@ class Game {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(this.player2.capseur.username,
-                      style: TextStyle(
-                          color: this.player2 == winner
-                              ? kPrimaryColor
-                              : Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w300)),
-                  Text(' - '),
-                  Text(this.player1.capseur.username,
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w300,
-                          color: this.player2 == winner
-                              ? Colors.black
-                              : kPrimaryColor)),
-                ],
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(this.player2.capseur.username,
+                        style: TextStyle(
+                            color: this.player2 == winner
+                                ? kPrimaryColor
+                                : Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w300)),
+                    Text(' - '),
+                    Text(this.player1.capseur.username,
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w300,
+                            color: this.player2 == winner
+                                ? Colors.black
+                                : kPrimaryColor)),
+                  ],
+                ),
               ),
               SizedBox(
                 height: 10,
