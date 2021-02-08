@@ -3,10 +3,12 @@ import 'package:caps_app/components/background.dart';
 import 'package:caps_app/components/loading.dart';
 import 'package:caps_app/components/matchResults.dart';
 import 'package:caps_app/components/matchsList.dart';
+import 'package:caps_app/components/matchsWaitingList.dart';
 import 'package:caps_app/models/basicUser.dart';
 import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/models/game.dart';
 import 'package:caps_app/models/matchEnded.dart';
+import 'package:caps_app/models/matchWaitingToBeValidated.dart';
 import 'package:caps_app/pages/homePage.dart';
 import 'package:caps_app/pages/lastMatchs.dart';
 import 'package:caps_app/pages/rankingPage.dart';
@@ -54,192 +56,198 @@ class _ProfilePageState extends State<ProfilePage> {
 
     if (user == null) return LoadingWidget();
 
-    return StreamProvider<List<MatchEnded>>.value(
-        value: DatabaseService().matchs,
-        child: StreamProvider<List<Capseur>>.value(
-            value: DatabaseService().capseurs,
-            child: Scaffold(
-              appBar: AppBar(
-                backgroundColor: kBackgroundBaseColor,
-                shadowColor: Colors.transparent,
-                leading: ArrowBackAppBar(),
-                centerTitle: true,
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    user.uid == capseur.uid && editing
-                        ? Expanded(
-                            child: TextField(
-                              controller: usernameTextFieldController,
+    return StreamProvider<List<MatchWaitingToBeValidated>>.value(
+      value: DatabaseService().matchsWaitingToBeValidated,
+      child: StreamProvider<List<MatchEnded>>.value(
+          value: DatabaseService().matchs,
+          child: StreamProvider<List<Capseur>>.value(
+              value: DatabaseService().capseurs,
+              child: Scaffold(
+                appBar: AppBar(
+                  backgroundColor: kBackgroundBaseColor,
+                  shadowColor: Colors.transparent,
+                  leading: ArrowBackAppBar(),
+                  centerTitle: true,
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      user.uid == capseur.uid && editing
+                          ? Expanded(
+                              child: TextField(
+                                controller: usernameTextFieldController,
+                              ),
+                            )
+                          : Text(
+                              usernameTextFieldController.text ??
+                                  capseur.username,
+                              style: TextStyle(
+                                  fontFamily: 'PirataOne',
+                                  fontSize: 30,
+                                  color: kPrimaryColor),
                             ),
-                          )
-                        : Text(
-                            usernameTextFieldController.text ??
-                                capseur.username,
-                            style: TextStyle(
-                                fontFamily: 'PirataOne',
-                                fontSize: 30,
-                                color: kPrimaryColor),
-                          ),
-                    user.uid == capseur.uid
-                        ? (editing
-                            ? Row(
-                                children: [
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.check,
-                                      color: Colors.green,
-                                      size: 30,
+                      user.uid == capseur.uid
+                          ? (editing
+                              ? Row(
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.check,
+                                        color: Colors.green,
+                                        size: 30,
+                                      ),
+                                      onPressed: () async {
+                                        setState(() {
+                                          editing = !editing;
+                                          print(usernameTextFieldController
+                                              .value.text.length);
+                                          if (usernameTextFieldController
+                                                  .value.text.length <=
+                                              10) {
+                                            DatabaseService().updateCapseurData(
+                                                capseur.uid,
+                                                usernameTextFieldController
+                                                    .value.text,
+                                                capseur.matchsPlayed,
+                                                capseur.matchsWon,
+                                                capseur.capsHit,
+                                                capseur.capsThrow,
+                                                capseur.bottlesEmptied,
+                                                capseur.points);
+                                            capseur.setUsername(
+                                                usernameTextFieldController
+                                                    .value.text);
+                                          } else {
+                                            usernameTextFieldController.text =
+                                                capseur.username;
+                                          }
+                                        });
+                                      },
                                     ),
-                                    onPressed: () async {
-                                      setState(() {
-                                        editing = !editing;
-                                        print(usernameTextFieldController
-                                            .value.text.length);
-                                        if (usernameTextFieldController
-                                                .value.text.length <=
-                                            10) {
-                                          DatabaseService().updateCapseurData(
-                                              capseur.uid,
-                                              usernameTextFieldController
-                                                  .value.text,
-                                              capseur.matchsPlayed,
-                                              capseur.matchsWon,
-                                              capseur.capsHit,
-                                              capseur.capsThrow,
-                                              capseur.bottlesEmptied,
-                                              capseur.points);
-                                          capseur.setUsername(
-                                              usernameTextFieldController
-                                                  .value.text);
-                                        } else {
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.close,
+                                        color: kPrimaryColor,
+                                        size: 30,
+                                      ),
+                                      onPressed: () async {
+                                        setState(() {
+                                          editing = !editing;
                                           usernameTextFieldController.text =
                                               capseur.username;
-                                        }
-                                      });
-                                    },
+                                        });
+                                      },
+                                    )
+                                  ],
+                                )
+                              : IconButton(
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: kSecondaryColor,
+                                    size: 20,
                                   ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.close,
-                                      color: kPrimaryColor,
-                                      size: 30,
-                                    ),
-                                    onPressed: () async {
-                                      setState(() {
-                                        editing = !editing;
-                                        usernameTextFieldController.text =
-                                            capseur.username;
-                                      });
-                                    },
-                                  )
-                                ],
-                              )
-                            : IconButton(
-                                icon: Icon(
-                                  Icons.edit,
-                                  color: kSecondaryColor,
-                                  size: 20,
-                                ),
-                                onPressed: () async {
-                                  setState(() {
-                                    editing = !editing;
-                                  });
-                                },
-                              ))
-                        : Container(),
+                                  onPressed: () async {
+                                    setState(() {
+                                      editing = !editing;
+                                    });
+                                  },
+                                ))
+                          : Container(),
+                    ],
+                  ),
+                  actions: [
+                    user.uid == capseur.uid
+                        ? IconButton(
+                            icon: Icon(
+                              Icons.power_settings_new,
+                              color: kSecondaryColor,
+                              size: 30,
+                            ),
+                            onPressed: () async {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  '/', (Route<dynamic> route) => false);
+                              Future.delayed(Duration(milliseconds: 600),
+                                  () => _auth.signOut());
+                            },
+                          )
+                        : SizedBox(
+                            width: 55,
+                          ),
                   ],
                 ),
-                actions: [
-                  user.uid == capseur.uid
-                      ? IconButton(
-                          icon: Icon(
-                            Icons.power_settings_new,
-                            color: kSecondaryColor,
-                            size: 30,
-                          ),
-                          onPressed: () async {
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                                '/', (Route<dynamic> route) => false);
-                            Future.delayed(Duration(milliseconds: 600),
-                                () => _auth.signOut());
-                          },
-                        )
-                      : SizedBox(
-                          width: 55,
-                        ),
-                ],
-              ),
-              body: Stack(
-                children: [
-                  Background(
-                    image: "assets/images/bottle_32deg.png",
-                  ),
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        if (user.uid != capseur.uid)
-                          ChallengeButton(
-                            capseurOfProfile: capseur,
-                            userUid: user.uid,
-                          ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        DataItemProfile(
-                            dataName: 'Points',
-                            dataValue: capseur.points.round().toString()),
-                        RaisedButton(
-                            onPressed: () async {
-                              Navigator.pushNamed(context, '/rankings');
-                            },
-                            color: kSecondaryColor,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 30, vertical: 10),
-                            child: Text(
-                              "Voir les classements",
-                              style: TextStyle(color: kWhiteColor),
-                            )),
-                        DataItemProfile(
-                            dataName: 'Matchs gagnés',
-                            dataValue: capseur.matchsWon.toString()),
-                        DataItemProfile(
-                            dataName: 'Matchs joués',
-                            dataValue: capseur.matchsPlayed.toString()),
-                        DataItemProfile(
-                            dataName: 'Caps touchées',
-                            dataValue: capseur.capsHit.toString()),
-                        DataItemProfile(
-                            dataName: 'Ratio',
-                            dataValue: (capseur.capsThrow != 0)
-                                ? (capseur.capsHit / capseur.capsThrow * 100)
-                                        .round()
-                                        .toString() +
-                                    '%'
-                                : ''),
-                        DataItemProfile(
-                            dataName: 'Kros bues',
-                            dataValue: capseur.bottlesEmptied.toString()),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Text(
-                          'DERNIERS MATCHS',
-                          style:
-                              TextStyle(fontFamily: 'PirataOne', fontSize: 25),
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        MatchList(
-                          capseur: capseur,
-                        ),
-                      ],
+                body: Stack(
+                  children: [
+                    Background(
+                      image: "assets/images/bottle_32deg.png",
                     ),
-                  )
-                ],
-              ),
-            )));
+                    SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          if (user.uid != capseur.uid)
+                            ChallengeButton(
+                              capseurOfProfile: capseur,
+                              userUid: user.uid,
+                            ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          DataItemProfile(
+                              dataName: 'Points',
+                              dataValue: capseur.points.round().toString()),
+                          RaisedButton(
+                              onPressed: () async {
+                                Navigator.pushNamed(context, '/rankings');
+                              },
+                              color: kSecondaryColor,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 30, vertical: 10),
+                              child: Text(
+                                "Voir les classements",
+                                style: TextStyle(color: kWhiteColor),
+                              )),
+                          DataItemProfile(
+                              dataName: 'Matchs gagnés',
+                              dataValue: capseur.matchsWon.toString()),
+                          DataItemProfile(
+                              dataName: 'Matchs joués',
+                              dataValue: capseur.matchsPlayed.toString()),
+                          DataItemProfile(
+                              dataName: 'Caps touchées',
+                              dataValue: capseur.capsHit.toString()),
+                          DataItemProfile(
+                              dataName: 'Ratio',
+                              dataValue: (capseur.capsThrow != 0)
+                                  ? (capseur.capsHit / capseur.capsThrow * 100)
+                                          .round()
+                                          .toString() +
+                                      '%'
+                                  : ''),
+                          DataItemProfile(
+                              dataName: 'Kros bues',
+                              dataValue: capseur.bottlesEmptied.toString()),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Text(
+                            'DERNIERS MATCHS',
+                            style: TextStyle(
+                                fontFamily: 'PirataOne', fontSize: 25),
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          MatchWaitingList(
+                            capseur: capseur,
+                          ),
+                          MatchList(
+                            capseur: capseur,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ))),
+    );
   }
 }
 
