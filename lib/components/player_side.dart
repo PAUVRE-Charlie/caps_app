@@ -122,9 +122,13 @@ class Arrow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (player.topPlayerBool & player.playing) {
-      return ImageIcon( AssetImage('assets/images/double_arrow_down.png') ,color: kSecondaryColor, size: 100.0,);
+      return Hero(
+          tag: 'double_arrow_down',
+          child: ImageIcon(AssetImage('assets/images/double_arrow_down.png') ,color: kSecondaryColor, size: 100.0,));
     }else if (!player.topPlayerBool & player.playing){
-      return ImageIcon( AssetImage('assets/images/double_arrow_up.png') ,color: kSecondaryColor, size: 100.0,);
+      return Hero(
+          tag: 'double_arrow_up',
+          child: ImageIcon( AssetImage('assets/images/double_arrow_up.png') ,color: kSecondaryColor, size: 100.0,));
     }else{
       return Container(height: 0, width: 0,);
     }

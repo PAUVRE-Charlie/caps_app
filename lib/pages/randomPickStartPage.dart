@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:caps_app/components/background.dart';
 import 'package:caps_app/components/loading.dart';
+import 'package:caps_app/components/player_side.dart';
 import 'package:caps_app/models/capseur.dart';
 import 'package:flutter/material.dart';
 
@@ -51,6 +52,10 @@ class _RandomPickStartPageState extends State<RandomPickStartPage> {
         widgetToShow = Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            player1Starting ? Padding(
+              padding: const EdgeInsets.only(bottom : 20.0),
+              child: Hero(tag: 'double_arrow_down', child: ImageIcon( AssetImage('assets/images/double_arrow_down.png') ,color: kSecondaryColor, size: 200.0,)),
+            ) : Container(height: 200.0),
             Padding(
               padding: EdgeInsets.all(20),
               child: Text(
@@ -80,7 +85,11 @@ class _RandomPickStartPageState extends State<RandomPickStartPage> {
                 "C'est parti !",
                 style: TextStyle(color: kWhiteColor),
               ),
-            )
+            ),
+            !player1Starting ? Padding(
+              padding: const EdgeInsets.only(top : 20.0),
+              child: Hero(tag: 'double_arrow_up', child: ImageIcon( AssetImage('assets/images/double_arrow_up.png') ,color: kSecondaryColor, size: 200.0,)),
+            ) : Container(height: 200.0),
           ],
         );
       });
