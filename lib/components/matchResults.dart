@@ -41,47 +41,50 @@ class _MatchResultsState extends State<MatchResults> {
         padding: EdgeInsets.symmetric(vertical: 10),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                  child: Text(capseur1.username,
-                      style: TextStyle(
-                          color: widget.match.player1Won
-                              ? kPrimaryColor
-                              : Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w300)),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                        builder: (context) =>
-                            new ProfilePage(capseur: capseur1),
-                      ),
-                    );
-                  },
-                ),
-                Text(' - '),
-                TextButton(
-                  child: Text(capseur2.username,
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w300,
-                          color: widget.match.player1Won
-                              ? Colors.black
-                              : kPrimaryColor)),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                        builder: (context) =>
-                            new ProfilePage(capseur: capseur2),
-                      ),
-                    );
-                  },
-                ),
-              ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    child: Text(capseur1.username,
+                        style: TextStyle(
+                            color: widget.match.player1Won
+                                ? kPrimaryColor
+                                : Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w300)),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                          builder: (context) =>
+                              new ProfilePage(capseur: capseur1),
+                        ),
+                      );
+                    },
+                  ),
+                  Text(' - '),
+                  TextButton(
+                    child: Text(capseur2.username,
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w300,
+                            color: widget.match.player1Won
+                                ? Colors.black
+                                : kPrimaryColor)),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                          builder: (context) =>
+                              new ProfilePage(capseur: capseur2),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
             SizedBox(
               height: 10,

@@ -177,16 +177,6 @@ class _MatchPageState extends State<MatchPage> {
                                 onPressed: canRevert
                                     ? () {
                                         setState(() {
-
-                                          print('a');
-                                          print(game.player1.score);
-                                          print('b');
-                                          print(gameLastTurn.player1.score);
-                                          print('c');
-                                          print(game.player2.score);
-                                          print('d');
-                                          print(gameLastTurn.player2.score);
-
                                           game = copyGame(gameLastTurn);
                                           game.switchTurns();
                                           canRevert = false;
