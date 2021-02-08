@@ -105,7 +105,6 @@ class _RegisterState extends State<Register> {
                         });
 
                         for (Capseur capseur in capseurs) {
-                          print(capseur.username);
                           if (capseur.username == username)
                             setState(() {
                               loading = false;
