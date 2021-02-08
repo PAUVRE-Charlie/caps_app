@@ -53,7 +53,11 @@ class _RegisterState extends State<Register> {
                     hintText: 'Email IMT',
                     textInputType: TextInputType.emailAddress,
                     validator: (val) {
-                      return val.isEmpty ? 'Entre ton mail' : null;
+                      return val.isEmpty
+                          ? 'Entre ton mail'
+                          : !(val.toString().contains('@imt-atlantique.net'))
+                              ? 'Vous devez utiliser une adresse imt-atlantique'
+                              : null;
                     },
                     onChanged: (val) {
                       email = val;
@@ -80,7 +84,11 @@ class _RegisterState extends State<Register> {
                   MyTextFormField(
                     hintText: 'Pseudo',
                     validator: (val) {
-                      return val.isEmpty ? 'Entre ton pseudo' : null;
+                      return val.isEmpty
+                          ? 'Entre ton pseudo'
+                          : val.toString().length > 10
+                              ? '10 caractères max'
+                              : null;
                     },
                     onChanged: (val) {
                       username = val;
@@ -95,19 +103,14 @@ class _RegisterState extends State<Register> {
                         setState(() {
                           loading = true;
                         });
-                        if (!email.contains('@imt-atlantique.net')) {
-                          setState(() {
-                            loading = false;
-                            error =
-                                'Vous devez utiliser une adresse imt-atlantique';
-                          });
-                          for (Capseur capseur in capseurs) {
-                            if (capseur.username == username)
-                              setState(() {
-                                loading = false;
-                                error = 'Ce pseudo est déja utilisé';
-                              });
-                          }
+
+                        for (Capseur capseur in capseurs) {
+                          print(capseur.username);
+                          if (capseur.username == username)
+                            setState(() {
+                              loading = false;
+                              error = 'Ce pseudo est déja utilisé';
+                            });
                         }
                         if (loading) {
                           dynamic result =
