@@ -45,7 +45,7 @@ class _MatchResultsState extends State<MatchResults> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextButton(
-                  child: Text(capseur1.firstname + ' ' + capseur1.lastname,
+                  child: Text(capseur1.username,
                       style: TextStyle(
                           color: widget.match.player1Won
                               ? kPrimaryColor
@@ -64,7 +64,7 @@ class _MatchResultsState extends State<MatchResults> {
                 ),
                 Text(' - '),
                 TextButton(
-                  child: Text(capseur2.firstname + ' ' + capseur2.lastname,
+                  child: Text(capseur2.username,
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w300,

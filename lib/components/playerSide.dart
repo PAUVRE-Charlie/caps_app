@@ -37,49 +37,58 @@ class _PlayerSideState extends State<PlayerSide> {
                       opacity: (widget.player.playing) ? 0.2 : 1,
                       child: Image(
                           height: MediaQuery.of(context).size.height * 1 / 5,
-                          image: AssetImage('assets/images/match_bottle_wcaps.png')),
+                          image: AssetImage(
+                              'assets/images/match_bottle_wcaps.png')),
                     ),
                   ),
                   Center(
-                      child: Arrow(player: widget.player,))
+                      child: Arrow(
+                    player: widget.player,
+                  ))
                 ],
               ),
               Text(
                 widget.player.score.toString(),
                 style: TextStyle(
-                    fontFamily: 'PirataOne', fontSize: 50, color: kPrimaryColor),
+                    fontFamily: 'PirataOne',
+                    fontSize: 50,
+                    color: kPrimaryColor),
               ),
             ],
           ),
         ),
         Column(
           children: [
-            widget.player.topPlayerBool ?
-            Container(
-              height: MediaQuery.of(context).size.height * 1 / 10,
-              width: MediaQuery.of(context).size.width / 3,
-              child: ListView.
-              builder(
-                scrollDirection: Axis.horizontal,
-                reverse: true,
-                itemCount: widget.bottlesNumber - 1,
-                itemBuilder: (BuildContext context, int index) {
-                  return Opacity(
-                    opacity:
-                    (index >= widget.player.bottlesLeftNumber - 1) ? 0.2 : 1,
-                    child: Image(image: AssetImage('assets/images/bottle.png')),
-                  );
-                  },
-              ),
-            ) : Container(
-              height: MediaQuery.of(context).size.height * 1 / 10,
-              width: MediaQuery.of(context).size.width / 3,),
+            widget.player.topPlayerBool
+                ? Container(
+                    height: MediaQuery.of(context).size.height * 1 / 10,
+                    width: MediaQuery.of(context).size.width / 3,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      reverse: true,
+                      itemCount: widget.bottlesNumber - 1,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Opacity(
+                          opacity:
+                              (index >= widget.player.bottlesLeftNumber - 1)
+                                  ? 0.2
+                                  : 1,
+                          child: Image(
+                              image: AssetImage('assets/images/bottle.png')),
+                        );
+                      },
+                    ),
+                  )
+                : Container(
+                    height: MediaQuery.of(context).size.height * 1 / 10,
+                    width: MediaQuery.of(context).size.width / 3,
+                  ),
             Container(
               height: MediaQuery.of(context).size.height * 1 / 10,
               width: MediaQuery.of(context).size.width / 3,
               alignment: AlignmentDirectional.center,
               child: Text(
-                widget.player.capseur.firstname,
+                widget.player.capseur.username,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontFamily: 'PirataOne',
@@ -87,26 +96,30 @@ class _PlayerSideState extends State<PlayerSide> {
                     color: kPrimaryColor),
               ),
             ),
-            !widget.player.topPlayerBool ?
-            Container(
-                height: MediaQuery.of(context).size.height * 1 / 10,
-                width: MediaQuery.of(context).size.width / 3,
-                child: ListView.
-                builder(
-                  scrollDirection: Axis.horizontal,
-                  reverse: true,
-                  itemCount: widget.bottlesNumber - 1,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Opacity(
-                      opacity:
-                      (index >= widget.player.bottlesLeftNumber - 1) ? 0.2 : 1,
-                      child: Image(image: AssetImage('assets/images/bottle.png')),
-                    );
-                  },
-                ),
-            ) : Container(
-              height: MediaQuery.of(context).size.height * 1 / 10,
-              width: MediaQuery.of(context).size.width / 3,),
+            !widget.player.topPlayerBool
+                ? Container(
+                    height: MediaQuery.of(context).size.height * 1 / 10,
+                    width: MediaQuery.of(context).size.width / 3,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      reverse: true,
+                      itemCount: widget.bottlesNumber - 1,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Opacity(
+                          opacity:
+                              (index >= widget.player.bottlesLeftNumber - 1)
+                                  ? 0.2
+                                  : 1,
+                          child: Image(
+                              image: AssetImage('assets/images/bottle.png')),
+                        );
+                      },
+                    ),
+                  )
+                : Container(
+                    height: MediaQuery.of(context).size.height * 1 / 10,
+                    width: MediaQuery.of(context).size.width / 3,
+                  ),
           ],
         )
       ],
@@ -124,13 +137,24 @@ class Arrow extends StatelessWidget {
     if (player.topPlayerBool & player.playing) {
       return Hero(
           tag: 'double_arrow_down',
-          child: ImageIcon(AssetImage('assets/images/double_arrow_down.png') ,color: kSecondaryColor, size: 100.0,));
-    }else if (!player.topPlayerBool & player.playing){
+          child: ImageIcon(
+            AssetImage('assets/images/double_arrow_down.png'),
+            color: kSecondaryColor,
+            size: 100.0,
+          ));
+    } else if (!player.topPlayerBool & player.playing) {
       return Hero(
           tag: 'double_arrow_up',
-          child: ImageIcon( AssetImage('assets/images/double_arrow_up.png') ,color: kSecondaryColor, size: 100.0,));
-    }else{
-      return Container(height: 0, width: 0,);
+          child: ImageIcon(
+            AssetImage('assets/images/double_arrow_up.png'),
+            color: kSecondaryColor,
+            size: 100.0,
+          ));
+    } else {
+      return Container(
+        height: 0,
+        width: 0,
+      );
     }
   }
 }

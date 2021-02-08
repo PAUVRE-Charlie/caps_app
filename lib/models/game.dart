@@ -157,7 +157,7 @@ class Game {
                 size: 80,
               ),
               Text(
-                winner.capseur.firstname + ' vainqueur !',
+                winner.capseur.username + ' vainqueur !',
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
                 textAlign: TextAlign.center,
               ),
@@ -165,10 +165,7 @@ class Game {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                      this.player2.capseur.firstname +
-                          ' ' +
-                          this.player2.capseur.lastname,
+                  Text(this.player2.capseur.username,
                       style: TextStyle(
                           color: this.player2 == winner
                               ? kPrimaryColor
@@ -176,10 +173,7 @@ class Game {
                           fontSize: 20,
                           fontWeight: FontWeight.w300)),
                   Text(' - '),
-                  Text(
-                      this.player1.capseur.firstname +
-                          ' ' +
-                          this.player1.capseur.lastname,
+                  Text(this.player1.capseur.username,
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w300,
@@ -336,9 +330,7 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
             SizedBox(
               height: 20,
             ),
-            Text(opponent != null
-                ? ("Contre: " + opponent.firstname + ' ' + opponent.lastname)
-                : ""),
+            Text(opponent != null ? ("Contre: " + opponent.username) : ""),
             SizedBox(
               height: 10,
             ),

@@ -42,8 +42,7 @@ class DatabaseService {
 
   Capseur _userDataFromSnapshot(DocumentSnapshot snapshot) {
     return Capseur(
-      snapshot.data()['firstname'] ?? '',
-      snapshot.data()['lastname'] ?? '',
+      snapshot.data()['username'] ?? '',
       snapshot.data()['matchsPlayed'] ?? '',
       snapshot.data()['matchsWon'] ?? '',
       snapshot.data()['capsHit'] ?? '',
@@ -71,8 +70,7 @@ class DatabaseService {
 
   Future updateCapseurData(
       String _uid,
-      String firstname,
-      String lastname,
+      String username,
       int matchsPlayed,
       int matchsWon,
       int capsHit,
@@ -80,8 +78,7 @@ class DatabaseService {
       int bottlesEmptied,
       double points) async {
     return await capseursCollection.doc(_uid).set({
-      'firstname': firstname,
-      'lastname': lastname,
+      'username': username,
       'matchsPlayed': matchsPlayed,
       'matchsWon': matchsWon,
       'capsHit': capsHit,
@@ -95,8 +92,7 @@ class DatabaseService {
   List<Capseur> _capseurListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return Capseur(
-        doc.data()['firstname'] ?? '',
-        doc.data()['lastname'] ?? '',
+        doc.data()['username'] ?? '',
         doc.data()['matchsPlayed'] ?? '',
         doc.data()['matchsWon'] ?? '',
         doc.data()['capsHit'] ?? '',
@@ -161,17 +157,17 @@ class DatabaseService {
   */
 
   Future updateMatchWaitingToBeValidatedData(
-      String uidCapseur1,
-      String uidCapseur2,
-      int scorePlayer1,
-      int scorePlayer2,
-      int pointsRequired,
-      int pointsPerBottle,
-      int capsHitPlayer1,
-      int capsThrowPlayer1,
-      int capsHitPlayer2,
-      int capsThrowPlayer2,
-      ) async {
+    String uidCapseur1,
+    String uidCapseur2,
+    int scorePlayer1,
+    int scorePlayer2,
+    int pointsRequired,
+    int pointsPerBottle,
+    int capsHitPlayer1,
+    int capsThrowPlayer1,
+    int capsHitPlayer2,
+    int capsThrowPlayer2,
+  ) async {
     return await matchsWaitingToBeValidatedCollection.doc().set({
       'capseur1': uidCapseur1,
       'capseur2': uidCapseur2,

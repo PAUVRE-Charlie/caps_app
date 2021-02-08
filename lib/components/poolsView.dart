@@ -56,7 +56,7 @@ class _PoolsViewState extends State<PoolsView> {
                     Padding(
                       padding: EdgeInsets.only(left: 20),
                       child: Text(
-                        "${participant.capseur.firstname} ${participant.capseur.lastname}",
+                        "${participant.capseur.username}",
                         style: TextStyle(fontSize: 16),
                       ),
                     ),

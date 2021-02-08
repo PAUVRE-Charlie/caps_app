@@ -1,7 +1,10 @@
 import 'package:caps_app/components/background.dart';
 import 'package:caps_app/components/register.dart';
 import 'package:caps_app/components/signIn.dart';
+import 'package:caps_app/models/capseur.dart';
+import 'package:caps_app/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../data.dart';
 
@@ -53,7 +56,10 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
               child: TabBarView(
                 children: [
                   SignIn(),
-                  Register(),
+                  StreamProvider<List<Capseur>>.value(
+                    value: DatabaseService().capseurs,
+                    child: Register(),
+                  )
                 ],
               ),
             )

@@ -20,16 +20,16 @@ class AuthService {
   }
   // sign in anonymously
 
-  Future signInAnon() async {
-    try {
-      UserCredential result = await _auth.signInAnonymously();
-      User user = result.user;
-      return _userFromFirebaseUser(user);
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
+  // Future signInAnon() async {
+  //   try {
+  //     UserCredential result = await _auth.signInAnonymously();
+  //     User user = result.user;
+  //     return _userFromFirebaseUser(user);
+  //   } catch (e) {
+  //     print(e.toString());
+  //     return null;
+  //   }
+  // }
 
   // sign in with email and password
 
@@ -49,7 +49,7 @@ class AuthService {
   // register with email and password
 
   Future registerWithEmailAndPassword(
-      String email, String password, String firstname, String lastname) async {
+      String email, String password, String username) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -57,7 +57,7 @@ class AuthService {
 
       // create a new document for the user with the uid
       await DatabaseService(uid: user.uid)
-          .updateCapseurData(user.uid, firstname, lastname, 0, 0, 0, 0, 0, 100);
+          .updateCapseurData(user.uid, username, 0, 0, 0, 0, 0, 100);
 
       return _userFromFirebaseUser(user);
     } catch (e) {

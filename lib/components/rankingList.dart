@@ -55,7 +55,7 @@ class _RankingListState extends State<RankingList> {
             child: ListTile(
               leading:
                   Text((index + 1).toString(), style: TextStyle(fontSize: 20)),
-              title: Text(capseur.firstname),
+              title: Text(capseur.username),
               trailing: Text(capseur.points.round().toString()),
               tileColor: capseur.uid == user.uid
                   ? kSecondaryColor.withOpacity(0.3)

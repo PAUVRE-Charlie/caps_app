@@ -1,7 +1,6 @@
 class Capseur {
   final String _uid;
-  String _firstname;
-  String _lastname;
+  String _username;
   int _matchsPlayed;
   int _matchsWon;
   int _capsHit;
@@ -9,11 +8,10 @@ class Capseur {
   int _bottlesEmptied;
   double _points;
 
-  Capseur(this._firstname, this._lastname, this._matchsPlayed, this._matchsWon,
-      this._capsHit, this._capsThrow, this._bottlesEmptied, this._uid, this._points);
+  Capseur(this._username, this._matchsPlayed, this._matchsWon, this._capsHit,
+      this._capsThrow, this._bottlesEmptied, this._uid, this._points);
 
-  String get firstname => _firstname;
-  String get lastname => _lastname;
+  String get username => _username;
   int get matchsPlayed => _matchsPlayed;
   int get matchsWon => _matchsWon;
   int get capsHit => _capsHit;

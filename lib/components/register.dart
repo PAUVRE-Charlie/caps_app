@@ -3,8 +3,10 @@ import 'dart:math';
 
 import 'package:caps_app/components/loading.dart';
 import 'package:caps_app/data.dart';
+import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'MyTextFormField.dart';
 
@@ -22,8 +24,7 @@ class _RegisterState extends State<Register> {
   // textfield state
   String email = '';
   String password = '';
-  String firstname = '';
-  String lastname = '';
+  String username = '';
   String error = '';
 
   bool loading;
@@ -36,6 +37,8 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    final capseurs = Provider.of<List<Capseur>>(context);
+
     return loading
         ? LoadingWidget()
         : SingleChildScrollView(
@@ -47,7 +50,7 @@ class _RegisterState extends State<Register> {
                     height: 20,
                   ),
                   MyTextFormField(
-                    hintText: 'Email imt-atlantique',
+                    hintText: 'Email IMT',
                     textInputType: TextInputType.emailAddress,
                     validator: (val) {
                       return val.isEmpty ? 'Entre ton mail' : null;
@@ -75,24 +78,12 @@ class _RegisterState extends State<Register> {
                     height: 20,
                   ),
                   MyTextFormField(
-                    hintText: 'Prénom',
+                    hintText: 'Pseudo',
                     validator: (val) {
-                      return val.isEmpty ? 'Entre ton prénom' : null;
+                      return val.isEmpty ? 'Entre ton pseudo' : null;
                     },
                     onChanged: (val) {
-                      firstname = val;
-                    },
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  MyTextFormField(
-                    hintText: 'Nom',
-                    validator: (val) {
-                      return val.isEmpty ? 'Entre ton nom' : null;
-                    },
-                    onChanged: (val) {
-                      lastname = val;
+                      username = val;
                     },
                   ),
                   SizedBox(
@@ -104,15 +95,24 @@ class _RegisterState extends State<Register> {
                         setState(() {
                           loading = true;
                         });
-                        if (!email.contains('@imt-atlantique.net')){
+                        if (!email.contains('@imt-atlantique.net')) {
                           setState(() {
                             loading = false;
-                            error = 'Vous devez utiliser une adresse imt-atlantique';
+                            error =
+                                'Vous devez utiliser une adresse imt-atlantique';
                           });
-                        }else{
+                          for (Capseur capseur in capseurs) {
+                            if (capseur.username == username)
+                              setState(() {
+                                loading = false;
+                                error = 'Ce pseudo est déja utilisé';
+                              });
+                          }
+                        }
+                        if (loading) {
                           dynamic result =
-                          await _auth.registerWithEmailAndPassword(
-                              email, password, firstname, lastname);
+                              await _auth.registerWithEmailAndPassword(
+                                  email, password, username);
                           if (result == null) {
                             setState(() {
                               loading = false;
@@ -120,7 +120,6 @@ class _RegisterState extends State<Register> {
                             });
                           }
                         }
-
                       }
                     },
                     color: kPrimaryColor,

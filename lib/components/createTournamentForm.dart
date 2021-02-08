@@ -142,7 +142,7 @@ class _CreateTournamentFormState extends State<CreateTournamentForm> {
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
                               Text(
-                                "${capseur.firstname} ${capseur.lastname}",
+                                "${capseur.username}",
                               ),
                               IconButton(
                                   icon: Icon(
@@ -435,7 +435,7 @@ class _PoolCreationState extends State<PoolCreation> {
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             Text(
-                              "${participant.capseur.firstname} ${participant.capseur.lastname}",
+                              "${participant.capseur.username}",
                             ),
                             IconButton(
                                 icon: Icon(

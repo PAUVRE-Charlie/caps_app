@@ -45,7 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 leading: ArrowBackAppBar(),
                 centerTitle: true,
                 title: Text(
-                  widget.capseur.firstname + ' ' + widget.capseur.lastname,
+                  widget.capseur.username,
                   style: TextStyle(
                       fontFamily: 'PirataOne',
                       fontSize: 30,

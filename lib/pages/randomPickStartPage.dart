@@ -52,14 +52,22 @@ class _RandomPickStartPageState extends State<RandomPickStartPage> {
         widgetToShow = Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            player1Starting ? Padding(
-              padding: const EdgeInsets.only(bottom : 20.0),
-              child: Hero(tag: 'double_arrow_down', child: ImageIcon( AssetImage('assets/images/double_arrow_down.png') ,color: kSecondaryColor, size: 200.0,)),
-            ) : Container(height: 200.0),
+            player1Starting
+                ? Padding(
+                    padding: const EdgeInsets.only(bottom: 20.0),
+                    child: Hero(
+                        tag: 'double_arrow_down',
+                        child: ImageIcon(
+                          AssetImage('assets/images/double_arrow_down.png'),
+                          color: kSecondaryColor,
+                          size: 200.0,
+                        )),
+                  )
+                : Container(height: 200.0),
             Padding(
               padding: EdgeInsets.all(20),
               child: Text(
-                "C'est à ${player1Starting ? widget.capseur1.firstname : widget.capseur2.firstname} de commencer !",
+                "C'est à ${player1Starting ? widget.capseur1.username : widget.capseur2.username} de commencer !",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 20),
               ),
@@ -86,10 +94,18 @@ class _RandomPickStartPageState extends State<RandomPickStartPage> {
                 style: TextStyle(color: kWhiteColor),
               ),
             ),
-            !player1Starting ? Padding(
-              padding: const EdgeInsets.only(top : 20.0),
-              child: Hero(tag: 'double_arrow_up', child: ImageIcon( AssetImage('assets/images/double_arrow_up.png') ,color: kSecondaryColor, size: 200.0,)),
-            ) : Container(height: 200.0),
+            !player1Starting
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Hero(
+                        tag: 'double_arrow_up',
+                        child: ImageIcon(
+                          AssetImage('assets/images/double_arrow_up.png'),
+                          color: kSecondaryColor,
+                          size: 200.0,
+                        )),
+                  )
+                : Container(height: 200.0),
           ],
         );
       });

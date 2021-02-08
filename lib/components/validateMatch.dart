@@ -35,8 +35,7 @@ class _ValidateMatchState extends State<ValidateMatch> {
 
     DatabaseService().updateCapseurData(
         capseur1.uid,
-        capseur1.firstname,
-        capseur1.lastname,
+        capseur1.username,
         capseur1.matchsPlayed + 1,
         capseur1.matchsWon + (match.scorePlayer1 > match.scorePlayer2 ? 1 : 0),
         capseur1.capsHit + match.player1CapsHitInThisGame,
@@ -49,8 +48,7 @@ class _ValidateMatchState extends State<ValidateMatch> {
 
     DatabaseService().updateCapseurData(
         capseur2.uid,
-        capseur2.firstname,
-        capseur2.lastname,
+        capseur2.username,
         capseur2.matchsPlayed + 1,
         capseur2.matchsWon + (match.scorePlayer2 > match.scorePlayer1 ? 1 : 0),
         capseur2.capsHit + match.player2CapsHitInThisGame,
