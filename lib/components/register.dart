@@ -47,7 +47,7 @@ class _RegisterState extends State<Register> {
                     height: 20,
                   ),
                   MyTextFormField(
-                    hintText: 'Email',
+                    hintText: 'Email imt-atlantique',
                     textInputType: TextInputType.emailAddress,
                     validator: (val) {
                       return val.isEmpty ? 'Entre ton mail' : null;
@@ -104,15 +104,23 @@ class _RegisterState extends State<Register> {
                         setState(() {
                           loading = true;
                         });
-                        dynamic result =
-                            await _auth.registerWithEmailAndPassword(
-                                email, password, firstname, lastname);
-                        if (result == null) {
+                        if (!email.contains('@imt-atlantique.net')){
                           setState(() {
                             loading = false;
-                            error = 'Email ou mot de passe incorrect';
+                            error = 'Vous devez utiliser une adresse imt-atlantique';
                           });
+                        }else{
+                          dynamic result =
+                          await _auth.registerWithEmailAndPassword(
+                              email, password, firstname, lastname);
+                          if (result == null) {
+                            setState(() {
+                              loading = false;
+                              error = 'Email ou mot de passe incorrect';
+                            });
+                          }
                         }
+
                       }
                     },
                     color: kPrimaryColor,
