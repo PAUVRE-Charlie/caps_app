@@ -1,16 +1,12 @@
 import 'dart:async';
-import 'dart:math';
 import 'dart:ui';
 
-import 'package:caps_app/components/matchResults.dart';
+import 'package:caps_app/components/matchResultEdit.dart';
 import 'package:caps_app/components/rankingList.dart';
 import 'package:caps_app/data.dart';
-import 'package:caps_app/models/matchEnded.dart';
-import 'package:caps_app/pages/matchPage.dart';
 import 'package:caps_app/models/player.dart';
 import 'package:caps_app/pages/randomPickStartPage.dart';
 import 'package:caps_app/services/database.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -145,10 +141,8 @@ class Game {
         return Future.value(false);
       },
       child: AlertDialog(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-        content: Container(
-          height: 350.0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+        content: SingleChildScrollView(
           child: Column(
             children: [
               Icon(
@@ -313,6 +307,7 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
 
   int getBottlesNumber() => widget.bottlesNumberKey.currentState._value;
   int getPointsPerBottle() => widget.pointsPerBottleKey.currentState._value;
+  int getPointsRequired() => this.getPointsPerBottle()*this.getBottlesNumber();
 
   @override
   void initState() {
@@ -426,18 +421,21 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
               onPressed: () async {
                 if (opponent != null) {
                   Navigator.of(context).pop();
-                  Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (ctxt) => new RandomPickStartPage(
-                            title: widget.title,
-                            capseur2: widget.capseur,
-                            capseur1: opponent,
-                            bottlesNumber: getBottlesNumber(),
-                            pointsPerBottle: getPointsPerBottle())),
-                  );
-                }
-              },
+                  showDialog<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return MatchResultEdit(
+                        pointsRequired: this.getPointsRequired(),
+                        pointsPerBottle: this.getPointsPerBottle(),
+                        player1: Player.initial(
+                            opponent, true, this.getBottlesNumber(), this.getPointsPerBottle(), true),
+                        player2: Player.initial(
+                            widget.capseur, false, this.getBottlesNumber(), this.getPointsPerBottle(), false),
+                      );
+                    }
+                    );
+                  }
+                },
               child: Text(
                 "Rentrer le score manuellement",
                 style: TextStyle(color: kSecondaryColor.withOpacity((opponent != null) ? 1 : 0.5)),
