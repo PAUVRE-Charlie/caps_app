@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../data.dart';
-import 'rulesPageEnglish.dart';
 
 class RulesPage extends StatelessWidget {
   const RulesPage({Key key}) : super(key: key);
@@ -43,7 +42,7 @@ class RulesPage extends StatelessWidget {
             child: Column(
               children: [
                 TextRules(
-                    "Les 2 joueur s'installent par terre l'un en face de l’autre. Pour la distance, il suffit que les deux joueurs s'assoient et tendent leurs jambes.",
+                    "Les 2 joueurs s'installent par terre l'un en face de l’autre. Pour la distance, il suffit que les deux joueurs s'assoient et tendent leurs jambes.",
                     index: 1),
                 TextRules(
                     "Chaque joueur décapsule sa bouteille de bière, la pose entre ses jambes, et pose la capsule sur la bouteille, à l'envers.",
@@ -71,7 +70,7 @@ class RulesPage extends StatelessWidget {
                   ),
                 ),
                 TextRules(
-                    "Lorsqu’un joueur 1 enlève la caps de son adversaire (joueur 2) celui ci se doit de riposter. Viens alors 2 possibilités. Soit le joueur 2 riposte mais ne fait pas tomber la caps, alors celui ci boit une gorgée. Soit le joueur 2 riposte et fait tomber la cap’s du joueur , c’est alors que nous avons 2 gorgées en jeu. Ainsi c’est au joueur 1 de riposter. Viens alors 2 possibilités (que vous avez compris j’espère). Soit le joueur 1 rate son coup, il boit alors 2 gorgées, soit il réussit et nous passons donc à 3 gorgées mise en jeu. Ainsi de suite jusqu’à ce qu’un joueur, ayant trop de pression, loupe son coup.",
+                    "Lorsqu’un joueur 1 enlève la caps de son adversaire (joueur 2) celui ci se doit de riposter. Viens alors 2 possibilités. Soit le joueur 2 riposte mais ne fait pas tomber la caps, alors celui ci boit une gorgée. Soit le joueur 2 riposte et fait tomber la cap’s du joueur, c’est alors que nous avons 2 gorgées en jeu. Ainsi c’est au joueur 1 de riposter. Viens alors 2 possibilités (que vous avez compris j’espère). Soit le joueur 1 rate son coup, il boit alors 2 gorgées, soit il réussit et nous passons donc à 3 gorgées mise en jeu. Ainsi de suite jusqu’à ce qu’un joueur, ayant trop de pression, loupe son coup.",
                     index: 5),
                 TextRules(
                   "lorsque je dis \"une gorgée\" je veux dire une fois le nombre de gorgée à boire. Par exemple, s'il a été fixé que une bière valait 4 points, une \"gorgée\" correspond alors à un quart de la bouteille. Le nombre de points par bouteille ainsi que le nombre de bouteilles à boire sont à fixer avant le début de la partie.",
@@ -90,7 +89,7 @@ class RulesPage extends StatelessWidget {
                     "Pour chaque \"gorgée\" bue par un joueur, son adversaire marque un point. Une fois qu'un joueur a fini de boire toutes ses bouteilles il a perdu.",
                     index: 6),
                 TextRules(
-                  "je te tiens à signaler à tous les bourrins que le but du jeu n’est pas de faire tomber une caps en jetant sa caps de toute ses forces contre la bouteille (fer contre verre ne compte évidement pas). Un coup est validé si la caps s’est faite éjecter par une caps directement (fer contre fer). Vous entendrez alors ce somptueux son : « POUM! »",
+                  "je tiens à signaler à tous les bourrins que le but du jeu n’est pas de faire tomber une caps en jetant sa caps de toute ses forces contre la bouteille (fer contre verre ne compte évidemment pas). Un coup est validé si la caps s’est faite éjectée par une caps directement (fer contre fer). Vous entendrez alors ce somptueux son : « POUM! »",
                   textToEmphasize: "ATTENTION : ",
                 ),
                 SizedBox(
@@ -104,7 +103,7 @@ class RulesPage extends StatelessWidget {
                       color: kPrimaryColor),
                 ),
                 TextRules(
-                  "\nL'aglorithme a été établi de la manière suivante.\nChaque nouveau joueur commence initialement avec 100 points. Si vous gagnez un match vous gagnez des points, si vous perdez, vous en perdez, simple.\nMais bien sûr, si vous gagnez contre un joueur mieux classé que vous, vous marquerez plus de points (« perf ») que si vous gagnez un joueur moins bien classé que vous. A contrario si vous perdez contre un joueur moins bien classé que vous, vous perderez plus de points(« contre-perf ») que si vous perdez contre un joueur mieux classé que vous.\nNotez que pour récompenser les joueurs jouant beaucoup, lors d'un match le perdant perds 80% des points gagnés par le gagnant.\nExemple : prenons 2 joueurs avec le même nombre de points qui font un match en 16 points. Le gagnant gagnera 5 points et le perdant perdra 4 points. Ainsi, le nombre de point total distribué augmentera avec le combre de match joué. Enfin si le match se joue en 4 il y aura moins de points attribués (coefficient 0.25) qu'un match en 16 (coefficient 1) ou encore plus en 32 (coefficient 2) pour des raisons de fiabilité",
+                  "\nL'algorithme a été établi de la manière suivante.\nChaque nouveau joueur commence initialement avec 100 points. Si vous gagnez un match vous gagnez des points, si vous perdez, vous en perdez, simple.\nMais bien sûr, si vous gagnez contre un joueur mieux classé que vous, vous marquerez plus de points (« perf ») que si vous gagnez un joueur moins bien classé que vous. A contrario si vous perdez contre un joueur moins bien classé que vous, vous perderez plus de points (« contre-perf ») que si vous perdez contre un joueur mieux classé que vous.\nNotez que pour récompenser les joueurs jouant beaucoup, lors d'un match le perdant perds 80% des points gagnés par le gagnant.\nExemple : prenons 2 joueurs avec le même nombre de points qui font un match en 16 points. Le gagnant gagnera 5 points et le perdant perdra 4 points. Ainsi, le nombre de point total distribué augmentera avec le nombre de matchs joués. Enfin si le match se joue en 4 il y aura moins de points attribués (coefficient 0.25) qu'un match en 16 (coefficient 1) ou encore plus en 32 (coefficient 2) pour des raisons de fiabilité",
                 ),
                 SizedBox(
                   height: 30,
