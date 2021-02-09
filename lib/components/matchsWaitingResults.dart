@@ -50,9 +50,7 @@ class _MatchWaitingResultsState extends State<MatchWaitingResults> {
                   TextButton(
                     child: Text(capseur1.username,
                         style: TextStyle(
-                            color: widget.match.player1Won
-                                ? kPrimaryColor
-                                : Colors.grey,
+                            color: Colors.grey,
                             fontSize: 20,
                             fontWeight: FontWeight.w300)),
                     onPressed: () {

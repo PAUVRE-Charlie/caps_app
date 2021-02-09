@@ -6,15 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:caps_app/models/player.dart';
 import 'package:caps_app/data.dart';
 
-
 class MatchResultEdit extends StatefulWidget {
-
   final int pointsRequired;
   final int pointsPerBottle;
   final Player player1;
   final Player player2;
 
-  MatchResultEdit({this.pointsRequired, this.pointsPerBottle, this.player1, this.player2});
+  MatchResultEdit(
+      {this.pointsRequired, this.pointsPerBottle, this.player1, this.player2});
 
   @override
   _MatchResultEditState createState() => _MatchResultEditState();
@@ -23,13 +22,20 @@ class MatchResultEdit extends StatefulWidget {
 class _MatchResultEditState extends State<MatchResultEdit> {
   Player winner;
   String error;
-  final textController1 = TextEditingController();
-  final textController2 = TextEditingController();
+  final textController1 = TextEditingController(text: '');
+  final textController2 = TextEditingController(text: '');
 
   @override
   void initState() {
     super.initState();
     error = '';
+  }
+
+  @override
+  void dispose() {
+    textController1.dispose();
+    textController2.dispose();
+    super.dispose();
   }
 
   @override
@@ -75,15 +81,6 @@ class _MatchResultEditState extends State<MatchResultEdit> {
                       keyboardType: TextInputType.number,
                       style: TextStyle(fontFamily: 'PirataOne', fontSize: 30),
                       controller: textController1,
-                      onChanged: (value){
-                        setState(() {
-                          widget.player2.setScore(int.parse(value));
-                          winner = (widget.player2.score >= widget.player1.score) ? widget.player2 : widget.player1;
-                          error = int.parse(value.toString())>=100 ? 'n\'exagerons pas...'
-                              : int.parse(value.toString()) == widget.player1.score ? 'l\'égalité n\'est pas possible'
-                              : '';
-                        });
-                      },
                     ),
                   ),
                 ),
@@ -95,15 +92,6 @@ class _MatchResultEditState extends State<MatchResultEdit> {
                       keyboardType: TextInputType.number,
                       style: TextStyle(fontFamily: 'PirataOne', fontSize: 30),
                       controller: textController2,
-                      onChanged: (value){
-                        setState(() {
-                          widget.player1.setScore(int.parse(value));
-                          winner = (widget.player2.score >= widget.player1.score) ? widget.player2 : widget.player1;
-                          error = int.parse(value.toString())>=100 ? 'n\'exagerons pas...'
-                              : int.parse(value.toString()) == widget.player2.score ? 'l\'égalité n\'est pas possible'
-                              : '';
-                        });
-                      },
                     ),
                   ),
                 ),
@@ -116,42 +104,60 @@ class _MatchResultEditState extends State<MatchResultEdit> {
                 ),
                 color: kPrimaryColor,
                 onPressed: () {
-                  if (widget.player2.score < widget.pointsRequired && widget.player1.score < widget.pointsRequired){
+                  if (textController2.value.text == '' ||
+                      textController1.value.text == '' ||
+                      int.parse(textController1.value.text) < 0 ||
+                      int.parse(textController2.value.text) < 0 ||
+                      int.parse(textController1.value.text) > 100 ||
+                      int.parse(textController2.value.text) > 100) {
                     setState(() {
-                      error = 'le score du vainqueur n\'est pas suffisant';
+                      error =
+                          'Au moins un score est non valide (entre 0 et 100)';
                     });
-                  }
-                  if (textController2.text == '' || textController1.text == ''){
-                    error = 'rentrez une valeur';
-                  }
-                  if (error == ''){
-                    endGame(winner, widget.pointsRequired, widget.pointsPerBottle);
+                  } else if ((int.parse(textController1.value.text) <
+                          widget.pointsRequired &&
+                      int.parse(textController1.value.text) <
+                          widget.pointsRequired)) {
+                    setState(() {
+                      error = 'Le score du vainqueur n\'est pas suffisant';
+                    });
+                  } else if (int.parse(textController1.value.text) ==
+                      (int.parse(textController2.value.text))) {
+                    setState(() {
+                      error = 'Il ne peut pas y avoir égalité';
+                    });
+                  } else {
+                    widget.player1
+                        .setScore(int.parse(textController1.value.text));
+                    widget.player2
+                        .setScore(int.parse(textController2.value.text));
+
+                    DatabaseService().updateMatchWaitingToBeValidatedData(
+                        widget.player1.capseur.uid,
+                        widget.player2.capseur.uid,
+                        widget.player1.score,
+                        widget.player2.score,
+                        widget.pointsRequired,
+                        widget.pointsPerBottle,
+                        widget.player1.capsHitInThisGame,
+                        widget.player1.capsThrowInThisGame,
+                        widget.player2.capsHitInThisGame,
+                        widget.player2.capsThrowInThisGame);
+
+                    Navigator.of(this.context).pop();
                   }
                 }),
-            Text(error, textAlign: TextAlign.center, style: TextStyle(fontSize: 15.0, color: kPrimaryColor, fontStyle: FontStyle.italic),),
+            Text(
+              error,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 15.0,
+                  color: kPrimaryColor,
+                  fontStyle: FontStyle.italic),
+            ),
           ],
         ),
       ),
     );
   }
-
-  endGame(Player winner, int pointsRequired, int pointsPerBottle) {
-    /* UPDATE ALL THE VARIABLES OF BOTH CAPSEURS IN THE SERVER */
-    DatabaseService().updateMatchWaitingToBeValidatedData(
-        widget.player1.capseur.uid,
-        widget.player2.capseur.uid,
-        widget.player1.score,
-        widget.player2.score,
-        pointsRequired,
-        pointsPerBottle,
-        widget.player1.capsHitInThisGame,
-        widget.player1.capsThrowInThisGame,
-        widget.player2.capsHitInThisGame,
-        widget.player2.capsThrowInThisGame);
-
-    Navigator.of(this.context).pop();
-  }
 }
-
-
-
