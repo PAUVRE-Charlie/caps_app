@@ -16,6 +16,10 @@ class Capseur {
   int get matchsWon => _matchsWon;
   int get capsHit => _capsHit;
   int get capsThrow => _capsThrow;
+  int get ratio => (this.capsThrow != 0)
+      ? (this.capsHit / this.capsThrow * 100).round()
+      : null;
+
   int get bottlesEmptied => _bottlesEmptied;
   String get uid => _uid;
   double get points => _points;

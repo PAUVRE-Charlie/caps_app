@@ -215,12 +215,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               dataValue: capseur.capsHit.toString()),
                           DataItemProfile(
                               dataName: 'Ratio',
-                              dataValue: (capseur.capsThrow != 0)
-                                  ? (capseur.capsHit / capseur.capsThrow * 100)
-                                          .round()
-                                          .toString() +
-                                      '%'
-                                  : ''),
+                              dataValue: (capseur.ratio != null
+                                  ? capseur.ratio.toString() + '%'
+                                  : '')),
                           DataItemProfile(
                               dataName: 'Kros bues',
                               dataValue: capseur.bottlesEmptied.toString()),
