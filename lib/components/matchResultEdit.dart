@@ -23,6 +23,8 @@ class MatchResultEdit extends StatefulWidget {
 class _MatchResultEditState extends State<MatchResultEdit> {
   Player winner;
   String error;
+  final textController1 = TextEditingController();
+  final textController2 = TextEditingController();
 
   @override
   void initState() {
@@ -72,14 +74,12 @@ class _MatchResultEditState extends State<MatchResultEdit> {
                     child: TextField(
                       keyboardType: TextInputType.number,
                       style: TextStyle(fontFamily: 'PirataOne', fontSize: 30),
+                      controller: textController1,
                       onChanged: (value){
                         setState(() {
                           widget.player2.setScore(int.parse(value));
-                          print(int.parse(value));
-                          print(value.isEmpty);
                           winner = (widget.player2.score >= widget.player1.score) ? widget.player2 : widget.player1;
-                          error = value.isEmpty ? 'rentrez une valeur'
-                              : int.parse(value.toString())>=100 ? 'n\'exagerons pas...'
+                          error = int.parse(value.toString())>=100 ? 'n\'exagerons pas...'
                               : int.parse(value.toString()) == widget.player1.score ? 'l\'égalité n\'est pas possible'
                               : '';
                         });
@@ -94,14 +94,12 @@ class _MatchResultEditState extends State<MatchResultEdit> {
                     child: TextField(
                       keyboardType: TextInputType.number,
                       style: TextStyle(fontFamily: 'PirataOne', fontSize: 30),
+                      controller: textController2,
                       onChanged: (value){
                         setState(() {
                           widget.player1.setScore(int.parse(value));
-                          print(int.parse(value));
-                          print(value.isEmpty);
                           winner = (widget.player2.score >= widget.player1.score) ? widget.player2 : widget.player1;
-                          error = value.isEmpty ? 'rentrez une valeur'
-                              : int.parse(value.toString())>=100 ? 'n\'exagerons pas...'
+                          error = int.parse(value.toString())>=100 ? 'n\'exagerons pas...'
                               : int.parse(value.toString()) == widget.player2.score ? 'l\'égalité n\'est pas possible'
                               : '';
                         });
@@ -122,6 +120,9 @@ class _MatchResultEditState extends State<MatchResultEdit> {
                     setState(() {
                       error = 'le score du vainqueur n\'est pas suffisant';
                     });
+                  }
+                  if (textController2.text == '' || textController1.text == ''){
+                    error = 'rentrez une valeur';
                   }
                   if (error == ''){
                     endGame(winner, widget.pointsRequired, widget.pointsPerBottle);
