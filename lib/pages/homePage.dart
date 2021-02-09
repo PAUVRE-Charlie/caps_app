@@ -151,54 +151,61 @@ class _MenuOrValidateMatchState extends State<MenuOrValidateMatch> {
     }
 
     return matchsNotValidatedWhereUserWasOpponent.isEmpty
-        ? Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Text(
-                  "Caps",
-                  style: TextStyle(
-                      fontSize: 100,
-                      fontFamily: 'PirataOne',
-                      color: kSecondaryColor),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 30),
-                  decoration: BoxDecoration(
-                      color: kWhiteHighOpacity,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Column(
-                    children: [
-                      TextButtonMenu(
-                          text: "Jouer",
-                          onPressed: () {
-                            Game.startMatch(context, "Match", widget.capseur);
-                          }),
-                      // TextButtonMenu(
-                      //     text: "Tournois",
-                      //     onPressed: () {
-                      //       Navigator.push(
-                      //           context,
-                      //           new MaterialPageRoute(
-                      //             builder: (ctxt) => new TournamentsMenuPage(),
-                      //           ));
-                      //     }),
-                      TextButtonMenu(
-                        text: "Classements",
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/rankings');
-                        },
-                      ),
-                      TextButtonMenu(
-                        text: "Derniers matchs",
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/lastmatchs');
-                        },
-                      ),
-                    ],
+        ? SingleChildScrollView(
+            child: Center(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 10,
                   ),
-                ),
-              ],
+                  Text(
+                    "Caps",
+                    style: TextStyle(
+                        fontSize: 100,
+                        fontFamily: 'PirataOne',
+                        color: kSecondaryColor),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 5,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 30),
+                    decoration: BoxDecoration(
+                        color: kWhiteHighOpacity,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Column(
+                      children: [
+                        TextButtonMenu(
+                            text: "Jouer",
+                            onPressed: () {
+                              Game.startMatch(context, "Match", widget.capseur);
+                            }),
+                        // TextButtonMenu(
+                        //     text: "Tournois",
+                        //     onPressed: () {
+                        //       Navigator.push(
+                        //           context,
+                        //           new MaterialPageRoute(
+                        //             builder: (ctxt) => new TournamentsMenuPage(),
+                        //           ));
+                        //     }),
+                        TextButtonMenu(
+                          text: "Classements",
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/rankings');
+                          },
+                        ),
+                        TextButtonMenu(
+                          text: "Derniers matchs",
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/lastmatchs');
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           )
         : ValidateMatch(capseurs, matchWaitingToBeValidated);
