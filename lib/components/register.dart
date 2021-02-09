@@ -1,6 +1,3 @@
-import 'dart:io';
-import 'dart:math';
-
 import 'package:caps_app/components/loading.dart';
 import 'package:caps_app/data.dart';
 import 'package:caps_app/models/capseur.dart';

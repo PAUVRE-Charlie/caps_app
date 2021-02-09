@@ -3,13 +3,10 @@ import 'package:caps_app/components/arrowBackAppBar.dart';
 import 'package:caps_app/components/background.dart';
 import 'package:caps_app/components/loading.dart';
 import 'package:caps_app/data.dart';
-import 'package:caps_app/models/capseur.dart';
-import 'package:caps_app/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
 
 
 class ResetPage extends StatefulWidget {

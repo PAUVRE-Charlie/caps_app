@@ -1,7 +1,6 @@
 import 'package:caps_app/components/arrowBackAppBar.dart';
 import 'package:caps_app/components/background.dart';
 import 'package:caps_app/components/loading.dart';
-import 'package:caps_app/components/matchResults.dart';
 import 'package:caps_app/components/matchsList.dart';
 import 'package:caps_app/components/matchsWaitingList.dart';
 import 'package:caps_app/models/basicUser.dart';
@@ -9,13 +8,12 @@ import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/models/game.dart';
 import 'package:caps_app/models/matchEnded.dart';
 import 'package:caps_app/models/matchWaitingToBeValidated.dart';
-import 'package:caps_app/pages/homePage.dart';
-import 'package:caps_app/pages/lastMatchs.dart';
-import 'package:caps_app/pages/rankingPage.dart';
 import 'package:caps_app/services/auth.dart';
 import 'package:caps_app/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 
 import '../data.dart';
 
@@ -119,6 +117,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           } else {
                                             usernameTextFieldController.text =
                                                 capseur.username;
+                                            Fluttertoast.showToast(msg: 'Votre nom ne peut dépasser 10 caractères');
                                           }
                                         });
                                       },
