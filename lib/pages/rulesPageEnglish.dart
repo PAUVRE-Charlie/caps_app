@@ -72,7 +72,7 @@ class RulesPageEnglish extends StatelessWidget {
                     "When a player 1 hit the player 2's cap and make it droped out of the bottle, the player 2 have to riposte. Thus, player 2 throw a cap and 2 options are offered :\nIf he/she doesn't hit the player 1's cap, then player 2 drinks 1 part of his beer (usually one quarter of the bottle but you can change this value as you want) and player 1 marks 1 point.\nElse, if he/she hits the player 2's cap, then there is now 2 points involved in the riposte.\nThen, repeat the patern as is necessary : player 1 throw a cap and 2 options are offered. If he/she doesn't hit the player 2's cap, then player 1 drinks 2 part of his beer (usually two quarter) and player 2 marks 2 points.\nElse, if he/she hits the player 1's cap, then there is now 3 points involved in the riposte...etc...",
                     index: 5),
                 TextRules(
-                  "You are able to choose the number of points per bootle and number of bottles in a match, usually you'll play in 12 or 16 points with 4 points per bottle (so 3 or 4 beer). After it's up to you to play with other configurations.",
+                  "You are able to choose the number of points per bottle and number of bottles in a match, usually you'll play in 12 or 16 points with 4 points per bottle (so 3 or 4 beer). After it's up to you to play with other configurations.",
                   textToEmphasize: "BE CAREFUL: ",
                 ),
                 Container(
@@ -88,7 +88,7 @@ class RulesPageEnglish extends StatelessWidget {
                     "End of the game : when a player reaches or exceeds the number of point required (without counting the riposte involved), the other player loose and have drink all his beers.",
                     index: 6),
                 TextRules(
-                  "some contentious situations could appeared but they are ellucidated in this section.The goal of the game is to hit the oponent's cap and make it drops on othe floor, there is no other way to mark a point. For instance, if you violently hit the bootle which make the cap drop on the floor, it doesn't count (it's call the lumberman shot). As well, if you hit the caps after a bounce on the oponnent's player for instance, it doesn't count. Finally if you just brush the cap without make it quit the top of the bootle, it doesn't count.",
+                  "some contentious situations could appeared but they are ellucidated in this section.The goal of the game is to hit the opponent's cap and make it drops on othe floor, there is no other way to mark a point. For instance, if you violently hit the bootle which make the cap drop on the floor, it doesn't count (it's call the lumberman shot). As well, if you hit the caps after a bounce on the oponnent's player for instance, it doesn't count. Finally if you just brush the cap without make it quit the top of the bootle, it doesn't count.",
                   textToEmphasize: "BE CAREFUL: ",
                 ),
                 SizedBox(
@@ -115,7 +115,7 @@ class RulesPageEnglish extends StatelessWidget {
                       color: kPrimaryColor),
                 ),
                 TextRules(
-                    "\n(We are not responsable of the issues involved by your alcohol consumption )"),
+                    "\n(We are not responsible of the issues involved by your alcohol consumption )"),
                 SizedBox(
                   height: 50,
                 ),

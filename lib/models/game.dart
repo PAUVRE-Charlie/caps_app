@@ -335,7 +335,7 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
             SizedBox(
               height: 20,
             ),
-            Text(opponent != null ? ("Contre: " + opponent.username) : ""),
+            if (opponent != null) Text("Contre: " + opponent.username),
             SizedBox(
               height: 10,
             ),
@@ -396,7 +396,6 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
             SizedBox(
               height: 40,
             ),
-            /* Validation button */
             RaisedButton(
               onPressed: () async {
                 if (opponent != null) {
@@ -414,10 +413,36 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
                 }
               },
               child: Text(
-                "Valider",
+                "Jouer",
                 style: TextStyle(color: kWhiteColor),
               ),
               color: (opponent != null) ? kPrimaryColor : kPrimaryDisableColor,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text('ou', style: TextStyle(color: Colors.grey[400], fontSize: 15.0),),
+            ),
+            TextButton(
+              onPressed: () async {
+                if (opponent != null) {
+                  Navigator.of(context).pop();
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (ctxt) => new RandomPickStartPage(
+                            title: widget.title,
+                            capseur2: widget.capseur,
+                            capseur1: opponent,
+                            bottlesNumber: getBottlesNumber(),
+                            pointsPerBottle: getPointsPerBottle())),
+                  );
+                }
+              },
+              child: Text(
+                "Rentrer le score manuellement",
+                style: TextStyle(color: kSecondaryColor.withOpacity((opponent != null) ? 1 : 0.5)),
+              ),
+              //color: (opponent != null) ? kPrimaryColor : kPrimaryDisableColor,
             )
           ],
         ),
