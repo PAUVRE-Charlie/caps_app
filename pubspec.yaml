@@ -25,18 +25,35 @@ dependencies:
     sdk: flutter
 
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
+  # https://pub.dev/packages/cupertino_icons, MIT license: Copyright (c) 2016 Vladimir Kharlampidi
+  
   firebase_auth: ^0.20.0+1
+  # https://pub.dev/packages/firebase_auth, BSD license: Copyright 2017 The Chromium Authors
+  
   cloud_firestore: ^0.16.0
+  # https://pub.dev/packages/cloud_firestore, BSD license: Copyright 2017, the Chromium project authors
+  
   firebase_core: ^0.7.0
+  # https://pub.dev/packages/firebase_core, BSD license: Copyright 2017 The Chromium Authors
+  
   provider: ^4.3.2+4
+  # https://pub.dev/packages/provider, MIT license: Copyright (c) 2019 Remi Rousselet
+  
   audioplayers: ^0.10.0
+  # https://pub.dev/packages/audioplayers, MIT license: Copyright (c) 2017 Luan Nico
+  
   uuid: ^2.2.2
+  # https://pub.dev/packages/uuid, MIT license: Copyright (c) 2012 Yulian Kuncheff
+  
   auto_size_text: ^2.1.0
+  # https://pub.dev/packages/auto_size_text, MIT license:Copyright (c) 2018 Simon Leier
+  
   fluttertoast: ^7.1.6
+  # https://pub.dev/packages/fluttertoast, MIT license: Copyright (c) 2020 Karthik Ponnam
+  
   keyboard_visibility: ^0.5.6
+  # https://pub.dev/packages/keyboard_visibility, MIT license: Copyright (c) 2006-2018
 
 dev_dependencies:
   flutter_test:
