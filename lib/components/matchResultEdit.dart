@@ -80,7 +80,14 @@ class _MatchResultEditState extends State<MatchResultEdit> {
                     child: TextField(
                       keyboardType: TextInputType.number,
                       style: TextStyle(fontFamily: 'PirataOne', fontSize: 30),
-                      controller: textController1,
+                      controller: textController2,
+                      onChanged: (val){
+                        setState(() {
+                          widget.player2.setScore(int.parse(val));
+                          print(int.parse(val));
+                          winner = widget.player1.score > widget.player2.score ? widget.player1 : widget.player2;
+                        });
+                      },
                     ),
                   ),
                 ),
@@ -91,7 +98,14 @@ class _MatchResultEditState extends State<MatchResultEdit> {
                     child: TextField(
                       keyboardType: TextInputType.number,
                       style: TextStyle(fontFamily: 'PirataOne', fontSize: 30),
-                      controller: textController2,
+                      controller: textController1,
+                      onChanged: (val){
+                        setState(() {
+                          widget.player1.setScore(int.parse(val));
+                          print(int.parse(val));
+                          winner = widget.player1.score > widget.player2.score ? widget.player1 : widget.player2;
+                        });
+                      },
                     ),
                   ),
                 ),
@@ -116,7 +130,7 @@ class _MatchResultEditState extends State<MatchResultEdit> {
                     });
                   } else if ((int.parse(textController1.value.text) <
                           widget.pointsRequired &&
-                      int.parse(textController1.value.text) <
+                      int.parse(textController2.value.text) <
                           widget.pointsRequired)) {
                     setState(() {
                       error = 'Le score du vainqueur n\'est pas suffisant';
@@ -126,7 +140,13 @@ class _MatchResultEditState extends State<MatchResultEdit> {
                     setState(() {
                       error = 'Il ne peut pas y avoir égalité';
                     });
-                  } else {
+                  }else if (int.parse(textController1.value.text) >= widget.pointsRequired &&
+    int.parse(textController2.value.text) >= widget.pointsRequired){
+                      setState(() {
+                        error =
+                        'Les 2 scores ne peuvent pas être supérieur à ${widget.pointsRequired}';
+                      });
+                  }else {
                     widget.player1
                         .setScore(int.parse(textController1.value.text));
                     widget.player2

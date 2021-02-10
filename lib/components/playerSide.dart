@@ -94,7 +94,7 @@ class _PlayerSideState extends State<PlayerSide> {
                 style: TextStyle(
                     fontFamily: 'PirataOne',
                     fontSize: 30,
-                    color: kPrimaryColor),
+                    color: kSecondaryColor),
               ),
             ),
             !widget.player.topPlayerBool

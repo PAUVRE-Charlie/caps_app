@@ -40,7 +40,7 @@ class _MatchPageState extends State<MatchPage> {
   Capseur capseur2;
   bool canRevert;
 
-  final audioplayer = AudioCache();
+  AudioCache audioplayer;
 
   Game copyGame(Game gameToCopy) {
     Player clonePlayer1 = Player(gameToCopy.player1.capseur, gameToCopy.player1.score, gameToCopy.player1.bottlesLeftNumber, gameToCopy.player1.currentBottlePointsLeft, true, gameToCopy.player1starting, gameToCopy.player1.capsHitInThisGame, gameToCopy.player1.capsThrowInThisGame);
@@ -60,6 +60,7 @@ class _MatchPageState extends State<MatchPage> {
         widget.pointsPerBottle, widget.player1Starting);
     gameLastTurn = copyGame(game);
     canRevert = false;
+    audioplayer = AudioCache();
     super.initState();
   }
 
