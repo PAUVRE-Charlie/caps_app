@@ -121,7 +121,7 @@ class RulesPage extends StatelessWidget {
                   height: 50,
                 ),
                 Text(
-                  "Créateurs de l'application: Charlie PAUVRE & Pierre SCHMUTZ",
+                  "Créateurs de l'application: Charlie PAUVRÉ & Pierre SCHMUTZ",
                   style: TextStyle(fontStyle: FontStyle.italic, fontSize: 11.0),
                 ),
               ],
