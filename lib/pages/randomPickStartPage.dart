@@ -52,7 +52,7 @@ class _RandomPickStartPageState extends State<RandomPickStartPage> {
         widgetToShow = Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            player1Starting
+            !player1Starting
                 ? Padding(
                     padding: const EdgeInsets.only(bottom: 20.0),
                     child: Hero(
@@ -96,7 +96,7 @@ class _RandomPickStartPageState extends State<RandomPickStartPage> {
               ),
             ),
             SizedBox(height: 50.0),
-            !player1Starting
+            player1Starting
                 ? Padding(
                     padding: const EdgeInsets.only(top: 20.0),
                     child: Hero(
