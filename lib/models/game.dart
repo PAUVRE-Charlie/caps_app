@@ -28,9 +28,9 @@ class Game {
     _player1Starting = player1Starting;
 
     _player1 = Player.initial(
-        capseur1, true, bottlesNumber, pointsPerBottle, _player1Starting);
+        capseur1, false, bottlesNumber, pointsPerBottle, _player1Starting);
     _player2 = Player.initial(
-        capseur2, false, bottlesNumber, pointsPerBottle, !_player1Starting);
+        capseur2, true, bottlesNumber, pointsPerBottle, !_player1Starting);
     _reverseCount = 0;
     _pointsRequired = pointsPerBottle * bottlesNumber;
     _pointsPerBottle = pointsPerBottle;
@@ -141,7 +141,8 @@ class Game {
         return Future.value(false);
       },
       child: AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         content: SingleChildScrollView(
           child: Column(
             children: [
@@ -161,19 +162,19 @@ class Game {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(this.player2.capseur.username,
+                    Text(this.player1.capseur.username,
                         style: TextStyle(
-                            color: this.player2 == winner
+                            color: this.player1 == winner
                                 ? kPrimaryColor
                                 : Colors.black,
                             fontSize: 20,
                             fontWeight: FontWeight.w300)),
                     Text(' - '),
-                    Text(this.player1.capseur.username,
+                    Text(this.player2.capseur.username,
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w300,
-                            color: this.player2 == winner
+                            color: this.player1 == winner
                                 ? Colors.black
                                 : kPrimaryColor)),
                   ],
@@ -183,9 +184,9 @@ class Game {
                 height: 10,
               ),
               Text(
-                this.player2.score.toString() +
+                this.player1.score.toString() +
                     ' - ' +
-                    this.player1.score.toString(),
+                    this.player2.score.toString(),
                 style: TextStyle(fontFamily: 'PirataOne', fontSize: 30),
               ),
               SizedBox(
@@ -307,7 +308,8 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
 
   int getBottlesNumber() => widget.bottlesNumberKey.currentState._value;
   int getPointsPerBottle() => widget.pointsPerBottleKey.currentState._value;
-  int getPointsRequired() => this.getPointsPerBottle()*this.getBottlesNumber();
+  int getPointsRequired() =>
+      this.getPointsPerBottle() * this.getBottlesNumber();
 
   @override
   void initState() {
@@ -400,8 +402,8 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
                     new MaterialPageRoute(
                         builder: (ctxt) => new RandomPickStartPage(
                             title: widget.title,
-                            capseur2: widget.capseur,
-                            capseur1: opponent,
+                            capseur2: opponent,
+                            capseur1: widget.capseur,
                             bottlesNumber: getBottlesNumber(),
                             pointsPerBottle: getPointsPerBottle())),
                   );
@@ -415,30 +417,42 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
-              child: Text('ou', style: TextStyle(color: Colors.grey[400], fontSize: 15.0),),
+              child: Text(
+                'ou',
+                style: TextStyle(color: Colors.grey[400], fontSize: 15.0),
+              ),
             ),
             TextButton(
               onPressed: () async {
                 if (opponent != null) {
                   Navigator.of(context).pop();
                   showDialog<void>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return MatchResultEdit(
-                        pointsRequired: this.getPointsRequired(),
-                        pointsPerBottle: this.getPointsPerBottle(),
-                        player1: Player.initial(
-                            opponent, true, this.getBottlesNumber(), this.getPointsPerBottle(), true),
-                        player2: Player.initial(
-                            widget.capseur, false, this.getBottlesNumber(), this.getPointsPerBottle(), false),
-                      );
-                    }
-                    );
-                  }
-                },
+                      context: context,
+                      builder: (BuildContext context) {
+                        return MatchResultEdit(
+                          pointsRequired: this.getPointsRequired(),
+                          pointsPerBottle: this.getPointsPerBottle(),
+                          player1: Player.initial(
+                              widget.capseur,
+                              true,
+                              this.getBottlesNumber(),
+                              this.getPointsPerBottle(),
+                              true),
+                          player2: Player.initial(
+                              opponent,
+                              false,
+                              this.getBottlesNumber(),
+                              this.getPointsPerBottle(),
+                              false),
+                        );
+                      });
+                }
+              },
               child: Text(
                 "Rentrer le score manuellement",
-                style: TextStyle(color: kSecondaryColor.withOpacity((opponent != null) ? 1 : 0.5)),
+                style: TextStyle(
+                    color: kSecondaryColor
+                        .withOpacity((opponent != null) ? 1 : 0.5)),
               ),
               //color: (opponent != null) ? kPrimaryColor : kPrimaryDisableColor,
             )

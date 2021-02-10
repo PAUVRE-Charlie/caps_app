@@ -51,19 +51,19 @@ class _MatchResultEditState extends State<MatchResultEdit> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(widget.player2.capseur.username,
+                  Text(widget.player1.capseur.username,
                       style: TextStyle(
-                          color: widget.player2 == winner
+                          color: widget.player1 == winner
                               ? kPrimaryColor
                               : Colors.black,
                           fontSize: 20,
                           fontWeight: FontWeight.w300)),
                   Text(' - '),
-                  Text(widget.player1.capseur.username,
+                  Text(widget.player2.capseur.username,
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w300,
-                          color: widget.player2 == winner
+                          color: widget.player1 == winner
                               ? Colors.black
                               : kPrimaryColor)),
                 ],
@@ -80,12 +80,13 @@ class _MatchResultEditState extends State<MatchResultEdit> {
                     child: TextField(
                       keyboardType: TextInputType.number,
                       style: TextStyle(fontFamily: 'PirataOne', fontSize: 30),
-                      controller: textController2,
-                      onChanged: (val){
+                      controller: textController1,
+                      onChanged: (val) {
                         setState(() {
-                          widget.player2.setScore(int.parse(val));
-                          print(int.parse(val));
-                          winner = widget.player1.score > widget.player2.score ? widget.player1 : widget.player2;
+                          widget.player1.setScore(int.parse(val));
+                          winner = widget.player1.score > widget.player2.score
+                              ? widget.player1
+                              : widget.player2;
                         });
                       },
                     ),
@@ -98,12 +99,13 @@ class _MatchResultEditState extends State<MatchResultEdit> {
                     child: TextField(
                       keyboardType: TextInputType.number,
                       style: TextStyle(fontFamily: 'PirataOne', fontSize: 30),
-                      controller: textController1,
-                      onChanged: (val){
+                      controller: textController2,
+                      onChanged: (val) {
                         setState(() {
-                          widget.player1.setScore(int.parse(val));
-                          print(int.parse(val));
-                          winner = widget.player1.score > widget.player2.score ? widget.player1 : widget.player2;
+                          widget.player2.setScore(int.parse(val));
+                          winner = widget.player1.score > widget.player2.score
+                              ? widget.player1
+                              : widget.player2;
                         });
                       },
                     ),
@@ -140,13 +142,15 @@ class _MatchResultEditState extends State<MatchResultEdit> {
                     setState(() {
                       error = 'Il ne peut pas y avoir égalité';
                     });
-                  }else if (int.parse(textController1.value.text) >= widget.pointsRequired &&
-    int.parse(textController2.value.text) >= widget.pointsRequired){
-                      setState(() {
-                        error =
-                        'Les 2 scores ne peuvent pas être supérieur à ${widget.pointsRequired}';
-                      });
-                  }else {
+                  } else if (int.parse(textController1.value.text) >=
+                          widget.pointsRequired &&
+                      int.parse(textController2.value.text) >=
+                          widget.pointsRequired) {
+                    setState(() {
+                      error =
+                          'Les 2 scores ne peuvent pas être supérieur à ${widget.pointsRequired}';
+                    });
+                  } else {
                     widget.player1
                         .setScore(int.parse(textController1.value.text));
                     widget.player2

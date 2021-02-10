@@ -43,8 +43,24 @@ class _MatchPageState extends State<MatchPage> {
   AudioCache audioplayer;
 
   Game copyGame(Game gameToCopy) {
-    Player clonePlayer1 = Player(gameToCopy.player1.capseur, gameToCopy.player1.score, gameToCopy.player1.bottlesLeftNumber, gameToCopy.player1.currentBottlePointsLeft, true, gameToCopy.player1starting, gameToCopy.player1.capsHitInThisGame, gameToCopy.player1.capsThrowInThisGame);
-    Player clonePlayer2 = Player(gameToCopy.player2.capseur, gameToCopy.player2.score, gameToCopy.player2.bottlesLeftNumber, gameToCopy.player2.currentBottlePointsLeft, false, !gameToCopy.player1starting, gameToCopy.player2.capsHitInThisGame, gameToCopy.player2.capsThrowInThisGame);
+    Player clonePlayer1 = Player(
+        gameToCopy.player1.capseur,
+        gameToCopy.player1.score,
+        gameToCopy.player1.bottlesLeftNumber,
+        gameToCopy.player1.currentBottlePointsLeft,
+        true,
+        gameToCopy.player1starting,
+        gameToCopy.player1.capsHitInThisGame,
+        gameToCopy.player1.capsThrowInThisGame);
+    Player clonePlayer2 = Player(
+        gameToCopy.player2.capseur,
+        gameToCopy.player2.score,
+        gameToCopy.player2.bottlesLeftNumber,
+        gameToCopy.player2.currentBottlePointsLeft,
+        false,
+        !gameToCopy.player1starting,
+        gameToCopy.player2.capsHitInThisGame,
+        gameToCopy.player2.capsThrowInThisGame);
     return Game(
         clonePlayer1,
         clonePlayer2,
@@ -87,9 +103,8 @@ class _MatchPageState extends State<MatchPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   PlayerSide(
-                      bottlesNumber:
-                          game.pointsRequired ~/ game.pointsPerBottle,
-                      player: game.player1,
+                    bottlesNumber: game.pointsRequired ~/ game.pointsPerBottle,
+                    player: game.player2,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -108,7 +123,8 @@ class _MatchPageState extends State<MatchPage> {
                                         Icons.thumb_up,
                                         color: Colors.green,
                                       ),
-                                      padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+                                      padding:
+                                          EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
                                       tooltip: 'touché',
                                       iconSize: 50,
                                       onPressed: () {
@@ -122,7 +138,12 @@ class _MatchPageState extends State<MatchPage> {
                                           canRevert = true;
                                         });
                                       }),
-                                  Text('touché', style: TextStyle(fontWeight: FontWeight.bold ,color: Colors.green),),
+                                  Text(
+                                    'touché',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green),
+                                  ),
                                 ],
                               ),
                               SizedBox(
@@ -135,7 +156,8 @@ class _MatchPageState extends State<MatchPage> {
                                         Icons.thumb_down,
                                         color: kPrimaryColor,
                                       ),
-                                      padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+                                      padding:
+                                          EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
                                       tooltip: 'loupé',
                                       iconSize: 50,
                                       onPressed: () {
@@ -145,7 +167,12 @@ class _MatchPageState extends State<MatchPage> {
                                           canRevert = true;
                                         });
                                       }),
-                                  Text('loupé', style: TextStyle(fontWeight: FontWeight.bold, color: kPrimaryColor),),
+                                  Text(
+                                    'loupé',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: kPrimaryColor),
+                                  ),
                                 ],
                               ),
                             ],
@@ -190,9 +217,8 @@ class _MatchPageState extends State<MatchPage> {
                     ],
                   ),
                   PlayerSide(
-                      bottlesNumber:
-                          game.pointsRequired ~/ game.pointsPerBottle,
-                      player: game.player2,
+                    bottlesNumber: game.pointsRequired ~/ game.pointsPerBottle,
+                    player: game.player1,
                   ),
                 ],
               ),

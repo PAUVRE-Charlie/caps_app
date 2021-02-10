@@ -160,7 +160,7 @@ class _MenuOrValidateMatchState extends State<MenuOrValidateMatch> {
       return LoadingWidget();
 
     final matchsNotValidatedWhereUserWasOpponent = matchsWaitingToBeValidated
-        .where((match) => match.player1 == widget.capseur.uid);
+        .where((match) => match.player2 == widget.capseur.uid);
 
     MatchWaitingToBeValidated matchWaitingToBeValidated;
 

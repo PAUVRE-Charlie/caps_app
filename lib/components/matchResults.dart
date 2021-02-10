@@ -27,15 +27,6 @@ class _MatchResultsState extends State<MatchResults> {
     Capseur capseur2 = widget.capseurs
         .firstWhere((capseur) => capseur.uid == widget.match.player2);
 
-    if (widget.capseur != null) {
-      if (capseur2.uid == widget.capseur.uid) {
-        capseur1 = widget.capseurs
-            .firstWhere((capseur) => capseur.uid == widget.match.player2);
-        capseur2 = widget.capseurs
-            .firstWhere((capseur) => capseur.uid == widget.match.player1);
-      }
-    }
-
     return Center(
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 10),
