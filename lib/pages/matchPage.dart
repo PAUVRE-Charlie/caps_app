@@ -48,8 +48,8 @@ class _MatchPageState extends State<MatchPage> {
         gameToCopy.player1.score,
         gameToCopy.player1.bottlesLeftNumber,
         gameToCopy.player1.currentBottlePointsLeft,
-        true,
-        gameToCopy.player1starting,
+        false,
+        gameToCopy.player1.playing,
         gameToCopy.player1.capsHitInThisGame,
         gameToCopy.player1.capsThrowInThisGame);
     Player clonePlayer2 = Player(
@@ -57,8 +57,8 @@ class _MatchPageState extends State<MatchPage> {
         gameToCopy.player2.score,
         gameToCopy.player2.bottlesLeftNumber,
         gameToCopy.player2.currentBottlePointsLeft,
-        false,
-        !gameToCopy.player1starting,
+        true,
+        gameToCopy.player2.playing,
         gameToCopy.player2.capsHitInThisGame,
         gameToCopy.player2.capsThrowInThisGame);
     return Game(
@@ -206,7 +206,6 @@ class _MatchPageState extends State<MatchPage> {
                                     ? () {
                                         setState(() {
                                           game = copyGame(gameLastTurn);
-                                          game.switchTurns();
                                           canRevert = false;
                                         });
                                       }
