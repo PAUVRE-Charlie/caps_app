@@ -1,4 +1,4 @@
-# Assitance
+# Assistance
 
 Cette application a pour but d'accompagner les joueurs de Caps dans leurs parties. 
 Son utilité principale est de compter les points, mais elle crée également des statistiques pour chaque joueur, ainsi qu'un classement général.
