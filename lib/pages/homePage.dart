@@ -12,6 +12,8 @@ import 'package:provider/provider.dart';
 import '../data.dart';
 import '../models/game.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:caps_app/components/utils.dart';
+
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -21,9 +23,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<BasicUser>(context);
+
+    Future.delayed(Duration(milliseconds: 500), () => displayDisclamer(context));
 
     if (user == null) return LoadingWidget();
 
