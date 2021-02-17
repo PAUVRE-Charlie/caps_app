@@ -1,6 +1,7 @@
 import 'package:caps_app/components/loading.dart';
 import 'package:caps_app/data.dart';
 import 'package:caps_app/models/capseur.dart';
+import 'package:caps_app/pages/verifyPage.dart';
 import 'package:caps_app/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +53,7 @@ class _RegisterState extends State<Register> {
                     validator: (val) {
                       return val.isEmpty
                           ? 'Entre ton mail'
-                          : !(val.toString().contains('@imt-atlantique.net'))
+                          : !(val.toString().contains('@'))
                               ? 'Vous devez utiliser une adresse imt-atlantique'
                               : null;
                     },
@@ -121,8 +122,8 @@ class _RegisterState extends State<Register> {
                       }
                     },
                     color: kPrimaryColor,
-                    child:
-                        Text('S\'inscrire', style: TextStyle(color: kWhiteColor)),
+                    child: Text('S\'inscrire',
+                        style: TextStyle(color: kWhiteColor)),
                   ),
                   SizedBox(
                     height: 20,
