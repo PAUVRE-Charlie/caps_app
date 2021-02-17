@@ -1,7 +1,6 @@
 import 'package:caps_app/models/basicUser.dart';
 import 'package:caps_app/pages/homePage.dart';
 import 'package:caps_app/pages/lastMatchs.dart';
-import 'package:caps_app/pages/matchPage.dart';
 import 'package:caps_app/pages/profilePage.dart';
 import 'package:caps_app/pages/randomPickStartPage.dart';
 import 'package:caps_app/pages/rankingPage.dart';
@@ -13,8 +12,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
-import 'models/capseur.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,10 +30,9 @@ class MyApp extends StatelessWidget {
     return StreamProvider<BasicUser>.value(
         value: AuthService().user,
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Caps',
-          theme: ThemeData(
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-              fontFamily: 'NotoSansJP'),
+          theme: ThemeData(visualDensity: VisualDensity.adaptivePlatformDensity, fontFamily: 'NotoSansJP'),
           routes: {
             '/home': (context) => HomePage(),
             '/profile': (context) => ProfilePage(),
