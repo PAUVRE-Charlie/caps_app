@@ -19,7 +19,10 @@ class MatchPage extends StatefulWidget {
       @required this.capseur2,
       @required this.bottlesNumber,
       @required this.pointsPerBottle,
-      @required this.player1Starting})
+      @required this.player1Starting,
+      this.tournamentUid,
+      this.poolUid,
+      this.finalBoardPosition})
       : super(key: key);
 
   final String title;
@@ -28,6 +31,9 @@ class MatchPage extends StatefulWidget {
   final int bottlesNumber;
   final int pointsPerBottle;
   final bool player1Starting;
+  final String tournamentUid;
+  final String poolUid;
+  final int finalBoardPosition;
 
   @override
   _MatchPageState createState() => _MatchPageState();
@@ -67,13 +73,23 @@ class _MatchPageState extends State<MatchPage> {
         gameToCopy.reverseCount,
         gameToCopy.pointsRequired,
         gameToCopy.pointsPerBottle,
-        gameToCopy.player1starting);
+        gameToCopy.player1starting,
+        gameToCopy.tournamentUid,
+        gameToCopy.poolUid,
+        gameToCopy.finalBoardPosition);
   }
 
   @override
   void initState() {
-    game = Game.initial(widget.capseur1, widget.capseur2, widget.bottlesNumber,
-        widget.pointsPerBottle, widget.player1Starting);
+    game = Game.initial(
+        widget.capseur1,
+        widget.capseur2,
+        widget.bottlesNumber,
+        widget.pointsPerBottle,
+        widget.player1Starting,
+        widget.tournamentUid,
+        widget.poolUid,
+        widget.finalBoardPosition);
     gameLastTurn = copyGame(game);
     canRevert = false;
     audioplayer = AudioCache();

@@ -1,6 +1,4 @@
-import 'dart:math';
-
-import 'package:caps_app/models/capseur.dart';
+import 'package:caps_app/models/finalBoard.dart';
 import 'package:caps_app/models/matchEnded.dart';
 import 'package:caps_app/models/matchsOfTournament.dart';
 import 'package:caps_app/models/pool.dart';
@@ -11,9 +9,12 @@ class Tournament {
   List<Pool> _pools;
   List<MatchOfTournament> _matchsOfTournaments;
   List<MatchEnded> _matchs;
+  FinalBoard _finalBoard;
 
   Tournament(this._tournamentInfo, this._pools, this._matchsOfTournaments,
-      this._matchs);
+      this._matchs) {
+    _finalBoard = FinalBoard();
+  }
 
   int get numberOfPools => _pools.length;
 
@@ -29,13 +30,7 @@ class Tournament {
   List<Pool> get pools => _pools;
   List<MatchOfTournament> get matchsOfTournaments => _matchsOfTournaments;
   List<MatchEnded> get matchs => _matchs;
-
-  int get numberOfPlayersInFinalBoard =>
-      this.numberOfPools *
-      this.tournamentInfo.numberPlayersGettingOutOfEachPool;
-
-  int get maxMatchsInFinalBoard =>
-      (log(this.numberOfPlayersInFinalBoard / ln2)).ceil();
+  FinalBoard get finalBoard => _finalBoard;
 
   int get maxNumberOfPlayersPerPool =>
       (this.numberOfCapseurs / this.numberOfPools).ceil();
@@ -53,5 +48,9 @@ class Tournament {
       if (!pool.closed) return false;
     }
     return true;
+  }
+
+  bool get tournamentClosed {
+    return this.finalBoard.getParticipantAt(1) != null;
   }
 }

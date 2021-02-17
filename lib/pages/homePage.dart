@@ -5,6 +5,7 @@ import 'package:caps_app/models/basicUser.dart';
 import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/models/matchWaitingToBeValidated.dart';
 import 'package:caps_app/pages/profilePage.dart';
+import 'package:caps_app/pages/tournamentsMenuPage.dart';
 import 'package:caps_app/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -189,15 +190,15 @@ class _MenuOrValidateMatchState extends State<MenuOrValidateMatch> {
                     onPressed: () {
                       Game.startMatch(context, "Match", widget.capseur);
                     }),
-                // TextButtonMenu(
-                //     text: "Tournois",
-                //     onPressed: () {
-                //       Navigator.push(
-                //           context,
-                //           new MaterialPageRoute(
-                //             builder: (ctxt) => new TournamentsMenuPage(),
-                //           ));
-                //     }),
+                TextButtonMenu(
+                    text: "Tournois",
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                            builder: (ctxt) => new TournamentsMenuPage(),
+                          ));
+                    }),
                 TextButtonMenu(
                   text: "Classements",
                   onPressed: () {

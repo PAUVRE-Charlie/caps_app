@@ -1,5 +1,3 @@
-import 'package:caps_app/models/capseur.dart';
-import 'package:caps_app/models/matchEnded.dart';
 import 'package:caps_app/models/participant.dart';
 
 import 'matchsOfTournament.dart';
@@ -41,7 +39,7 @@ class Pool {
   void removeParticipant(Participant participantToRemove) {
     Participant _participantToRemove;
     for (Participant participant in _participants) {
-      if (participant.capseur.uid == participantToRemove.capseur.uid)
+      if (participant.capseurUid == participantToRemove.capseurUid)
         _participantToRemove = participant;
     }
     _participants.remove(_participantToRemove);

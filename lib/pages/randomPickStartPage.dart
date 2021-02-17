@@ -16,7 +16,10 @@ class RandomPickStartPage extends StatefulWidget {
       this.capseur1,
       this.capseur2,
       this.bottlesNumber,
-      this.pointsPerBottle})
+      this.pointsPerBottle,
+      this.tournamentUid,
+      this.poolUid,
+      this.finalBoardPosition})
       : super(key: key);
 
   final String title;
@@ -24,6 +27,9 @@ class RandomPickStartPage extends StatefulWidget {
   final Capseur capseur2;
   final int bottlesNumber;
   final int pointsPerBottle;
+  final String tournamentUid;
+  final String poolUid;
+  final int finalBoardPosition;
 
   @override
   _RandomPickStartPageState createState() => _RandomPickStartPageState();
@@ -87,6 +93,9 @@ class _RandomPickStartPageState extends State<RandomPickStartPage> {
                             bottlesNumber: widget.bottlesNumber,
                             pointsPerBottle: widget.pointsPerBottle,
                             player1Starting: player1Starting,
+                            tournamentUid: widget.tournamentUid,
+                            poolUid: widget.poolUid,
+                            finalBoardPosition: widget.finalBoardPosition,
                           )),
                 );
               },

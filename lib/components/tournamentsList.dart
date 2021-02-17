@@ -3,6 +3,7 @@ import 'package:caps_app/components/matchResults.dart';
 import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/models/matchEnded.dart';
 import 'package:caps_app/models/matchsOfTournament.dart';
+import 'package:caps_app/models/participant.dart';
 import 'package:caps_app/models/pool.dart';
 import 'package:caps_app/models/tournamentInfo.dart';
 import 'package:caps_app/pages/tournamentPage.dart';
@@ -29,7 +30,6 @@ class _MatchListState extends State<TournamentList> {
     if (tournaments == null) return LoadingWidget();
 
     DatabaseService db = new DatabaseService();
-
     return ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           TournamentInfo tournament = tournaments[index];
@@ -40,7 +40,7 @@ class _MatchListState extends State<TournamentList> {
                 context,
                 new MaterialPageRoute(
                   builder: (ctxt) =>
-                      StreamProvider<Map<String, Map<String, String>>>.value(
+                      StreamProvider<Map<String, List<Participant>>>.value(
                     value: db.capseursInTournaments,
                     child: StreamProvider<List<Capseur>>.value(
                       value: db.capseurs,

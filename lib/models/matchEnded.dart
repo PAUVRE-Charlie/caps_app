@@ -18,4 +18,6 @@ class MatchEnded {
   int get scorePlayer1 => _scorePlayer1;
   int get scorePlayer2 => _scorePlayer2;
   bool get player1Won => _scorePlayer1 > _scorePlayer2;
+
+  String get winnerUid => this.player1Won ? _capseur1 : _capseur2;
 }

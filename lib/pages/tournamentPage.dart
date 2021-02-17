@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:caps_app/components/TournamentView.dart';
 import 'package:caps_app/components/arrowBackAppBar.dart';
 import 'package:caps_app/components/background.dart';
@@ -28,7 +30,7 @@ class TournamentPage extends StatelessWidget {
     var pools = Provider.of<List<Pool>>(context);
     var capseurs = Provider.of<List<Capseur>>(context);
     var capseursInTournaments =
-        Provider.of<Map<String, Map<String, String>>>(context);
+        Provider.of<Map<String, List<Participant>>>(context);
 
     Widget widgetToShow;
 
@@ -39,6 +41,7 @@ class TournamentPage extends StatelessWidget {
         pools == null) {
       widgetToShow = new LoadingWidget();
     } else {
+      // filter all matchs and pools to only keep the ones of this tournament
       matchsOfTournaments = matchsOfTournaments
           .where((match) => match.tournamentUid == tournamentInfo.uid)
           .toList();
@@ -48,50 +51,85 @@ class TournamentPage extends StatelessWidget {
           if (matchOfTournament.match == match.uid) return true;
         }
         return false;
-      });
+      }).toList();
 
       pools = pools
           .where((pool) => pool.tournamentUid == tournamentInfo.uid)
           .toList();
 
-      matchsOfTournaments.forEach((matchofTournament) {
-        if (matchofTournament.poolUid != null) {
-          pools
-              .firstWhere((pool) => pool.uid == matchofTournament.poolUid)
-              .addMatch(matchofTournament);
-        } else {}
-      });
+      // create the tournament
       Tournament tournament =
           new Tournament(tournamentInfo, pools, matchsOfTournaments, matchs);
 
-      Map<String, String> tournamentAssociation =
+      // put the participants in the right pool and the right position in the final board
+      List<Participant> tournamentAssociation =
           capseursInTournaments[tournamentInfo.uid];
-
-      tournamentAssociation.forEach((capseurUid, poolUid) {
-        pools.firstWhere((pool) => pool.uid == poolUid).addParticipant(
-            new Participant.initial(
-                capseurs.firstWhere((capseur) => capseur.uid == capseurUid)));
+      tournamentAssociation.forEach((participant) {
+        if (participant.poolUid != '') {
+          pools
+              .firstWhere((pool) => pool.uid == participant.poolUid)
+              .addParticipant(participant);
+        }
+        if (participant.finalBoardPosition != 0) {
+          tournament.finalBoard.addParticipant(participant);
+        }
       });
 
-      for (Pool pool in pools) {
-        for (MatchOfTournament matchOfTournament in pool.matchs) {
-          MatchEnded match = matchs
-              .firstWhere((match) => match.uid == matchOfTournament.match);
+      tournament.finalBoard
+          .setNumberOfPlayers(tournament.finalBoard.participants.length);
 
-          Participant participant1 = pool.participants.firstWhere(
-              (participant) => participant.capseur.uid == match.player1);
-          Participant participant2 = pool.participants.firstWhere(
-              (participant) => participant.capseur.uid == match.player2);
+      for (int i = tournament.finalBoard.numberOfCasesOnFirstColumn;
+          i < 2 * tournament.finalBoard.numberOfCasesOnFirstColumn;
+          i++) {
+        if (tournament.finalBoard.getParticipantAt(i) == null) {
+          tournament.finalBoard.addParticipant(new Participant.initial(
+              tournament.finalBoard.getParticipantAt(i - 1).capseurUid,
+              '',
+              tournament.finalBoard.nextPosition(i)));
+        }
+      }
+      // put all matchs in correponding pool/finalboard
+      matchsOfTournaments.forEach((matchofTournament) {
+        if (matchofTournament.poolUid != '') {
+          pools
+              .firstWhere((pool) => pool.uid == matchofTournament.poolUid)
+              .addMatch(matchofTournament);
+        }
+        if (matchofTournament.finalBoardPosition != 0) {
+          tournament.finalBoard.addParticipant(new Participant.initial(
+              matchs
+                  .firstWhere((match) => match.uid == matchofTournament.match)
+                  .winnerUid,
+              '',
+              matchofTournament.finalBoardPosition));
+        }
+      });
+      // complete the profile of the participant for this tournament using the matchs
+      if (pools.isNotEmpty) {
+        for (Pool pool in pools) {
+          // complete its stats in his pool
+          for (MatchOfTournament matchOfTournament in pool.matchs) {
+            MatchEnded match = matchs
+                .firstWhere((match) => match.uid == matchOfTournament.match);
 
-          int capsAverageForParticipant1 =
-              match.scorePlayer1 - match.scorePlayer2;
+            Participant participant1 = pool.participants.firstWhere(
+                (participant) => participant.capseurUid == match.player1);
+            Participant participant2 = pool.participants.firstWhere(
+                (participant) => participant.capseurUid == match.player2);
 
-          participant1.addCapsAverage(capsAverageForParticipant1);
-          participant2.addCapsAverage(-capsAverageForParticipant1);
+            int capsAverageForParticipant1 =
+                match.scorePlayer1 - match.scorePlayer2;
+
+            participant1.addCapsAverage(capsAverageForParticipant1);
+            participant2.addCapsAverage(-capsAverageForParticipant1);
+          }
         }
       }
 
-      widgetToShow = TournamentView(tournament: tournament);
+      widgetToShow = TournamentView(
+        tournament: tournament,
+        capseurs: capseurs,
+      );
     }
 
     return DefaultTabController(

@@ -6,9 +6,11 @@ import 'package:caps_app/models/tournament.dart';
 import 'package:flutter/material.dart';
 
 class PoolsView extends StatefulWidget {
-  PoolsView({Key key, @required this.tournament}) : super(key: key);
+  PoolsView({Key key, @required this.tournament, this.capseurs})
+      : super(key: key);
 
   final Tournament tournament;
+  final List<Capseur> capseurs;
 
   @override
   _PoolsViewState createState() => _PoolsViewState();
@@ -17,6 +19,8 @@ class PoolsView extends StatefulWidget {
 class _PoolsViewState extends State<PoolsView> {
   @override
   Widget build(BuildContext context) {
+    if (widget.tournament.pools.isEmpty) return Text('Pas de poules');
+
     return ListView.builder(
       itemCount: widget.tournament.pools.length,
       itemBuilder: (BuildContext context, int index) {
@@ -56,7 +60,7 @@ class _PoolsViewState extends State<PoolsView> {
                     Padding(
                       padding: EdgeInsets.only(left: 20),
                       child: Text(
-                        "${participant.capseur.username}",
+                        "${participant.getCapseur(widget.capseurs).username}",
                         style: TextStyle(fontSize: 16),
                       ),
                     ),

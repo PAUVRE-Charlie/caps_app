@@ -17,6 +17,10 @@ class MatchWaitingToBeValidated {
   int _player1CapsThrowInThisGame;
   int _player2CapsThrowInThisGame;
 
+  String _tournamentUid;
+  String _poolUid;
+  int _finalBoardPosition;
+
   MatchWaitingToBeValidated(
       this._uid,
       this._capseur1,
@@ -29,7 +33,10 @@ class MatchWaitingToBeValidated {
       this._player1CapsHitInThisGame,
       this._player1CapsThrowInThisGame,
       this._player2CapsHitInThisGame,
-      this._player2CapsThrowInThisGame);
+      this._player2CapsThrowInThisGame,
+      this._tournamentUid,
+      this._poolUid,
+      this._finalBoardPosition);
 
   String get uid => _uid;
   String get player1 => _capseur1;
@@ -44,4 +51,8 @@ class MatchWaitingToBeValidated {
   int get player2CapsHitInThisGame => _player2CapsHitInThisGame;
   int get player1CapsThrowInThisGame => _player1CapsThrowInThisGame;
   int get player2CapsThrowInThisGame => _player2CapsThrowInThisGame;
+  String get tournamentUid => _tournamentUid == '' ? null : _tournamentUid;
+  String get poolUid => _poolUid == '' ? null : _poolUid;
+  int get finalBoardPosition =>
+      _finalBoardPosition == 0 ? null : _finalBoardPosition;
 }

@@ -21,9 +21,19 @@ class Game {
   int _pointsRequired;
   int _pointsPerBottle;
   bool _player1Starting;
+  String _tournamentUid;
+  String _poolUid;
+  int _finalBoardPosition;
 
-  Game.initial(Capseur capseur1, Capseur capseur2, int bottlesNumber,
-      int pointsPerBottle, bool player1Starting) {
+  Game.initial(
+      Capseur capseur1,
+      Capseur capseur2,
+      int bottlesNumber,
+      int pointsPerBottle,
+      bool player1Starting,
+      String tournamentUid,
+      String poolUid,
+      int finalBoardPosition) {
     //reset or new game
     _player1Starting = player1Starting;
 
@@ -35,10 +45,21 @@ class Game {
     _pointsRequired = pointsPerBottle * bottlesNumber;
     _pointsPerBottle = pointsPerBottle;
     _context = context;
+    _tournamentUid = tournamentUid;
+    _poolUid = poolUid;
+    _finalBoardPosition = finalBoardPosition;
   }
 
-  Game(this._player1, this._player2, this._reverseCount, this._pointsRequired,
-      this._pointsPerBottle, this._player1Starting);
+  Game(
+      this._player1,
+      this._player2,
+      this._reverseCount,
+      this._pointsRequired,
+      this._pointsPerBottle,
+      this._player1Starting,
+      this._tournamentUid,
+      this._poolUid,
+      this._finalBoardPosition);
 
   BuildContext get context => _context;
   Player get player1 => _player1;
@@ -47,6 +68,9 @@ class Game {
   int get pointsRequired => _pointsRequired;
   int get pointsPerBottle => _pointsPerBottle;
   bool get player1starting => _player1Starting;
+  String get tournamentUid => _tournamentUid;
+  String get poolUid => _poolUid;
+  int get finalBoardPosition => _finalBoardPosition;
 
   setContext(BuildContext context) {
     _context = context;
@@ -84,6 +108,42 @@ class Game {
               bottlesNumberDialog: bottlesNumberDialog,
               pointsPerBottleDialog: pointsPerBottleDialog,
               capseur2: capseur2);
+        });
+  }
+
+  static Future<void> startMatchOfTournament(
+      BuildContext context, String title, Capseur capseur, String tournamentUid,
+      {Capseur capseur2, String poolUid, int finalBoardPosition}) async {
+    final _bottlesNumberKey = GlobalKey<_DropDownAlertState>();
+    final _pointsPerBottleKey = GlobalKey<_DropDownAlertState>();
+
+    DropDownAlert bottlesNumberDialog = new DropDownAlert(
+      key: _bottlesNumberKey,
+      initialValue: 3,
+      values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+    );
+    DropDownAlert pointsPerBottleDialog = new DropDownAlert(
+      key: _pointsPerBottleKey,
+      initialValue: 4,
+      values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    );
+
+    return showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialogNewMatch(
+            title: title,
+            capseur: capseur,
+            bottlesNumberKey: _bottlesNumberKey,
+            pointsPerBottleKey: _pointsPerBottleKey,
+            bottlesNumberDialog: bottlesNumberDialog,
+            pointsPerBottleDialog: pointsPerBottleDialog,
+            capseur2: capseur2,
+            forceOpponent: true,
+            tournamentUid: tournamentUid,
+            poolUid: poolUid,
+            finalBoardPosition: finalBoardPosition,
+          );
         });
   }
 
@@ -220,7 +280,10 @@ class Game {
         this.player1.capsHitInThisGame,
         this.player1.capsThrowInThisGame,
         this.player2.capsHitInThisGame,
-        this.player2.capsThrowInThisGame);
+        this.player2.capsThrowInThisGame,
+        tournamentUid: this.tournamentUid,
+        poolUid: this.poolUid,
+        finalBoardPosition: this.finalBoardPosition);
 
     Navigator.of(this.context).pop();
     Navigator.of(this.context).pop();
@@ -274,7 +337,11 @@ class AlertDialogNewMatch extends StatefulWidget {
       this.pointsPerBottleKey,
       this.bottlesNumberDialog,
       this.pointsPerBottleDialog,
-      this.capseur2})
+      this.capseur2,
+      this.forceOpponent = false,
+      this.tournamentUid,
+      this.poolUid,
+      this.finalBoardPosition})
       : super(key: key);
 
   final String title;
@@ -284,6 +351,10 @@ class AlertDialogNewMatch extends StatefulWidget {
   final GlobalKey<_DropDownAlertState> pointsPerBottleKey;
   final DropDownAlert bottlesNumberDialog;
   final DropDownAlert pointsPerBottleDialog;
+  final bool forceOpponent;
+  final String tournamentUid;
+  final String poolUid;
+  final int finalBoardPosition;
 
   @override
   _AlertDialogNewMatchState createState() => _AlertDialogNewMatchState();
@@ -336,24 +407,25 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
             SizedBox(
               height: 10,
             ),
-            RaisedButton(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: Text(
-                "Selectionne ton adversaire",
-                style: TextStyle(color: kWhiteColor),
+            if (!widget.forceOpponent)
+              RaisedButton(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: Text(
+                  "Selectionne ton adversaire",
+                  style: TextStyle(color: kWhiteColor),
+                ),
+                color: (opponent != null) ? kSecondaryColor : kPrimaryColor,
+                onPressed: () {
+                  _showUserList(selectOpponent: (Capseur _opponent) {
+                    if (_opponent.uid != widget.capseur.uid) {
+                      setState(() {
+                        opponent = _opponent;
+                      });
+                      Navigator.of(context).pop();
+                    }
+                  });
+                },
               ),
-              color: (opponent != null) ? kSecondaryColor : kPrimaryColor,
-              onPressed: () {
-                _showUserList(selectOpponent: (Capseur _opponent) {
-                  if (_opponent.uid != widget.capseur.uid) {
-                    setState(() {
-                      opponent = _opponent;
-                    });
-                    Navigator.of(context).pop();
-                  }
-                });
-              },
-            ),
             SizedBox(
               height: 20,
             ),
@@ -401,11 +473,15 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
                     context,
                     new MaterialPageRoute(
                         builder: (ctxt) => new RandomPickStartPage(
-                            title: widget.title,
-                            capseur2: opponent,
-                            capseur1: widget.capseur,
-                            bottlesNumber: getBottlesNumber(),
-                            pointsPerBottle: getPointsPerBottle())),
+                              title: widget.title,
+                              capseur2: opponent,
+                              capseur1: widget.capseur,
+                              bottlesNumber: getBottlesNumber(),
+                              pointsPerBottle: getPointsPerBottle(),
+                              tournamentUid: widget.tournamentUid,
+                              poolUid: widget.poolUid,
+                              finalBoardPosition: widget.finalBoardPosition,
+                            )),
                   );
                 }
               },

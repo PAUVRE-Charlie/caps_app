@@ -5,6 +5,7 @@ import 'package:caps_app/models/matchEnded.dart';
 import 'package:caps_app/models/matchWaitingToBeValidated.dart';
 import 'package:caps_app/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 import '../data.dart';
 import 'matchResults.dart';
@@ -172,12 +173,29 @@ class _ValidateMatchState extends State<ValidateMatch> {
                           widget.capseurs.firstWhere((capseur) =>
                               capseur.uid ==
                               widget.matchWaitingToBeValidated.player2));
-                      DatabaseService().updateMatchData(
-                          widget.matchWaitingToBeValidated.player1,
-                          widget.matchWaitingToBeValidated.player2,
-                          widget.matchWaitingToBeValidated.scorePlayer1,
-                          widget.matchWaitingToBeValidated.scorePlayer2);
 
+                      if (widget.matchWaitingToBeValidated.tournamentUid !=
+                          null) {
+                        Uuid uuid = Uuid();
+                        String matchUid = uuid.v4();
+                        DatabaseService().updateMatchData(
+                            widget.matchWaitingToBeValidated.player1,
+                            widget.matchWaitingToBeValidated.player2,
+                            widget.matchWaitingToBeValidated.scorePlayer1,
+                            widget.matchWaitingToBeValidated.scorePlayer2,
+                            matchUid: matchUid);
+                        DatabaseService().updateMatchOfTournamentData(matchUid,
+                            widget.matchWaitingToBeValidated.tournamentUid,
+                            poolUid: widget.matchWaitingToBeValidated.poolUid,
+                            finalBoardPosition: widget
+                                .matchWaitingToBeValidated.finalBoardPosition);
+                      } else {
+                        DatabaseService().updateMatchData(
+                            widget.matchWaitingToBeValidated.player1,
+                            widget.matchWaitingToBeValidated.player2,
+                            widget.matchWaitingToBeValidated.scorePlayer1,
+                            widget.matchWaitingToBeValidated.scorePlayer2);
+                      }
                       DatabaseService().deleteMatchWaitingToBeValidated(
                           widget.matchWaitingToBeValidated.uid);
                     },

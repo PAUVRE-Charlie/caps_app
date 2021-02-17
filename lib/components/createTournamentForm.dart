@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:caps_app/components/rankingList.dart';
 import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/models/participant.dart';
@@ -24,6 +26,7 @@ class _CreateTournamentFormState extends State<CreateTournamentForm> {
   int numberPlayersGettingOutOfEachPool;
   int numberPlayersPerPool;
   List<Capseur> capseurs;
+  bool withPools;
   bool randomPool;
   List<String> poolNames;
   String error;
@@ -40,6 +43,7 @@ class _CreateTournamentFormState extends State<CreateTournamentForm> {
     numberPlayersGettingOutOfEachPool = 0;
     numberPlayersPerPool = 0;
     capseurs = new List();
+    withPools = false;
     randomPool = true;
     poolNames = new List();
     error = '';
@@ -101,7 +105,7 @@ class _CreateTournamentFormState extends State<CreateTournamentForm> {
                           textInputType: TextInputType.number,
                           validator: (val) {
                             return int.tryParse(val) == null ||
-                                    int.parse(val) <= 0
+                                    int.parse(val) <= 1
                                 ? 'Erreur'
                                 : null;
                           },
@@ -179,7 +183,25 @@ class _CreateTournamentFormState extends State<CreateTournamentForm> {
                   SizedBox(
                     height: 20,
                   ),
-                  if (capseurs.length > 0)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Avec des poules ?"),
+                      Checkbox(
+                        value: withPools,
+                        activeColor: kPrimaryColor,
+                        onChanged: (val) {
+                          setState(() {
+                            withPools = val;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  if (withPools && capseurs.length > 0) ...[
+                    SizedBox(
+                      height: 20,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -208,117 +230,180 @@ class _CreateTournamentFormState extends State<CreateTournamentForm> {
                         )
                       ],
                     ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  if (numberPlayersGettingOutOfEachPool > 0)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Nombre de personnes par poule: "),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width / 6,
-                          child: MyTextFormField(
-                            textInputType: TextInputType.number,
-                            validator: (val) {
-                              return int.tryParse(val) == null ||
-                                      int.parse(val) <= 1 ||
-                                      int.parse(val) <
-                                          (numberPlayersGettingOutOfEachPool +
-                                              1)
-                                  ? 'Erreur'
-                                  : null;
-                            },
+                    SizedBox(
+                      height: 20,
+                    ),
+                    if (numberPlayersGettingOutOfEachPool > 0)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Nombre de personnes par poule: "),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width / 6,
+                            child: MyTextFormField(
+                              textInputType: TextInputType.number,
+                              validator: (val) {
+                                return int.tryParse(val) == null ||
+                                        int.parse(val) <= 1 ||
+                                        int.parse(val) <
+                                            (numberPlayersGettingOutOfEachPool +
+                                                1)
+                                    ? 'Erreur'
+                                    : null;
+                              },
+                              onChanged: (val) {
+                                setState(() {
+                                  numberPlayersPerPool = int.tryParse(val) ?? 0;
+                                });
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    if (numberPlayersPerPool > 0 &&
+                        numberPlayersGettingOutOfEachPool > 0 &&
+                        capseurs.length > 0)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Poules organisées au hasard: "),
+                          Checkbox(
+                            value: randomPool,
+                            activeColor: kPrimaryColor,
                             onChanged: (val) {
                               setState(() {
-                                numberPlayersPerPool = int.tryParse(val) ?? 0;
+                                randomPool = val;
                               });
                             },
                           ),
-                        )
-                      ],
+                        ],
+                      ),
+                    SizedBox(
+                      height: 20,
                     ),
+                    if (!randomPool)
+                      PoolCreation(
+                        key: _poolsCreationKey,
+                        numberOfPools: numberPlayersPerPool != 0
+                            ? (capseurs.length / numberPlayersPerPool).ceil()
+                            : 0,
+                        capseurs: capseurs,
+                        maxPlayersPerPool: numberPlayersPerPool,
+                      ),
+                  ],
                   SizedBox(
                     height: 20,
                   ),
-                  if (numberPlayersPerPool > 0 &&
-                      numberPlayersGettingOutOfEachPool > 0 &&
-                      capseurs.length > 0)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Poules organisées au hasard: "),
-                        Checkbox(
-                          value: randomPool,
-                          activeColor: kPrimaryColor,
-                          onChanged: (val) {
-                            setState(() {
-                              randomPool = val;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  if (!randomPool)
-                    PoolCreation(
-                      key: _poolsCreationKey,
-                      numberOfPools: numberPlayersPerPool != 0
-                          ? (capseurs.length / numberPlayersPerPool).ceil()
-                          : 0,
-                      capseurs: capseurs,
-                      maxPlayersPerPool: numberPlayersPerPool,
-                    ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  RaisedButton(
-                    onPressed: () async {
-                      if (_formKey.currentState.validate()) {
-                        List<Pool> _pools =
-                            _poolsCreationKey.currentState.pools;
-
-                        Uuid uuid = Uuid();
-                        setState(() {
-                          loading = true;
-                        });
-                        String tournamentUid = uuid.v4();
-                        await DatabaseService().updateTournamentData(
-                            tournamentUid,
-                            name,
-                            numberPlayersGettingOutOfEachPool);
-
-                        for (Pool pool in _pools) {
-                          String poolUid = uuid.v4();
-                          await DatabaseService().updatePoolData(
-                              poolUid, tournamentUid, pool.name);
-                          for (Participant participant in pool.participants) {
-                            await DatabaseService()
-                                .updateCapseursInTournamentsData(tournamentUid,
-                                    poolUid, participant.capseur.uid);
+                  if (capseurs.length >= 2 &&
+                      (!withPools ||
+                          (numberPlayersGettingOutOfEachPool > 0 &&
+                              numberPlayersPerPool > 0))) ...[
+                    RaisedButton(
+                      onPressed: () async {
+                        bool cantCreateBecausePoolsNotComplete = false;
+                        List<Pool> pools;
+                        if (withPools && !randomPool) {
+                          pools = _poolsCreationKey.currentState.pools;
+                          for (Pool pool in pools) {
+                            if (pool.participants.length < numberPlayersPerPool)
+                              cantCreateBecausePoolsNotComplete = true;
                           }
                         }
-                        setState(() {
-                          loading = false;
-                          Navigator.of(context).pop();
-                        });
-                      }
-                    },
-                    color: kPrimaryColor,
-                    child: Text('Créer', style: TextStyle(color: kWhiteColor)),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    error,
-                    style: TextStyle(color: kPrimaryColor),
-                  )
+                        if (_formKey.currentState.validate() &&
+                            !cantCreateBecausePoolsNotComplete) {
+                          Uuid uuid = Uuid();
+                          setState(() {
+                            loading = true;
+                          });
+                          String tournamentUid = uuid.v4();
+                          if (!withPools) numberPlayersGettingOutOfEachPool = 0;
+                          await DatabaseService().updateTournamentData(
+                              tournamentUid,
+                              name,
+                              numberPlayersGettingOutOfEachPool);
+
+                          if (withPools) {
+                            if (randomPool) {
+                              int poolsCount =
+                                  (capseurs.length / numberPlayersPerPool)
+                                      .ceil();
+                              pools = new List();
+                              for (int i = 0; i < poolsCount; i++) {
+                                pools.add(new Pool("", "", "Poule ${i + 1}"));
+                              }
+                              for (int i = 0; i < capseurs.length; i++) {
+                                pools[i ~/ numberPlayersPerPool].addParticipant(
+                                    new Participant.initial(
+                                        capseurs[i].uid,
+                                        pools[i ~/ numberPlayersPerPool].uid,
+                                        0));
+                              }
+                            }
+                            for (Pool pool in pools) {
+                              String poolUid = uuid.v4();
+                              await DatabaseService().updatePoolData(
+                                  poolUid, tournamentUid, pool.name);
+                              for (Participant participant
+                                  in pool.participants) {
+                                await DatabaseService()
+                                    .updateCapseursInTournamentsData(
+                                        tournamentUid,
+                                        poolUid,
+                                        participant.capseurUid,
+                                        0);
+                              }
+                            }
+                          } else {
+                            int numberOfCasesInFirstColumnInFinalBoard =
+                                pow(2, (log(capseurs.length) / ln2).ceil());
+                            int count = numberOfCasesInFirstColumnInFinalBoard;
+                            for (Capseur capseur in capseurs) {
+                              await DatabaseService().updateCapseursInTournamentsData(
+                                  tournamentUid,
+                                  '',
+                                  capseur.uid,
+                                  count - numberOfCasesInFirstColumnInFinalBoard <
+                                          numberOfCasesInFirstColumnInFinalBoard ~/
+                                              2
+                                      ? 2 *
+                                              (count -
+                                                  numberOfCasesInFirstColumnInFinalBoard) +
+                                          numberOfCasesInFirstColumnInFinalBoard
+                                      : 2 *
+                                              (count -
+                                                  numberOfCasesInFirstColumnInFinalBoard -
+                                                  numberOfCasesInFirstColumnInFinalBoard ~/
+                                                      2) +
+                                          numberOfCasesInFirstColumnInFinalBoard +
+                                          1);
+                              count++;
+                            }
+                          }
+
+                          setState(() {
+                            loading = false;
+                            Navigator.of(context).pop();
+                          });
+                        }
+                      },
+                      color: kPrimaryColor,
+                      child:
+                          Text('Créer', style: TextStyle(color: kWhiteColor)),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      error,
+                      style: TextStyle(color: kPrimaryColor),
+                    )
+                  ]
                 ],
               ),
             ),
@@ -435,7 +520,7 @@ class _PoolCreationState extends State<PoolCreation> {
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             Text(
-                              "${participant.capseur.username}",
+                              "${participant.getCapseur(widget.capseurs).username}",
                             ),
                             IconButton(
                                 icon: Icon(
@@ -462,12 +547,14 @@ class _PoolCreationState extends State<PoolCreation> {
                       if (pool.participants.length !=
                           widget.maxPlayersPerPool) {
                         List<Capseur> noShowList = pool.participants
-                            .map((participant) => participant.capseur)
+                            .map((participant) =>
+                                participant.getCapseur(widget.capseurs))
                             .toList();
 
                         for (Pool pool in pools) {
-                          noShowList.addAll(pool.participants
-                              .map((participant) => participant.capseur));
+                          noShowList.addAll(pool.participants.map(
+                              (participant) =>
+                                  participant.getCapseur(widget.capseurs)));
                         }
 
                         _showUserList(
@@ -475,8 +562,8 @@ class _PoolCreationState extends State<PoolCreation> {
                             justThemCapseur: widget.capseurs,
                             onSelectCapseur: (Capseur _capseur) {
                               setState(() {
-                                pool.addParticipant(
-                                    new Participant.initial(_capseur));
+                                pool.addParticipant(new Participant.initial(
+                                    _capseur.uid, pool.uid, 0));
                               });
                               Navigator.of(context).pop();
                             });
