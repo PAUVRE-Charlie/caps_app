@@ -53,7 +53,7 @@ class _RegisterState extends State<Register> {
                     validator: (val) {
                       return val.isEmpty
                           ? 'Entre ton mail'
-                          : !(val.toString().contains('@'))
+                          : !(val.toString().contains('@imt-atlantique.net'))
                               ? 'Vous devez utiliser une adresse imt-atlantique'
                               : null;
                     },
