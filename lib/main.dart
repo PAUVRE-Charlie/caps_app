@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
     return StreamProvider<BasicUser>.value(
         value: AuthService().user,
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Caps',
           theme: ThemeData(
               visualDensity: VisualDensity.adaptivePlatformDensity,
