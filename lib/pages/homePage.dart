@@ -195,7 +195,7 @@ class _MenuOrValidateMatchState extends State<MenuOrValidateMatch> {
                     onPressed: () {
                       Game.startMatch(context, "Match", widget.capseur);
                     }),
-                TextButtonMenu(
+                /*TextButtonMenu(
                     text: "Tournois",
                     onPressed: () {
                       Navigator.push(
@@ -203,7 +203,7 @@ class _MenuOrValidateMatchState extends State<MenuOrValidateMatch> {
                           new MaterialPageRoute(
                             builder: (ctxt) => new TournamentsMenuPage(),
                           ));
-                    }),
+                    }),*/
                 TextButtonMenu(
                   text: "Classements",
                   onPressed: () {
