@@ -1,19 +1,18 @@
 import 'package:caps_app/components/background.dart';
 import 'package:caps_app/components/loading.dart';
+import 'package:caps_app/components/utils.dart';
 import 'package:caps_app/components/validateMatch.dart';
 import 'package:caps_app/models/basicUser.dart';
 import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/models/matchWaitingToBeValidated.dart';
 import 'package:caps_app/pages/profilePage.dart';
-import 'package:caps_app/pages/tournamentsMenuPage.dart';
 import 'package:caps_app/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:provider/provider.dart';
+
 import '../data.dart';
 import '../models/game.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
-import 'package:caps_app/components/utils.dart';
-
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -23,7 +22,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<BasicUser>(context);
@@ -113,10 +111,7 @@ class TextButtonMenu extends StatelessWidget {
           onPressed: onPressed,
           child: Text(
             text,
-            style: TextStyle(
-                color: kPrimaryColor,
-                fontSize: 25,
-                fontWeight: FontWeight.w300),
+            style: TextStyle(color: kPrimaryColor, fontSize: 25, fontWeight: FontWeight.w300),
           )),
     );
   }
@@ -132,8 +127,7 @@ class MenuOrValidateMatch extends StatefulWidget {
 }
 
 class _MenuOrValidateMatchState extends State<MenuOrValidateMatch> {
-  KeyboardVisibilityNotification _keyboardVisibility =
-      new KeyboardVisibilityNotification();
+  KeyboardVisibilityNotification _keyboardVisibility = new KeyboardVisibilityNotification();
   int _keyboardVisibilitySubscriberId;
   bool _keyboardState;
 
@@ -158,15 +152,12 @@ class _MenuOrValidateMatchState extends State<MenuOrValidateMatch> {
 
   @override
   Widget build(BuildContext context) {
-    final matchsWaitingToBeValidated =
-        Provider.of<List<MatchWaitingToBeValidated>>(context);
+    final matchsWaitingToBeValidated = Provider.of<List<MatchWaitingToBeValidated>>(context);
     final capseurs = Provider.of<List<Capseur>>(context);
 
-    if (matchsWaitingToBeValidated == null || capseurs == null)
-      return LoadingWidget();
+    if (matchsWaitingToBeValidated == null || capseurs == null) return LoadingWidget();
 
-    final matchsNotValidatedWhereUserWasOpponent = matchsWaitingToBeValidated
-        .where((match) => match.player2 == widget.capseur.uid);
+    final matchsNotValidatedWhereUserWasOpponent = matchsWaitingToBeValidated.where((match) => match.player2 == widget.capseur.uid);
 
     MatchWaitingToBeValidated matchWaitingToBeValidated;
 
@@ -180,14 +171,11 @@ class _MenuOrValidateMatchState extends State<MenuOrValidateMatch> {
         children: <Widget>[
           Text(
             "Caps",
-            style: TextStyle(
-                fontSize: 100, fontFamily: 'PirataOne', color: kSecondaryColor),
+            style: TextStyle(fontSize: 100, fontFamily: 'PirataOne', color: kSecondaryColor),
           ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 50, vertical: 30),
-            decoration: BoxDecoration(
-                color: kWhiteHighOpacity,
-                borderRadius: BorderRadius.circular(20)),
+            decoration: BoxDecoration(color: kWhiteHighOpacity, borderRadius: BorderRadius.circular(20)),
             child: Column(
               children: [
                 TextButtonMenu(
@@ -195,7 +183,7 @@ class _MenuOrValidateMatchState extends State<MenuOrValidateMatch> {
                     onPressed: () {
                       Game.startMatch(context, "Match", widget.capseur);
                     }),
-                TextButtonMenu(
+                /*TextButtonMenu(
                     text: "Tournois",
                     onPressed: () {
                       Navigator.push(
@@ -203,7 +191,7 @@ class _MenuOrValidateMatchState extends State<MenuOrValidateMatch> {
                           new MaterialPageRoute(
                             builder: (ctxt) => new TournamentsMenuPage(),
                           ));
-                    }),
+                    }),*/
                 TextButtonMenu(
                   text: "Classements",
                   onPressed: () {
