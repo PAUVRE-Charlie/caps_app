@@ -23,6 +23,20 @@ class RankingList extends StatefulWidget {
 }
 
 class _RankingListState extends State<RankingList> {
+  TextEditingController _searchController;
+
+  @override
+  void initState() {
+    _searchController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<BasicUser>(context);
@@ -45,24 +59,64 @@ class _RankingListState extends State<RankingList> {
 
     capseurs.sort(((x, y) => y.points.compareTo(x.points)));
 
-    return ListView.builder(
-        itemBuilder: (BuildContext context, int index) {
-          Capseur capseur = capseurs[index];
-          return GestureDetector(
-            onTap: () {
-              if (widget.onPressed != null) widget.onPressed(capseur);
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(30),
+          child: TextField(
+            controller: _searchController,
+            onChanged: (value) {
+              setState(() {});
             },
-            child: ListTile(
-              leading:
-                  Text((index + 1).toString(), style: TextStyle(fontSize: 20)),
-              title: Text(capseur.username),
-              trailing: Text(capseur.points.round().toString()),
-              tileColor: capseur.uid == user.uid
-                  ? kSecondaryColor.withOpacity(0.3)
-                  : Colors.transparent,
-            ),
-          );
-        },
-        itemCount: capseurs.length);
+            cursorColor: kSecondaryColor,
+            decoration: InputDecoration(
+                labelText: "Rechercher",
+                labelStyle: TextStyle(color: kSecondaryColor),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: kSecondaryColor,
+                ),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: kSecondaryColor,
+                        style: BorderStyle.solid,
+                        width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: kSecondaryColor,
+                        style: BorderStyle.solid,
+                        width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(15)))),
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                Capseur capseur = capseurs[index];
+                return capseur.username
+                        .toLowerCase()
+                        .contains(_searchController.value.text.toLowerCase())
+                    ? GestureDetector(
+                        onTap: () {
+                          if (widget.onPressed != null)
+                            widget.onPressed(capseur);
+                        },
+                        child: ListTile(
+                          leading: Text((index + 1).toString(),
+                              style: TextStyle(fontSize: 20)),
+                          title: Text(capseur.username),
+                          trailing: Text(capseur.points.round().toString()),
+                          tileColor: capseur.uid == user.uid
+                              ? kSecondaryColor.withOpacity(0.3)
+                              : Colors.transparent,
+                        ),
+                      )
+                    : Container();
+              },
+              itemCount: capseurs.length),
+        )
+      ],
+    );
   }
 }

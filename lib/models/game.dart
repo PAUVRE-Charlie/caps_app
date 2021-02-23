@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:caps_app/components/background.dart';
 import 'package:caps_app/components/matchResultEdit.dart';
 import 'package:caps_app/components/rankingList.dart';
 import 'package:caps_app/data.dart';
@@ -367,12 +368,18 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
   void _showUserList({Function selectOpponent}) {
     showModalBottomSheet(
         context: context,
+        isScrollControlled: true,
         builder: (context) {
           return StreamProvider<List<Capseur>>.value(
               value: DatabaseService().capseurs,
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
-                child: RankingList(onPressed: selectOpponent),
+              child: Stack(
+                children: [
+                  Background(),
+                  Container(
+                    padding: EdgeInsets.only(top: 40, left: 60, right: 60),
+                    child: RankingList(onPressed: selectOpponent),
+                  )
+                ],
               ));
         });
   }

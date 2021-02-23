@@ -32,15 +32,18 @@ class RankingPage extends StatelessWidget {
               Background(
                 image: "assets/images/bottle_-15deg.png",
               ),
-              RankingList(onPressed: (Capseur capseur) {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                      builder: (ctxt) => new ProfilePage(
-                        capseur: capseur,
-                      ),
-                    ));
-              }),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 40),
+                child: RankingList(onPressed: (Capseur capseur) {
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                        builder: (ctxt) => new ProfilePage(
+                          capseur: capseur,
+                        ),
+                      ));
+                }),
+              ),
             ],
           ),
         ));
