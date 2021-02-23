@@ -9,7 +9,41 @@ import 'package:provider/provider.dart';
 
 import '../data.dart';
 
-class RankingPage extends StatelessWidget {
+enum Filter { POINTS, MATCHSWON, MATCHSPLAYED, CAPSHIT, RATIO, KROEMPTIED }
+
+class RankingPage extends StatefulWidget {
+  @override
+  _RankingPageState createState() => _RankingPageState();
+}
+
+class _RankingPageState extends State<RankingPage> {
+  String filterToString(Filter filter) {
+    switch (filter) {
+      case Filter.POINTS:
+        return 'Points';
+        break;
+      case Filter.MATCHSWON:
+        return 'Matchs gagnés';
+        break;
+      case Filter.MATCHSPLAYED:
+        return 'Matchs joués';
+        break;
+      case Filter.CAPSHIT:
+        return 'Caps touchées';
+        break;
+      case Filter.RATIO:
+        return 'Ratio';
+        break;
+      case Filter.KROEMPTIED:
+        return 'Kros bues';
+        break;
+      default:
+        return 'Points';
+    }
+  }
+
+  Filter _filter = Filter.POINTS;
+
   @override
   Widget build(BuildContext context) {
     return StreamProvider<List<Capseur>>.value(
@@ -26,6 +60,28 @@ class RankingPage extends StatelessWidget {
                   fontSize: 30,
                   color: kSecondaryColor),
             ),
+            actions: [
+              DropdownButton<Filter>(
+                value: _filter,
+                style: TextStyle(color: Colors.deepPurple),
+                onChanged: (Filter newValue) {
+                  setState(() {
+                    _filter = newValue;
+                  });
+                },
+                items: Filter.values
+                    .map<DropdownMenuItem<Filter>>((Filter filter) {
+                  return DropdownMenuItem<Filter>(
+                    value: filter,
+                    child: Text(
+                      filterToString(filter),
+                      textAlign: TextAlign.right,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  );
+                }).toList(),
+              )
+            ],
           ),
           body: Stack(
             children: [
@@ -34,15 +90,19 @@ class RankingPage extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 40),
-                child: RankingList(onPressed: (Capseur capseur) {
-                  Navigator.push(
+                child: RankingList(
+                  filter: _filter,
+                  onPressed: (Capseur capseur) {
+                    Navigator.push(
                       context,
                       new MaterialPageRoute(
                         builder: (ctxt) => new ProfilePage(
                           capseur: capseur,
                         ),
-                      ));
-                }),
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),

@@ -1,5 +1,6 @@
 import 'package:caps_app/components/loading.dart';
 import 'package:caps_app/models/basicUser.dart';
+import 'package:caps_app/pages/rankingPage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,12 +12,14 @@ class RankingList extends StatefulWidget {
       {Key key,
       this.onPressed(Capseur capseur),
       this.noShowCapseurs,
-      this.justThemCapseurs})
+      this.justThemCapseurs,
+      this.filter})
       : super(key: key);
 
   final Function onPressed;
   final List<Capseur> noShowCapseurs;
   final List<Capseur> justThemCapseurs;
+  final Filter filter;
 
   @override
   _RankingListState createState() => _RankingListState();
@@ -35,6 +38,56 @@ class _RankingListState extends State<RankingList> {
   void dispose() {
     _searchController.dispose();
     super.dispose();
+  }
+
+  Function(Capseur, Capseur) getFilter(Filter filter) {
+    switch (filter) {
+      case Filter.POINTS:
+        return ((x, y) => y.points.compareTo(x.points));
+        break;
+      case Filter.MATCHSWON:
+        return ((x, y) => y.matchsWon.compareTo(x.matchsWon));
+        break;
+      case Filter.MATCHSPLAYED:
+        return ((x, y) => y.matchsPlayed.compareTo(x.matchsPlayed));
+        break;
+      case Filter.CAPSHIT:
+        return ((x, y) => y.capsHit.compareTo(x.capsHit));
+        break;
+      case Filter.RATIO:
+        return ((x, y) => y.ratio.compareTo(x.ratio));
+        break;
+      case Filter.KROEMPTIED:
+        return ((x, y) => y.bottlesEmptied.compareTo(x.bottlesEmptied));
+        break;
+      default:
+        return ((x, y) => y.points.compareTo(x.points));
+    }
+  }
+
+  String getValue(Filter filter, Capseur capseur) {
+    switch (filter) {
+      case Filter.POINTS:
+        return capseur.points.round().toString();
+        break;
+      case Filter.MATCHSWON:
+        return capseur.matchsWon.toString();
+        break;
+      case Filter.MATCHSPLAYED:
+        return capseur.matchsPlayed.toString();
+        break;
+      case Filter.CAPSHIT:
+        return capseur.capsHit.toString();
+        break;
+      case Filter.RATIO:
+        return capseur.ratio.toString();
+        break;
+      case Filter.KROEMPTIED:
+        return capseur.bottlesEmptied.toString();
+        break;
+      default:
+        return capseur.points.round().toString();
+    }
   }
 
   @override
@@ -57,7 +110,7 @@ class _RankingListState extends State<RankingList> {
       }).toList();
     }
 
-    capseurs.sort(((x, y) => y.points.compareTo(x.points)));
+    capseurs.sort(getFilter(widget.filter));
 
     return Column(
       children: [
@@ -106,7 +159,7 @@ class _RankingListState extends State<RankingList> {
                           leading: Text((index + 1).toString(),
                               style: TextStyle(fontSize: 20)),
                           title: Text(capseur.username),
-                          trailing: Text(capseur.points.round().toString()),
+                          trailing: Text(getValue(widget.filter, capseur)),
                           tileColor: capseur.uid == user.uid
                               ? kSecondaryColor.withOpacity(0.3)
                               : Colors.transparent,
