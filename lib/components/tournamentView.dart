@@ -1,4 +1,5 @@
 import 'package:caps_app/components/finalBoardView.dart';
+import 'package:caps_app/components/matchsTournamentView.dart';
 import 'package:caps_app/components/poolsView.dart';
 import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/models/matchWaitingToBeValidated.dart';
@@ -22,6 +23,7 @@ class TournamentView extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 30, horizontal: 10),
         child: TabBarView(
+          physics: NeverScrollableScrollPhysics(),
           children: [
             PoolsView(
               tournament: tournament,
@@ -30,7 +32,11 @@ class TournamentView extends StatelessWidget {
             FinalBoardView(
               tournament: tournament,
               capseurs: capseurs,
-            )
+            ),
+            MatchsTournamentView(
+              tournament: tournament,
+              capseurs: capseurs,
+            ),
           ],
         ),
       ),

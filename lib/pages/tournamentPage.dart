@@ -57,6 +57,10 @@ class TournamentPage extends StatelessWidget {
           .where((pool) => pool.tournamentUid == tournamentInfo.uid)
           .toList();
 
+      pools.forEach((pool) {
+        pool.reset();
+      });
+
       // create the tournament
       Tournament tournament =
           new Tournament(tournamentInfo, pools, matchsOfTournaments, matchs);
@@ -64,6 +68,8 @@ class TournamentPage extends StatelessWidget {
       // put the participants in the right pool and the right position in the final board
       List<Participant> tournamentAssociation =
           capseursInTournaments[tournamentInfo.uid];
+
+      while (tournamentAssociation == null) widgetToShow = LoadingWidget();
       tournamentAssociation.forEach((participant) {
         if (participant.poolUid != '') {
           pools
@@ -75,19 +81,6 @@ class TournamentPage extends StatelessWidget {
         }
       });
 
-      tournament.finalBoard
-          .setNumberOfPlayers(tournament.finalBoard.participants.length);
-
-      for (int i = tournament.finalBoard.numberOfCasesOnFirstColumn;
-          i < 2 * tournament.finalBoard.numberOfCasesOnFirstColumn;
-          i++) {
-        if (tournament.finalBoard.getParticipantAt(i) == null) {
-          tournament.finalBoard.addParticipant(new Participant.initial(
-              tournament.finalBoard.getParticipantAt(i - 1).capseurUid,
-              '',
-              tournament.finalBoard.nextPosition(i)));
-        }
-      }
       // put all matchs in correponding pool/finalboard
       matchsOfTournaments.forEach((matchofTournament) {
         if (matchofTournament.poolUid != '') {
@@ -104,6 +97,7 @@ class TournamentPage extends StatelessWidget {
               matchofTournament.finalBoardPosition));
         }
       });
+
       // complete the profile of the participant for this tournament using the matchs
       if (pools.isNotEmpty) {
         for (Pool pool in pools) {
@@ -123,6 +117,52 @@ class TournamentPage extends StatelessWidget {
             participant1.addCapsAverage(capsAverageForParticipant1);
             participant2.addCapsAverage(-capsAverageForParticipant1);
           }
+          if (pool.closed &&
+              pool.rankedPartipant.first.finalBoardPosition == 0) {
+            for (int i = 0;
+                i < tournament.tournamentInfo.numberPlayersGettingOutOfEachPool;
+                i++) {
+              Participant participant = pool.rankedPartipant[i];
+              bool playerPutInFinalBoard = false;
+              int j = tournament.finalBoard.numberOfCasesOnFirstColumn;
+              while (!playerPutInFinalBoard) {
+                if (tournament.finalBoard.getParticipantAt(j) == null) {
+                  playerPutInFinalBoard = true;
+
+                  DatabaseService().updateExistingCapseursInTournamentsData(
+                      participant.associationUid,
+                      tournament.tournamentInfo.uid,
+                      pool.uid,
+                      participant.capseurUid,
+                      j);
+                } else {
+                  j += 2;
+                  if (j ==
+                      2 * tournament.finalBoard.numberOfCasesOnFirstColumn) {
+                    j = tournament.finalBoard.numberOfCasesOnFirstColumn + 1;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      if (tournament.pools.length == 0) {
+        tournament.finalBoard
+            .setNumberOfPlayers(tournament.finalBoard.participants.length);
+      }
+
+      if (tournament.poolsClosed) {
+        for (int i = tournament.finalBoard.numberOfCasesOnFirstColumn;
+            i < 2 * tournament.finalBoard.numberOfCasesOnFirstColumn;
+            i++) {
+          if (tournament.finalBoard.getParticipantAt(i) == null) {
+            tournament.finalBoard.addParticipant(new Participant.initial(
+                tournament.finalBoard.getParticipantAt(i - 1).capseurUid,
+                '',
+                tournament.finalBoard.nextPosition(i)));
+          }
         }
       }
 
@@ -133,7 +173,7 @@ class TournamentPage extends StatelessWidget {
     }
 
     return DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: kBackgroundBaseColor,
@@ -153,6 +193,14 @@ class TournamentPage extends StatelessWidget {
                 Tab(
                   child: Text('Tableau final',
                       style: TextStyle(color: kSecondaryColor)),
+                  icon: Icon(
+                    Icons.list_alt,
+                    color: kSecondaryColor,
+                  ),
+                ),
+                Tab(
+                  child:
+                      Text('Matchs', style: TextStyle(color: kSecondaryColor)),
                   icon: Icon(
                     Icons.list_alt,
                     color: kSecondaryColor,

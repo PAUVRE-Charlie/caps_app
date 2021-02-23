@@ -1,5 +1,6 @@
 import 'package:caps_app/models/participant.dart';
 
+import 'matchEnded.dart';
 import 'matchsOfTournament.dart';
 
 class Pool {
@@ -51,5 +52,33 @@ class Pool {
 
   void setName(String name) {
     _name = name;
+  }
+
+  bool isInThisPool(String capseurUid) {
+    for (Participant participant in this.participants) {
+      if (participant.capseurUid == capseurUid) return true;
+    }
+    return false;
+  }
+
+  bool canPlay(
+      String capseurUid, String opponentUid, List<MatchEnded> allMatchs) {
+    if (isInThisPool(capseurUid) &&
+        isInThisPool(opponentUid) &&
+        opponentUid != capseurUid) {
+      for (MatchOfTournament match in this.matchs) {
+        if (allMatchs
+            .firstWhere((matchEnded) => matchEnded.uid == match.match)
+            .isOpposing(capseurUid, opponentUid)) return false;
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void reset() {
+    this._matchs = new List();
+    this._participants = new List();
   }
 }

@@ -20,4 +20,9 @@ class MatchEnded {
   bool get player1Won => _scorePlayer1 > _scorePlayer2;
 
   String get winnerUid => this.player1Won ? _capseur1 : _capseur2;
+
+  bool isOpposing(String capseurUid1, String capseurUid2) {
+    return ((capseurUid1 == this._capseur1 && capseurUid2 == this._capseur2) ||
+        (capseurUid2 == this._capseur1 && capseurUid1 == this._capseur2));
+  }
 }

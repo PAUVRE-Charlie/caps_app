@@ -284,7 +284,7 @@ class DatabaseService {
   List<TournamentInfo> _tournamentListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return TournamentInfo(doc.id, doc.data()['name'] ?? '',
-          doc.data()['numberPlayersGettingOutOfEachPool'] ?? 0);
+          doc.data()['numberPlayerGettingOutOfEachPool'] ?? 0);
     }).toList();
   }
 
@@ -339,6 +339,20 @@ class DatabaseService {
     });
   }
 
+  Future updateExistingCapseursInTournamentsData(
+      String associationUid,
+      String tournamentUid,
+      String poolUid,
+      String capseurUid,
+      int finalBoardPosition) async {
+    return await capseursInTournamentsCollection.doc(associationUid).set({
+      'tournamentUid': tournamentUid,
+      'poolUid': poolUid,
+      'capseurUid': capseurUid,
+      'finalBoardPosition': finalBoardPosition
+    });
+  }
+
   Map<String, List<Participant>> _capseursInTournamentsMapFromSnapshot(
       QuerySnapshot snapshot) {
     Map<String, List<Participant>> listOfCapseursInTournaments = new Map();
@@ -347,8 +361,11 @@ class DatabaseService {
           listOfCapseursInTournaments[doc.data()['tournamentUid']] ??
               new List();
 
-      tournamentList.add(Participant.initial(doc.data()['capseurUid'],
-          doc.data()['poolUid'] ?? '', doc.data()['finalBoardPosition'] ?? 0));
+      tournamentList.add(Participant.fromAssociation(
+          doc.id,
+          doc.data()['capseurUid'],
+          doc.data()['poolUid'] ?? '',
+          doc.data()['finalBoardPosition'] ?? 0));
 
       listOfCapseursInTournaments[doc.data()['tournamentUid']] = tournamentList;
     });

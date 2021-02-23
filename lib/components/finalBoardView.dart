@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:bidirectional_scroll_view/bidirectional_scroll_view.dart';
+import 'package:caps_app/components/loading.dart';
 import 'package:caps_app/components/matchsWaitingList.dart';
 import 'package:caps_app/data.dart';
 import 'package:caps_app/models/basicUser.dart';
@@ -26,156 +28,214 @@ class FinalBoardView extends StatefulWidget {
 class _PoolsViewState extends State<FinalBoardView> {
   @override
   Widget build(BuildContext context) {
-    if (widget.tournament.finalBoard.numberOfPlayers == 0)
-      return Text("Encore en phases de poules");
+    final matchsWaitingToBeValidated =
+        Provider.of<List<MatchWaitingToBeValidated>>(context);
 
-    const double heightSpace = 40;
+    if (matchsWaitingToBeValidated == null) return LoadingWidget();
 
-    return Stack(
-      children: [
-        SingleChildScrollView(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              for (int j = widget.tournament.finalBoard.maxMatchs; j >= 0; j--)
-                Column(
-                  children: [
-                    SizedBox(
-                      height:
-                          (pow(2, widget.tournament.finalBoard.maxMatchs - j) -
-                                      1)
-                                  .toDouble() *
-                              heightSpace,
-                    ),
-                    for (int i = pow(2, j); i < pow(2, j + 1); i++) ...[
+    if (!widget.tournament.poolsClosed)
+      return Center(
+          child: Text(
+        "Encore en phase de poules",
+        style: TextStyle(
+            fontFamily: 'PirataOne', fontSize: 35, color: Colors.black),
+      ));
+
+    const double heightSpace = 20;
+
+    return BidirectionalScrollViewPlugin(
+      child: Row(
+        children: [
+          for (int j = widget.tournament.finalBoard.maxMatchs; j >= 0; j--)
+            Column(
+              children: [
+                SizedBox(
+                  height:
+                      (pow(2, widget.tournament.finalBoard.maxMatchs - j) - 1)
+                              .toDouble() *
+                          heightSpace,
+                ),
+                for (int i = pow(2, j); i < pow(2, j + 1); i++) ...[
+                  Row(
+                    children: [
+                      if (j != widget.tournament.finalBoard.maxMatchs) ...[
+                        SizedBox(
+                          width: 50,
+                        ),
+                        Column(
+                          children: [
+                            CustomPaint(
+                              painter: LinePainter(
+                                  -50,
+                                  (pow(
+                                                  2,
+                                                  widget.tournament.finalBoard
+                                                          .maxMatchs -
+                                                      j) -
+                                              1) /
+                                          2.toDouble() *
+                                          heightSpace +
+                                      heightSpace / 2),
+                            ),
+                            CustomPaint(
+                              painter: LinePainter(
+                                  -50,
+                                  -(pow(
+                                                  2,
+                                                  widget.tournament.finalBoard
+                                                          .maxMatchs -
+                                                      j) -
+                                              1) /
+                                          2.toDouble() *
+                                          heightSpace -
+                                      heightSpace / 2),
+                            ),
+                          ],
+                        )
+                      ],
                       Container(
                           height: heightSpace,
                           child: CaseOfFinalBoard(
                             tournament: widget.tournament,
                             capseurs: widget.capseurs,
                             position: i,
-                          )),
-                      if (i != pow(2, j + 1) - 1)
-                        SizedBox(
-                          height: (pow(
-                                          2,
-                                          widget.tournament.finalBoard
-                                                  .maxMatchs -
-                                              j +
-                                              1) -
-                                      1)
-                                  .toDouble() *
-                              heightSpace,
-                        ),
+                            matchsWaitingToBeValidated:
+                                matchsWaitingToBeValidated,
+                          ))
                     ],
+                  ),
+                  if (i != pow(2, j + 1) - 1)
                     SizedBox(
-                      height:
-                          (pow(2, widget.tournament.finalBoard.maxMatchs - j) -
-                                      1)
-                                  .toDouble() *
-                              heightSpace,
+                      height: (pow(
+                                      2,
+                                      widget.tournament.finalBoard.maxMatchs -
+                                          j +
+                                          1) -
+                                  1)
+                              .toDouble() *
+                          heightSpace,
                     ),
-                  ],
+                ],
+                SizedBox(
+                  height:
+                      (pow(2, widget.tournament.finalBoard.maxMatchs - j) - 1)
+                              .toDouble() *
+                          heightSpace,
                 ),
-            ],
-          ),
-        ),
-      ],
+              ],
+            ),
+        ],
+      ),
     );
   }
 }
 
-class CaseOfFinalBoard extends StatefulWidget {
+class CaseOfFinalBoard extends StatelessWidget {
   const CaseOfFinalBoard(
       {Key key,
       @required this.tournament,
       @required this.capseurs,
-      @required this.position})
+      @required this.position,
+      @required this.matchsWaitingToBeValidated})
       : super(key: key);
-
-  @override
-  _CaseOfFinalBoardState createState() => _CaseOfFinalBoardState();
 
   final Tournament tournament;
   final List<Capseur> capseurs;
+  final List<MatchWaitingToBeValidated> matchsWaitingToBeValidated;
   final int position;
-}
 
-class _CaseOfFinalBoardState extends State<CaseOfFinalBoard> {
-  @override
   Widget build(BuildContext context) {
     final user = Provider.of<BasicUser>(context);
-    final matchsWaitingToBeValidated =
-        Provider.of<List<MatchWaitingToBeValidated>>(context);
 
     Participant participantOfThisCase =
-        widget.tournament.finalBoard.getParticipantAt(widget.position);
+        tournament.finalBoard.getParticipantAt(position);
 
     bool isAlreadyPlayed() {
-      for (MatchWaitingToBeValidated match in matchsWaitingToBeValidated) {
-        if (match.finalBoardPosition == widget.position) return true;
+      for (MatchWaitingToBeValidated match in matchsWaitingToBeValidated.where(
+          (match) => match.tournamentUid == tournament.tournamentInfo.uid)) {
+        if (match.finalBoardPosition == position) return true;
       }
       return false;
     }
 
-    return Center(
-      child: participantOfThisCase != null
-          ? TextButton(
-              child: Text(
-                  participantOfThisCase.getCapseur(widget.capseurs).username,
-                  style: TextStyle(
-                      color: participantOfThisCase.capseurUid == user.uid
-                          ? kPrimaryColor
-                          : Colors.black)),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                    builder: (context) => new ProfilePage(
-                        capseur:
-                            participantOfThisCase.getCapseur(widget.capseurs)),
-                  ),
-                );
-              },
-            )
-          : widget.tournament.finalBoard
-                      .playInThisMatch(user.uid, widget.position) &&
-                  widget.tournament.finalBoard
-                          .participantsInMatch(widget.position)
-                          .first !=
-                      null &&
-                  widget.tournament.finalBoard
-                          .participantsInMatch(widget.position)
-                          .last !=
-                      null
-              ? TextButton(
-                  child: Text(isAlreadyPlayed() ? 'A valider...' : 'Jouer'),
-                  onPressed: !isAlreadyPlayed()
-                      ? () {
-                          List<Participant> participantsInMatch = widget
-                              .tournament.finalBoard
-                              .participantsInMatch(widget.position);
-                          Game.startMatchOfTournament(
-                            context,
-                            "Match",
-                            widget.capseurs.firstWhere((capseur) =>
-                                capseur.uid ==
-                                participantsInMatch
-                                    .firstWhere((participant) =>
-                                        participant.capseurUid == user.uid)
-                                    .capseurUid),
-                            widget.tournament.tournamentInfo.uid,
-                            finalBoardPosition: widget.position,
-                            capseur2: widget.capseurs.firstWhere((capseur) =>
-                                capseur.uid ==
-                                participantsInMatch
-                                    .firstWhere((participant) =>
-                                        participant.capseurUid != user.uid)
-                                    .capseurUid),
-                          );
-                        }
-                      : null)
-              : Text('-------'),
+    return Container(
+      width: 100,
+      child: Center(
+        child: participantOfThisCase != null
+            ? TextButton(
+                style: ButtonStyle(
+                    padding: MaterialStateProperty.all(EdgeInsets.all(0))),
+                child: Text(participantOfThisCase.getCapseur(capseurs).username,
+                    style: TextStyle(
+                        color: participantOfThisCase.capseurUid == user.uid
+                            ? kPrimaryColor
+                            : Colors.black)),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                      builder: (context) => new ProfilePage(
+                          capseur: participantOfThisCase.getCapseur(capseurs)),
+                    ),
+                  );
+                },
+              )
+            : tournament.finalBoard.playInThisMatch(user.uid, position) &&
+                    tournament.finalBoard.participantsInMatch(position).first !=
+                        null &&
+                    tournament.finalBoard.participantsInMatch(position).last !=
+                        null
+                ? TextButton(
+                    child: Text(
+                      isAlreadyPlayed() ? 'A valider...' : 'Jouer',
+                    ),
+                    style: ButtonStyle(
+                        padding: MaterialStateProperty.all(EdgeInsets.all(0))),
+                    onPressed: !isAlreadyPlayed()
+                        ? () {
+                            List<Participant> participantsInMatch = tournament
+                                .finalBoard
+                                .participantsInMatch(position);
+                            Game.startMatchOfTournament(
+                              context,
+                              "Match",
+                              capseurs.firstWhere((capseur) =>
+                                  capseur.uid ==
+                                  participantsInMatch
+                                      .firstWhere((participant) =>
+                                          participant.capseurUid == user.uid)
+                                      .capseurUid),
+                              tournament.tournamentInfo.uid,
+                              finalBoardPosition: position,
+                              capseur2: capseurs.firstWhere((capseur) =>
+                                  capseur.uid ==
+                                  participantsInMatch
+                                      .firstWhere((participant) =>
+                                          participant.capseurUid != user.uid)
+                                      .capseurUid),
+                            );
+                          }
+                        : null)
+                : Text('  -------'),
+      ),
     );
   }
+}
+
+class LinePainter extends CustomPainter {
+  final double x;
+  final double y;
+
+  LinePainter(this.x, this.y);
+
+  void paint(Canvas canvas, Size size) {
+    canvas.drawLine(
+        Offset(0, 0),
+        Offset(x, y),
+        Paint()
+          ..color = Colors.black.withOpacity(0.5)
+          ..strokeWidth = 2);
+  }
+
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }

@@ -13,7 +13,15 @@ class Tournament {
 
   Tournament(this._tournamentInfo, this._pools, this._matchsOfTournaments,
       this._matchs) {
-    _finalBoard = FinalBoard();
+    print(this.numberOfPools *
+        this.tournamentInfo.numberPlayersGettingOutOfEachPool);
+    print(this.numberOfPools);
+    print(this.tournamentInfo.numberPlayersGettingOutOfEachPool);
+    _finalBoard = this._pools.isEmpty
+        ? FinalBoard()
+        : FinalBoard(
+            numberOfPlayers: this.numberOfPools *
+                this.tournamentInfo.numberPlayersGettingOutOfEachPool);
   }
 
   int get numberOfPools => _pools.length;
@@ -52,5 +60,11 @@ class Tournament {
 
   bool get tournamentClosed {
     return this.finalBoard.getParticipantAt(1) != null;
+  }
+
+  List<Pool> get sortedPools {
+    List<Pool> _sortedPools = this.pools;
+    _sortedPools.sort((x, y) => (x.name.compareTo(y.name)));
+    return _sortedPools;
   }
 }

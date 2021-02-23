@@ -338,11 +338,9 @@ class _CreateTournamentFormState extends State<CreateTournamentForm> {
                                 pools.add(new Pool("", "", "Poule ${i + 1}"));
                               }
                               for (int i = 0; i < capseurs.length; i++) {
-                                pools[i ~/ numberPlayersPerPool].addParticipant(
-                                    new Participant.initial(
-                                        capseurs[i].uid,
-                                        pools[i ~/ numberPlayersPerPool].uid,
-                                        0));
+                                pools[i % poolsCount].addParticipant(
+                                    new Participant.initial(capseurs[i].uid,
+                                        pools[i % poolsCount].uid, 0));
                               }
                             }
                             for (Pool pool in pools) {

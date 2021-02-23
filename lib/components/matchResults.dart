@@ -6,7 +6,8 @@ import 'package:caps_app/pages/profilePage.dart';
 import 'package:flutter/material.dart';
 
 class MatchResults extends StatefulWidget {
-  MatchResults({Key key, this.match, this.capseurs, this.capseur})
+  MatchResults(
+      {Key key, @required this.match, @required this.capseurs, this.capseur})
       : super(key: key);
 
   final MatchEnded match;

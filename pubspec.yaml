@@ -55,6 +55,9 @@ dependencies:
   keyboard_visibility: ^0.5.6
   # https://pub.dev/packages/keyboard_visibility, MIT license: Copyright (c) 2006-2018
 
+  bidirectional_scroll_view: ^0.1.1
+  #https://pub.dev/packages/bidirectional_scroll_view, BSD license: Copyright (c) toufikzitouni
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

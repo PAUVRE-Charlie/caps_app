@@ -12,10 +12,10 @@ class FinalBoard {
   List<MatchOfTournament> _matchs;
   int _numberOfPlayers;
 
-  FinalBoard() {
+  FinalBoard({int numberOfPlayers}) {
     _participants = new List();
     _matchs = new List();
-    _numberOfPlayers = 0;
+    _numberOfPlayers = numberOfPlayers ?? 0;
   }
 
   List<Participant> get participants => _participants;

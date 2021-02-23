@@ -55,4 +55,9 @@ class MatchWaitingToBeValidated {
   String get poolUid => _poolUid == '' ? null : _poolUid;
   int get finalBoardPosition =>
       _finalBoardPosition == 0 ? null : _finalBoardPosition;
+
+  bool isOpposing(String capseurUid1, String capseurUid2) {
+    return ((capseurUid1 == this._capseur1 && capseurUid2 == this._capseur2) ||
+        (capseurUid2 == this._capseur1 && capseurUid1 == this._capseur2));
+  }
 }

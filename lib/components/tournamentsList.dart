@@ -1,5 +1,6 @@
 import 'package:caps_app/components/loading.dart';
 import 'package:caps_app/components/matchResults.dart';
+import 'package:caps_app/data.dart';
 import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/models/matchEnded.dart';
 import 'package:caps_app/models/matchsOfTournament.dart';
@@ -34,7 +35,11 @@ class _MatchListState extends State<TournamentList> {
         itemBuilder: (BuildContext context, int index) {
           TournamentInfo tournament = tournaments[index];
           return ListTile(
-            title: Text(tournament.name),
+            title: Text(
+              tournament.name,
+              style: TextStyle(fontFamily: 'PirataOne', fontSize: 25),
+            ),
+            trailing: Icon(Icons.arrow_forward_ios_sharp),
             onTap: () {
               Navigator.push(
                 context,

@@ -15,7 +15,7 @@ Future<void> displayDisclamer(context) {
             title: Text("Attention"),
             content: SingleChildScrollView(
               child: Text(
-                "L'abus d'alcool est dangereux pour la santé. En poursuivant vous confirmez être responsable des éventuelles conséquences que pourrait engendrer l'utilisation de Caps Beer Game. Sachez que vous n'êtes en aucun cas forcé à boire de l'alcool et nous rappelons que ce jeu peut bien évidemment se jouer sans alcool",
+                "L'abus d'alcool est dangereux pour la santé. En poursuivant vous confirmez être responsable des éventuelles conséquences que pourrait engendrer l'utilisation de Caps Beer Game. Sachez que vous n'êtes en aucun cas forcé à boire de l'alcool et nous rappelons que ce jeu peut bien évidemment se jouer sans alcool.",
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 18,
@@ -24,14 +24,14 @@ Future<void> displayDisclamer(context) {
             ),
             actions: <Widget>[
               TextButton(
+                child: Text("FERMER"),
+                onPressed: () => exit(0),
+              ),
+              TextButton(
                 child: Text("OK"),
                 onPressed: () {
                   Navigator.pop(context);
                 },
-              ),
-              TextButton(
-                child: Text("FERMER"),
-                onPressed: () => exit(0),
               ),
             ],
           ),
