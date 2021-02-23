@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MatchList extends StatefulWidget {
-  MatchList({Key key, this.capseur}) : super(key: key);
+  MatchList({Key key, this.capseur, this.maxMatchsDisplayed}) : super(key: key);
 
   final Capseur
       capseur; // not mandatory, but if not null, the list will only contain matchs of this player
+
+  final int maxMatchsDisplayed;
 
   @override
   _MatchListState createState() => _MatchListState();
@@ -30,6 +32,11 @@ class _MatchListState extends State<MatchList> {
               match.player1 == widget.capseur.uid ||
               match.player2 == widget.capseur.uid)
           .toList();
+    }
+
+    if (widget.maxMatchsDisplayed != null &&
+        matchs.length > widget.maxMatchsDisplayed) {
+      matchs = matchs.sublist(0, widget.maxMatchsDisplayed);
     }
 
     return Column(
