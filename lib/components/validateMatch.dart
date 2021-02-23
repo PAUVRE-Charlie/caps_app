@@ -45,7 +45,10 @@ class _ValidateMatchState extends State<ValidateMatch> {
         capseur1.points +
             (match.scorePlayer1 > match.scorePlayer2
                 ? updatePointsWinner(winner, loser, match.pointsRequired)
-                : updatePointsloser(winner, loser, match.pointsRequired)));
+                : updatePointsloser(winner, loser, match.pointsRequired)),
+        (match.scorePlayer1 > match.scorePlayer2) ? capseur1.victorySerieActual + 1 : 0,
+        (capseur1.victorySerieActual > capseur1.victorySerieMax) ? capseur1.victorySerieActual : capseur1.victorySerieMax,
+        (match.maxGameReverse > capseur1.maxReverse) ? match.maxGameReverse : capseur1.maxReverse,);
 
     DatabaseService().updateCapseurData(
         capseur2.uid,
@@ -58,7 +61,10 @@ class _ValidateMatchState extends State<ValidateMatch> {
         capseur2.points +
             (match.scorePlayer2 > match.scorePlayer1
                 ? updatePointsWinner(winner, loser, match.pointsRequired)
-                : updatePointsloser(winner, loser, match.pointsRequired)));
+                : updatePointsloser(winner, loser, match.pointsRequired)),
+    (match.scorePlayer2 > match.scorePlayer1) ? capseur2.victorySerieActual + 1 : 0,
+    (capseur2.victorySerieActual > capseur2.victorySerieMax) ? capseur2.victorySerieActual : capseur1.victorySerieMax,
+    (match.maxGameReverse > capseur2.maxReverse) ? match.maxGameReverse : capseur2.maxReverse,);
   }
 
   double updatePointsWinner(Capseur winner, Capseur loser, int pointsRequired) {

@@ -24,6 +24,7 @@ class Game {
   String _tournamentUid;
   String _poolUid;
   int _finalBoardPosition;
+  int _maxGameReverse;
 
   Game.initial(
       Capseur capseur1,
@@ -48,6 +49,7 @@ class Game {
     _tournamentUid = tournamentUid;
     _poolUid = poolUid;
     _finalBoardPosition = finalBoardPosition;
+    _maxGameReverse = 0;
   }
 
   Game(
@@ -57,9 +59,10 @@ class Game {
       this._pointsRequired,
       this._pointsPerBottle,
       this._player1Starting,
+      this._maxGameReverse,
       this._tournamentUid,
       this._poolUid,
-      this._finalBoardPosition);
+      this._finalBoardPosition,);
 
   BuildContext get context => _context;
   Player get player1 => _player1;
@@ -71,6 +74,7 @@ class Game {
   String get tournamentUid => _tournamentUid;
   String get poolUid => _poolUid;
   int get finalBoardPosition => _finalBoardPosition;
+  int get maxGameReverse => _maxGameReverse;
 
   setContext(BuildContext context) {
     _context = context;
@@ -78,6 +82,10 @@ class Game {
 
   setReverseCount(int value) {
     _reverseCount = value;
+  }
+
+  setMaxGameReverse(int value) {
+    _maxGameReverse = value;
   }
 
   static Future<void> startMatch(
@@ -159,6 +167,9 @@ class Game {
       setReverseCount(this.reverseCount + 1);
     } else {
       if (this.reverseCount > 0) {
+        if (this.reverseCount > this.maxGameReverse) {
+          setMaxGameReverse(this.reverseCount);
+        }
         if (_player1.playing) {
           this.player1.addCapsThrow();
           setScoreAndDrink(this.reverseCount, this.player1, this.player2);
@@ -184,7 +195,6 @@ class Game {
         .setScore(playerWhoseScoreIncrease.score + currentReverseCount);
     playerWhoDrinks.drink(currentReverseCount, this.pointsPerBottle);
     if (playerWhoseScoreIncrease.score >= this.pointsRequired) {
-      //endGame(playerWhoseScoreIncrease);
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -281,6 +291,7 @@ class Game {
         this.player1.capsThrowInThisGame,
         this.player2.capsHitInThisGame,
         this.player2.capsThrowInThisGame,
+        this.maxGameReverse,
         tournamentUid: this.tournamentUid,
         poolUid: this.poolUid,
         finalBoardPosition: this.finalBoardPosition);

@@ -74,6 +74,7 @@ class _MatchPageState extends State<MatchPage> {
         gameToCopy.pointsRequired,
         gameToCopy.pointsPerBottle,
         gameToCopy.player1starting,
+        gameToCopy.maxGameReverse,
         gameToCopy.tournamentUid,
         gameToCopy.poolUid,
         gameToCopy.finalBoardPosition);

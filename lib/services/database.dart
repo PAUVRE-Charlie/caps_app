@@ -44,13 +44,16 @@ class DatabaseService {
   Capseur _userDataFromSnapshot(DocumentSnapshot snapshot) {
     return Capseur(
       snapshot.data()['username'] ?? '',
-      snapshot.data()['matchsPlayed'] ?? '',
-      snapshot.data()['matchsWon'] ?? '',
-      snapshot.data()['capsHit'] ?? '',
-      snapshot.data()['capsThrow'] ?? '',
-      snapshot.data()['bottlesEmptied'] ?? '',
+      snapshot.data()['matchsPlayed'] ?? 0,
+      snapshot.data()['matchsWon'] ?? 0,
+      snapshot.data()['capsHit'] ?? 0,
+      snapshot.data()['capsThrow'] ?? 0,
+      snapshot.data()['bottlesEmptied'] ?? 0,
       uid,
-      snapshot.data()['points'] ?? '',
+      snapshot.data()['points'] ?? 0.0,
+      snapshot.data()['victorySerieActual'] ?? 0,
+      snapshot.data()['victorySerieMax'] ?? 0,
+      snapshot.data()['maxReverse'] ?? 0,
     );
   }
 
@@ -77,7 +80,11 @@ class DatabaseService {
       int capsHit,
       int capsThrow,
       int bottlesEmptied,
-      double points) async {
+      double points,
+      int victorySerieMax,
+      int victorySerieActual,
+      int maxReverse,
+      ) async {
     return await capseursCollection.doc(_uid).set({
       'username': username,
       'matchsPlayed': matchsPlayed,
@@ -86,6 +93,9 @@ class DatabaseService {
       'capsThrow': capsThrow,
       'bottlesEmptied': bottlesEmptied,
       'points': points,
+      'victorySerieMax': victorySerieMax,
+      'victorySerieActual': victorySerieActual,
+      'maxReverse': maxReverse,
     });
   }
 
@@ -94,13 +104,16 @@ class DatabaseService {
     return snapshot.docs.map((doc) {
       return Capseur(
         doc.data()['username'] ?? '',
-        doc.data()['matchsPlayed'] ?? '',
-        doc.data()['matchsWon'] ?? '',
-        doc.data()['capsHit'] ?? '',
-        doc.data()['capsThrow'] ?? '',
-        doc.data()['bottlesEmptied'] ?? '',
-        doc.id ?? '',
-        doc.data()['points'] ?? '',
+        doc.data()['matchsPlayed'] ?? 0,
+        doc.data()['matchsWon'] ?? 0,
+        doc.data()['capsHit'] ?? 0,
+        doc.data()['capsThrow'] ?? 0,
+        doc.data()['bottlesEmptied'] ?? 0,
+        doc.id,
+        doc.data()['points'] ?? 0.0,
+        doc.data()['victorySerieActual'] ?? 0,
+        doc.data()['victorySerieMax'] ?? 0,
+        doc.data()['maxReverse'] ?? 0,
       );
     }).toList();
   }
@@ -177,9 +190,10 @@ class DatabaseService {
       int capsThrowPlayer1,
       int capsHitPlayer2,
       int capsThrowPlayer2,
+      int maxGameReverse,
       {String tournamentUid,
       String poolUid,
-      int finalBoardPosition}) async {
+      int finalBoardPosition,}) async {
     return await matchsWaitingToBeValidatedCollection.doc().set({
       'capseur1': uidCapseur1,
       'capseur2': uidCapseur2,
@@ -192,6 +206,7 @@ class DatabaseService {
       'capsThrowPlayer1': capsThrowPlayer1,
       'capsHitPlayer2': capsHitPlayer2,
       'capsThrowPlayer2': capsThrowPlayer2,
+      'maxGameReverse': maxGameReverse,
       'tournamentUid': tournamentUid ?? '',
       'poolUid': poolUid ?? '',
       'finalBoardPosition': finalBoardPosition ?? 0,
@@ -214,6 +229,7 @@ class DatabaseService {
         doc.data()['capsThrowPlayer1'] ?? 0,
         doc.data()['capsHitPlayer2'] ?? 0,
         doc.data()['capsThrowPlayer2'] ?? 0,
+        doc.data()['maxGameReverse'] ?? 0,
         doc.data()['tournamentUid'] ?? '',
         doc.data()['poolUid'] ?? '',
         doc.data()['finalBoardPosition'] ?? 0,

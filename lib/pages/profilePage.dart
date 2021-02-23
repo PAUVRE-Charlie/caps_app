@@ -110,7 +110,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 capseur.capsHit,
                                                 capseur.capsThrow,
                                                 capseur.bottlesEmptied,
-                                                capseur.points);
+                                                capseur.points,
+                                                capseur.victorySerieActual,
+                                                capseur.victorySerieMax,
+                                                capseur.maxReverse);
                                             capseur.setUsername(
                                                 usernameTextFieldController
                                                     .value.text);
@@ -220,6 +223,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           DataItemProfile(
                               dataName: 'Kros bues',
                               dataValue: capseur.bottlesEmptied.toString()),
+                          DataItemProfile(
+                              dataName: 'Serie victoire',
+                              dataValue: capseur.victorySerieActual.toString() + ' (max: ' + capseur.victorySerieMax.toString() + ')'),
+                          DataItemProfile(
+                              dataName: 'Max reverse',
+                              dataValue: capseur.maxReverse.toString()),
                           SizedBox(
                             height: 30,
                           ),

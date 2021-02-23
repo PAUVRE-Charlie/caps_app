@@ -166,7 +166,8 @@ class _MatchResultEditState extends State<MatchResultEdit> {
                         widget.player1.capsHitInThisGame,
                         widget.player1.capsThrowInThisGame,
                         widget.player2.capsHitInThisGame,
-                        widget.player2.capsThrowInThisGame);
+                        widget.player2.capsThrowInThisGame,
+                        0,);
 
                     Navigator.of(this.context).pop();
                   }
