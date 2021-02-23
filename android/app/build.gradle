@@ -13,12 +13,12 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
+    flutterVersionCode = '3'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
+    flutterVersionName = '3.0'
 }
 
 apply plugin: 'com.android.application'
@@ -60,11 +60,20 @@ android {
         }
     }
 
+    ndkVersion "23.0.7123448"
+
+
+
+
     buildTypes {
         release {
             signingConfig signingConfigs.release
+            ndk {
+                debugSymbolLevel 'SYMBOL_TABLE'
+            }
         }
     }
+
 }
 
 flutter {
