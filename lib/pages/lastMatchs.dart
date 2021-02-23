@@ -37,7 +37,9 @@ class LastMatchs extends StatelessWidget {
                   image: "assets/images/bottle_-15deg.png",
                 ),
                 SingleChildScrollView(
-                  child: MatchList(),
+                  child: MatchList(
+                    maxMatchsDisplayed: 50,
+                  ),
                 )
               ],
             ),

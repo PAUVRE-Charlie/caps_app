@@ -14,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-
 import '../data.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -117,7 +116,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                           } else {
                                             usernameTextFieldController.text =
                                                 capseur.username;
-                                            Fluttertoast.showToast(msg: 'Votre nom ne peut dépasser 10 caractères');
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    'Votre nom ne peut dépasser 10 caractères');
                                           }
                                         });
                                       },
@@ -236,6 +237,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           MatchList(
                             capseur: capseur,
+                            maxMatchsDisplayed: 20,
                           ),
                         ],
                       ),
