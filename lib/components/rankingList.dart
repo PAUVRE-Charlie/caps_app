@@ -109,18 +109,18 @@ class _RankingListState extends State<RankingList> {
 
     if (capseurs == null) return LoadingWidget();
 
-    if (widget.justThemCapseurs != null) {
-      capseurs = widget.justThemCapseurs;
-    }
+    // if (widget.justThemCapseurs != null) {
+    //   capseurs = widget.justThemCapseurs;
+    // }
 
-    if (widget.noShowCapseurs != null) {
-      capseurs = capseurs.where((capseur) {
-        for (Capseur capseur2 in widget.noShowCapseurs) {
-          if (capseur2.uid == capseur.uid) return false;
-        }
-        return true;
-      }).toList();
-    }
+    // if (widget.noShowCapseurs != null) {
+    //   capseurs = capseurs.where((capseur) {
+    //     for (Capseur capseur2 in widget.noShowCapseurs) {
+    //       if (capseur2.uid == capseur.uid) return false;
+    //     }
+    //     return true;
+    //   }).toList();
+    // }
 
     capseurs.sort(getFilter(widget.filter));
 
@@ -159,9 +159,12 @@ class _RankingListState extends State<RankingList> {
           child: ListView.builder(
               itemBuilder: (BuildContext context, int index) {
                 Capseur capseur = capseurs[index];
-                return capseur.username
-                        .toLowerCase()
-                        .contains(_searchController.value.text.toLowerCase())
+                return capseur.username.toLowerCase().contains(
+                            _searchController.value.text.toLowerCase()) &&
+                        (widget.justThemCapseurs == null ||
+                            widget.justThemCapseurs.contains(capseur)) &&
+                        (widget.noShowCapseurs == null ||
+                            !widget.noShowCapseurs.contains(capseur))
                     ? GestureDetector(
                         onTap: () {
                           if (widget.onPressed != null)
