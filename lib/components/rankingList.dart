@@ -60,6 +60,12 @@ class _RankingListState extends State<RankingList> {
       case Filter.KROEMPTIED:
         return ((x, y) => y.bottlesEmptied.compareTo(x.bottlesEmptied));
         break;
+      case Filter.VICTORYSERIEMAX:
+        return ((x, y) => y.victorySerieMax.compareTo(x.victorySerieMax));
+        break;
+      case Filter.MAXREVERSE:
+        return ((x, y) => y.maxReverse.compareTo(x.maxReverse));
+        break;
       default:
         return ((x, y) => y.points.compareTo(x.points));
     }
@@ -80,10 +86,16 @@ class _RankingListState extends State<RankingList> {
         return capseur.capsHit.toString();
         break;
       case Filter.RATIO:
-        return capseur.ratio.toString();
+        return capseur.ratio.toString() + '%';
         break;
       case Filter.KROEMPTIED:
         return capseur.bottlesEmptied.toString();
+        break;
+      case Filter.VICTORYSERIEMAX:
+        return capseur.victorySerieMax.toString();
+        break;
+      case Filter.MAXREVERSE:
+        return capseur.maxReverse.toString();
         break;
       default:
         return capseur.points.round().toString();

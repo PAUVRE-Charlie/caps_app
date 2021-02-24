@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../data.dart';
 
-enum Filter { POINTS, MATCHSWON, MATCHSPLAYED, CAPSHIT, RATIO, KROEMPTIED }
+enum Filter { POINTS, MATCHSWON, MATCHSPLAYED, CAPSHIT, RATIO, KROEMPTIED, VICTORYSERIEMAX, MAXREVERSE}
 
 class RankingPage extends StatefulWidget {
   @override
@@ -36,6 +36,12 @@ class _RankingPageState extends State<RankingPage> {
         break;
       case Filter.KROEMPTIED:
         return 'Kros bues';
+        break;
+      case Filter.VICTORYSERIEMAX:
+        return 'Serie victoire';
+        break;
+      case Filter.MAXREVERSE:
+        return 'Max reverse';
         break;
       default:
         return 'Points';

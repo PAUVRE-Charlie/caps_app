@@ -81,8 +81,9 @@ class DatabaseService {
       int capsThrow,
       int bottlesEmptied,
       double points,
-      int victorySerieMax,
       int victorySerieActual,
+
+      int victorySerieMax,
       int maxReverse,
       ) async {
     return await capseursCollection.doc(_uid).set({
@@ -93,8 +94,8 @@ class DatabaseService {
       'capsThrow': capsThrow,
       'bottlesEmptied': bottlesEmptied,
       'points': points,
-      'victorySerieMax': victorySerieMax,
       'victorySerieActual': victorySerieActual,
+      'victorySerieMax': victorySerieMax,
       'maxReverse': maxReverse,
     });
   }

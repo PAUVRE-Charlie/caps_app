@@ -22,7 +22,7 @@ class ValidateMatch extends StatefulWidget {
 }
 
 class _ValidateMatchState extends State<ValidateMatch> {
-  void updateCapseursStats(
+  void updateCapseursStats (
       MatchWaitingToBeValidated match, Capseur capseur1, Capseur capseur2) {
     Capseur winner;
     Capseur loser;
@@ -47,7 +47,7 @@ class _ValidateMatchState extends State<ValidateMatch> {
                 ? updatePointsWinner(winner, loser, match.pointsRequired)
                 : updatePointsloser(winner, loser, match.pointsRequired)),
         (match.scorePlayer1 > match.scorePlayer2) ? capseur1.victorySerieActual + 1 : 0,
-        (capseur1.victorySerieActual > capseur1.victorySerieMax) ? capseur1.victorySerieActual : capseur1.victorySerieMax,
+        (match.scorePlayer1 > match.scorePlayer2) ? capseur1.victorySerieActual + 1 : 0 > capseur1.victorySerieMax ? capseur1.victorySerieActual + 1 : capseur1.victorySerieMax,
         (match.maxGameReverse > capseur1.maxReverse) ? match.maxGameReverse : capseur1.maxReverse,);
 
     DatabaseService().updateCapseurData(
@@ -62,9 +62,9 @@ class _ValidateMatchState extends State<ValidateMatch> {
             (match.scorePlayer2 > match.scorePlayer1
                 ? updatePointsWinner(winner, loser, match.pointsRequired)
                 : updatePointsloser(winner, loser, match.pointsRequired)),
-    (match.scorePlayer2 > match.scorePlayer1) ? capseur2.victorySerieActual + 1 : 0,
-    (capseur2.victorySerieActual > capseur2.victorySerieMax) ? capseur2.victorySerieActual : capseur1.victorySerieMax,
-    (match.maxGameReverse > capseur2.maxReverse) ? match.maxGameReverse : capseur2.maxReverse,);
+        (match.scorePlayer2 > match.scorePlayer1) ? capseur2.victorySerieActual + 1 : 0,
+        (match.scorePlayer2 > match.scorePlayer1) ? capseur2.victorySerieActual + 1 : 0 > capseur2.victorySerieMax ? capseur2.victorySerieActual + 1 : capseur2.victorySerieMax,
+        (match.maxGameReverse > capseur2.maxReverse) ? match.maxGameReverse : capseur2.maxReverse,);
   }
 
   double updatePointsWinner(Capseur winner, Capseur loser, int pointsRequired) {
