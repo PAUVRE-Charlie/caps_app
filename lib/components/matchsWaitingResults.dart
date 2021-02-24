@@ -6,6 +6,8 @@ import 'package:caps_app/models/matchWaitingToBeValidated.dart';
 import 'package:caps_app/pages/profilePage.dart';
 import 'package:flutter/material.dart';
 
+import '../utils.dart';
+
 class MatchWaitingResults extends StatefulWidget {
   MatchWaitingResults({Key key, this.match, this.capseurs, this.capseur})
       : super(key: key);
@@ -74,8 +76,9 @@ class _MatchWaitingResultsState extends State<MatchWaitingResults> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 10,
+            Text(
+              dateFromString(widget.match.date.toDate().toLocal()),
+              style: TextStyle(color: Colors.grey, fontSize: 12),
             ),
             Text(
               widget.match.scorePlayer1.toString() +

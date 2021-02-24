@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 
+String intTimeToString(int timeInt) {
+  return (timeInt < 10 ? '0' + timeInt.toString() : timeInt.toString());
+}
+
+String dateFromString(DateTime date) {
+  return ('${intTimeToString(date.day)}/${intTimeToString(date.month)}/${date.year} : ${intTimeToString(date.hour)}h${intTimeToString(date.minute)}');
+}
+
 Future<void> displayDisclamer(context) {
   return showDialog<void>(
       context: context,

@@ -73,19 +73,18 @@ class DatabaseService {
   */
 
   Future updateCapseurData(
-      String _uid,
-      String username,
-      int matchsPlayed,
-      int matchsWon,
-      int capsHit,
-      int capsThrow,
-      int bottlesEmptied,
-      double points,
-      int victorySerieActual,
-
-      int victorySerieMax,
-      int maxReverse,
-      ) async {
+    String _uid,
+    String username,
+    int matchsPlayed,
+    int matchsWon,
+    int capsHit,
+    int capsThrow,
+    int bottlesEmptied,
+    double points,
+    int victorySerieActual,
+    int victorySerieMax,
+    int maxReverse,
+  ) async {
     return await capseursCollection.doc(_uid).set({
       'username': username,
       'matchsPlayed': matchsPlayed,
@@ -133,21 +132,21 @@ class DatabaseService {
         ################################################################
   */
 
-  Future updateMatchData(String uidCapseur1, String uidCapseur2,
+  Future updateMatchData(String uidCapseur1, String uidCapseur2, Timestamp date,
       int scorePlayer1, int scorePlayer2,
       {String matchUid}) async {
     return matchUid == null
         ? await matchsCollection.doc().set({
             'capseur1': uidCapseur1,
             'capseur2': uidCapseur2,
-            'date': Timestamp.now(),
+            'date': date,
             'scorePlayer1': scorePlayer1,
             'scorePlayer2': scorePlayer2,
           })
         : await matchsCollection.doc(matchUid).set({
             'capseur1': uidCapseur1,
             'capseur2': uidCapseur2,
-            'date': Timestamp.now(),
+            'date': date,
             'scorePlayer1': scorePlayer1,
             'scorePlayer2': scorePlayer2,
           });
@@ -181,20 +180,21 @@ class DatabaseService {
   */
 
   Future updateMatchWaitingToBeValidatedData(
-      String uidCapseur1,
-      String uidCapseur2,
-      int scorePlayer1,
-      int scorePlayer2,
-      int pointsRequired,
-      int pointsPerBottle,
-      int capsHitPlayer1,
-      int capsThrowPlayer1,
-      int capsHitPlayer2,
-      int capsThrowPlayer2,
-      int maxGameReverse,
-      {String tournamentUid,
-      String poolUid,
-      int finalBoardPosition,}) async {
+    String uidCapseur1,
+    String uidCapseur2,
+    int scorePlayer1,
+    int scorePlayer2,
+    int pointsRequired,
+    int pointsPerBottle,
+    int capsHitPlayer1,
+    int capsThrowPlayer1,
+    int capsHitPlayer2,
+    int capsThrowPlayer2,
+    int maxGameReverse, {
+    String tournamentUid,
+    String poolUid,
+    int finalBoardPosition,
+  }) async {
     return await matchsWaitingToBeValidatedCollection.doc().set({
       'capseur1': uidCapseur1,
       'capseur2': uidCapseur2,

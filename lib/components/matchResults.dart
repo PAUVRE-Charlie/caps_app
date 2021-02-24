@@ -1,8 +1,10 @@
 import 'package:caps_app/components/loading.dart';
+import 'package:caps_app/utils.dart';
 import 'package:caps_app/data.dart';
 import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/models/matchEnded.dart';
 import 'package:caps_app/pages/profilePage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class MatchResults extends StatefulWidget {
@@ -78,8 +80,9 @@ class _MatchResultsState extends State<MatchResults> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 10,
+            Text(
+              dateFromString(widget.match.date.toDate().toLocal()),
+              style: TextStyle(color: Colors.grey[600], fontSize: 12),
             ),
             Text(
               widget.match.scorePlayer1.toString() +

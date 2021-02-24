@@ -34,6 +34,8 @@ class _MatchWaitingListState extends State<MatchWaitingList> {
           .toList();
     }
 
+    matchs.sort(((x, y) => y.date.compareTo(x.date)));
+
     return Column(
       children: [
         for (MatchWaitingToBeValidated match in matchs)

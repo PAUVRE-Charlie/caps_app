@@ -1,6 +1,6 @@
 import 'package:caps_app/components/background.dart';
 import 'package:caps_app/components/loading.dart';
-import 'package:caps_app/components/utils.dart';
+import 'package:caps_app/utils.dart';
 import 'package:caps_app/components/validateMatch.dart';
 import 'package:caps_app/models/basicUser.dart';
 import 'package:caps_app/models/capseur.dart';
@@ -172,6 +172,7 @@ class _MenuOrValidateMatchState extends State<MenuOrValidateMatch> {
 
     if (matchsNotValidatedWhereUserWasOpponent.isNotEmpty) {
       matchWaitingToBeValidated = matchsNotValidatedWhereUserWasOpponent.first;
+      matchsWaitingToBeValidated.sort(((x, y) => y.date.compareTo(x.date)));
     }
 
     Widget normalHomePage = Center(
