@@ -172,7 +172,7 @@ class _MenuOrValidateMatchState extends State<MenuOrValidateMatch> {
 
     if (matchsNotValidatedWhereUserWasOpponent.isNotEmpty) {
       matchWaitingToBeValidated = matchsNotValidatedWhereUserWasOpponent.first;
-      matchsWaitingToBeValidated.sort(((x, y) => y.date.compareTo(x.date)));
+      matchsWaitingToBeValidated.sort(((x, y) => x.date.compareTo(y.date)));
     }
 
     Widget normalHomePage = Center(
