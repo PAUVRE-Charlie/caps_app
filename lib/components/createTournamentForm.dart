@@ -170,6 +170,7 @@ class _CreateTournamentFormState extends State<CreateTournamentForm> {
                         color: kSecondaryColor,
                       ),
                       onPressed: () {
+                        FocusManager.instance.primaryFocus.unfocus();
                         if (capseurs.length < numberMaxPlayers) {
                           _showUserList(onSelectCapseur: (Capseur _opponent) {
                             setState(() {
@@ -277,6 +278,7 @@ class _CreateTournamentFormState extends State<CreateTournamentForm> {
                             value: randomPool,
                             activeColor: kPrimaryColor,
                             onChanged: (val) {
+                              FocusManager.instance.primaryFocus.unfocus();
                               setState(() {
                                 randomPool = val;
                               });

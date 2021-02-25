@@ -14,7 +14,7 @@ import 'package:caps_app/pages/profilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class FinalBoardView extends StatefulWidget {
+class FinalBoardView extends StatelessWidget {
   FinalBoardView({Key key, @required this.tournament, @required this.capseurs})
       : super(key: key);
 
@@ -22,18 +22,8 @@ class FinalBoardView extends StatefulWidget {
   final List<Capseur> capseurs;
 
   @override
-  _PoolsViewState createState() => _PoolsViewState();
-}
-
-class _PoolsViewState extends State<FinalBoardView> {
-  @override
   Widget build(BuildContext context) {
-    final matchsWaitingToBeValidated =
-        Provider.of<List<MatchWaitingToBeValidated>>(context);
-
-    if (matchsWaitingToBeValidated == null) return LoadingWidget();
-
-    if (!widget.tournament.poolsClosed)
+    if (!tournament.poolsClosed)
       return Center(
           child: Text(
         "Encore en phase de poules",
@@ -46,19 +36,18 @@ class _PoolsViewState extends State<FinalBoardView> {
     return BidirectionalScrollViewPlugin(
       child: Row(
         children: [
-          for (int j = widget.tournament.finalBoard.maxMatchs; j >= 0; j--)
+          for (int j = tournament.finalBoard.maxMatchs; j >= 0; j--)
             Column(
               children: [
                 SizedBox(
-                  height:
-                      (pow(2, widget.tournament.finalBoard.maxMatchs - j) - 1)
-                              .toDouble() *
-                          heightSpace,
+                  height: (pow(2, tournament.finalBoard.maxMatchs - j) - 1)
+                          .toDouble() *
+                      heightSpace,
                 ),
                 for (int i = pow(2, j); i < pow(2, j + 1); i++) ...[
                   Row(
                     children: [
-                      if (j != widget.tournament.finalBoard.maxMatchs) ...[
+                      if (j != tournament.finalBoard.maxMatchs) ...[
                         SizedBox(
                           width: 50,
                         ),
@@ -67,11 +56,7 @@ class _PoolsViewState extends State<FinalBoardView> {
                             CustomPaint(
                               painter: LinePainter(
                                   -50,
-                                  (pow(
-                                                  2,
-                                                  widget.tournament.finalBoard
-                                                          .maxMatchs -
-                                                      j) -
+                                  (pow(2, tournament.finalBoard.maxMatchs - j) -
                                               1) /
                                           2.toDouble() *
                                           heightSpace +
@@ -82,7 +67,7 @@ class _PoolsViewState extends State<FinalBoardView> {
                                   -50,
                                   -(pow(
                                                   2,
-                                                  widget.tournament.finalBoard
+                                                  tournament.finalBoard
                                                           .maxMatchs -
                                                       j) -
                                               1) /
@@ -96,31 +81,24 @@ class _PoolsViewState extends State<FinalBoardView> {
                       Container(
                           height: heightSpace,
                           child: CaseOfFinalBoard(
-                            tournament: widget.tournament,
-                            capseurs: widget.capseurs,
+                            tournament: tournament,
+                            capseurs: capseurs,
                             position: i,
-                            matchsWaitingToBeValidated:
-                                matchsWaitingToBeValidated,
                           ))
                     ],
                   ),
                   if (i != pow(2, j + 1) - 1)
                     SizedBox(
-                      height: (pow(
-                                      2,
-                                      widget.tournament.finalBoard.maxMatchs -
-                                          j +
-                                          1) -
-                                  1)
-                              .toDouble() *
-                          heightSpace,
+                      height:
+                          (pow(2, tournament.finalBoard.maxMatchs - j + 1) - 1)
+                                  .toDouble() *
+                              heightSpace,
                     ),
                 ],
                 SizedBox(
-                  height:
-                      (pow(2, widget.tournament.finalBoard.maxMatchs - j) - 1)
-                              .toDouble() *
-                          heightSpace,
+                  height: (pow(2, tournament.finalBoard.maxMatchs - j) - 1)
+                          .toDouble() *
+                      heightSpace,
                 ),
               ],
             ),
@@ -135,13 +113,11 @@ class CaseOfFinalBoard extends StatelessWidget {
       {Key key,
       @required this.tournament,
       @required this.capseurs,
-      @required this.position,
-      @required this.matchsWaitingToBeValidated})
+      @required this.position})
       : super(key: key);
 
   final Tournament tournament;
   final List<Capseur> capseurs;
-  final List<MatchWaitingToBeValidated> matchsWaitingToBeValidated;
   final int position;
 
   Widget build(BuildContext context) {
@@ -150,7 +126,12 @@ class CaseOfFinalBoard extends StatelessWidget {
     Participant participantOfThisCase =
         tournament.finalBoard.getParticipantAt(position);
 
-    bool isAlreadyPlayed() {
+    final matchsWaitingToBeValidated =
+        Provider.of<List<MatchWaitingToBeValidated>>(context);
+
+    if (matchsWaitingToBeValidated == null) return LoadingWidget();
+
+    bool isAlreadyPlayed(int position) {
       for (MatchWaitingToBeValidated match in matchsWaitingToBeValidated.where(
           (match) => match.tournamentUid == tournament.tournamentInfo.uid)) {
         if (match.finalBoardPosition == position) return true;
@@ -187,11 +168,11 @@ class CaseOfFinalBoard extends StatelessWidget {
                         null
                 ? TextButton(
                     child: Text(
-                      isAlreadyPlayed() ? 'A valider...' : 'Jouer',
+                      isAlreadyPlayed(position) ? 'A valider...' : 'Jouer',
                     ),
                     style: ButtonStyle(
                         padding: MaterialStateProperty.all(EdgeInsets.all(0))),
-                    onPressed: !isAlreadyPlayed()
+                    onPressed: !isAlreadyPlayed(position)
                         ? () {
                             List<Participant> participantsInMatch = tournament
                                 .finalBoard
