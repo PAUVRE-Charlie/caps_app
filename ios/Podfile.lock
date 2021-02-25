@@ -214,6 +214,8 @@ PODS:
     - abseil/meta/type_traits
   - audioplayers (0.0.1):
     - Flutter
+  - bidirectional_scroll_view (0.0.1):
+    - Flutter
   - BoringSSL-GRPC (0.0.7):
     - BoringSSL-GRPC/Implementation (= 0.0.7)
     - BoringSSL-GRPC/Interface (= 0.0.7)
@@ -328,6 +330,7 @@ PODS:
 
 DEPENDENCIES:
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
+  - bidirectional_scroll_view (from `.symlinks/plugins/bidirectional_scroll_view/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -359,6 +362,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   audioplayers:
     :path: ".symlinks/plugins/audioplayers/ios"
+  bidirectional_scroll_view:
+    :path: ".symlinks/plugins/bidirectional_scroll_view/ios"
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   firebase_auth:
@@ -377,6 +382,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
   audioplayers: 84f968cea3f2deab00ec4f8ff53358b3c0b3992c
+  bidirectional_scroll_view: 5d30a418a3f51a24633df3a713cfb2a52b57c998
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   cloud_firestore: 433cf1aece50c727965355ae00e8dbeeceae66b1
   Firebase: 26223c695fe322633274198cb19dca8cb7e54416
