@@ -18,8 +18,7 @@ class Wrapper extends StatelessWidget {
 
     return user == null
         ? AuthenticatePage()
-        //: auth.currentUser.emailVerified
-        : true
+        : auth.currentUser.emailVerified
             ? HomePage()
             : VerifyPage();
   }
