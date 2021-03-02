@@ -3,6 +3,7 @@ import 'package:caps_app/data.dart';
 import 'package:caps_app/models/capseur.dart';
 import 'package:caps_app/pages/verifyPage.dart';
 import 'package:caps_app/services/auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,10 +27,12 @@ class _RegisterState extends State<Register> {
   String error = '';
 
   bool loading;
+  bool showingHelp;
 
   @override
   void initState() {
     loading = false;
+    showingHelp = false;
     super.initState();
   }
 
@@ -47,20 +50,50 @@ class _RegisterState extends State<Register> {
                   SizedBox(
                     height: 20,
                   ),
-                  MyTextFormField(
-                    hintText: 'Email IMT',
-                    textInputType: TextInputType.emailAddress,
-                    validator: (val) {
-                      return val.isEmpty
-                          ? 'Entre ton mail'
-                          : !(val.toString().contains('@imt-atlantique.net'))
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        alignment: Alignment.bottomLeft,
+                          icon: Icon(
+                            showingHelp ? Icons.keyboard_arrow_up : Icons.help,
+                            color: kSecondaryColor,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              showingHelp = !showingHelp;
+                            });
+                          }),
+                      if (showingHelp)
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: Colors.grey[100]),
+                          ),
+                          padding: EdgeInsets.all(5),
+                          child: Text(
+                            "Seuls les vrais capseurs d'IMT Atlantique peuvent s'inscrire, avec une adresse email imt-atlantique valide.",
+                            textAlign: TextAlign.justify,
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                          ),
+                        ),
+                      MyTextFormField(
+                        hintText: 'Email IMT',
+                        textInputType: TextInputType.emailAddress,
+                        validator: (val) {
+                          return val.isEmpty
+                              ? 'Entre ton mail'
+                              : !(val.toString().contains('@imt-atlantique.net'))
                               ? 'Vous devez utiliser une adresse imt-atlantique'
                               : null;
-                    },
-                    onChanged: (val) {
-                      email = val;
-                    },
+                        },
+                        onChanged: (val) {
+                          email = val;
+                        },
+                      ),
+                    ],
                   ),
+
+
                   SizedBox(
                     height: 20,
                   ),
