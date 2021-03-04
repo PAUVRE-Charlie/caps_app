@@ -42,13 +42,15 @@ class DatabaseService {
   */
 
   Capseur _userDataFromSnapshot(DocumentSnapshot snapshot) {
+    double bottlesEmptied = snapshot.data()['bottlesEmptied'].toDouble() ?? 0.0;
+
     return Capseur(
       snapshot.data()['username'] ?? '',
       snapshot.data()['matchsPlayed'] ?? 0,
       snapshot.data()['matchsWon'] ?? 0,
       snapshot.data()['capsHit'] ?? 0,
       snapshot.data()['capsThrow'] ?? 0,
-      snapshot.data()['bottlesEmptied'] ?? 0,
+      bottlesEmptied,
       uid,
       snapshot.data()['points'] ?? 0.0,
       snapshot.data()['victorySerieActual'] ?? 0,
@@ -102,13 +104,15 @@ class DatabaseService {
   // Capseur list from snapshot
   List<Capseur> _capseurListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
+      double bottlesEmptied = doc.data()['bottlesEmptied'].toDouble() ?? 0.0;
+
       return Capseur(
         doc.data()['username'] ?? '',
         doc.data()['matchsPlayed'] ?? 0,
         doc.data()['matchsWon'] ?? 0,
         doc.data()['capsHit'] ?? 0,
         doc.data()['capsThrow'] ?? 0,
-        doc.data()['bottlesEmptied'] ?? 0,
+        bottlesEmptied,
         doc.id,
         doc.data()['points'] ?? 0.0,
         doc.data()['victorySerieActual'] ?? 0,

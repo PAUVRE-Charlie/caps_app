@@ -81,6 +81,11 @@ class TournamentPage extends StatelessWidget {
         }
       });
 
+      if (tournament.pools.length == 0) {
+        tournament.finalBoard
+            .setNumberOfPlayers(tournament.finalBoard.participants.length);
+      }
+
       // put all matchs in correponding pool/finalboard
       matchsOfTournaments.forEach((matchofTournament) {
         if (matchofTournament.poolUid != '') {
@@ -146,11 +151,6 @@ class TournamentPage extends StatelessWidget {
             }
           }
         }
-      }
-
-      if (tournament.pools.length == 0) {
-        tournament.finalBoard
-            .setNumberOfPlayers(tournament.finalBoard.participants.length);
       }
 
       if (tournament.poolsClosed) {
