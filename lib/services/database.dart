@@ -79,7 +79,7 @@ class DatabaseService {
     int matchsWon,
     int capsHit,
     int capsThrow,
-    int bottlesEmptied,
+    double bottlesEmptied,
     double points,
     int victorySerieActual,
     int victorySerieMax,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:caps_app/components/background.dart';
@@ -54,16 +55,17 @@ class Game {
   }
 
   Game(
-      this._player1,
-      this._player2,
-      this._reverseCount,
-      this._pointsRequired,
-      this._pointsPerBottle,
-      this._player1Starting,
-      this._maxGameReverse,
-      this._tournamentUid,
-      this._poolUid,
-      this._finalBoardPosition,);
+    this._player1,
+    this._player2,
+    this._reverseCount,
+    this._pointsRequired,
+    this._pointsPerBottle,
+    this._player1Starting,
+    this._maxGameReverse,
+    this._tournamentUid,
+    this._poolUid,
+    this._finalBoardPosition,
+  );
 
   BuildContext get context => _context;
   Player get player1 => _player1;
@@ -129,12 +131,54 @@ class Game {
     DropDownAlert bottlesNumberDialog = new DropDownAlert(
       key: _bottlesNumberKey,
       initialValue: 3,
-      values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+      values: [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
     );
     DropDownAlert pointsPerBottleDialog = new DropDownAlert(
       key: _pointsPerBottleKey,
       initialValue: 4,
-      values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      values: [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
     );
 
     return showDialog<void>(
@@ -157,12 +201,15 @@ class Game {
   }
 
   nextTurn(bool capsHit) {
+    if (_player1.playing) {
+      this.player1.addCapsThrow();
+    } else {
+      this.player2.addCapsThrow();
+    }
     if (capsHit) {
       if (_player1.playing) {
-        this.player1.addCapsThrow();
         this.player1.addCapsHit();
       } else {
-        this.player2.addCapsThrow();
         this.player2.addCapsHit();
       }
       setReverseCount(this.reverseCount + 1);
@@ -172,10 +219,8 @@ class Game {
           setMaxGameReverse(this.reverseCount);
         }
         if (_player1.playing) {
-          this.player1.addCapsThrow();
           setScoreAndDrink(this.reverseCount, this.player1, this.player2);
         } else {
-          this.player2.addCapsThrow();
           setScoreAndDrink(this.reverseCount, this.player2, this.player1);
         }
 
@@ -280,6 +325,8 @@ class Game {
   }
 
   endGame(Player winner) {
+    winner.setScore(this.pointsRequired);
+
     /* UPDATE ALL THE VARIABLES OF BOTH CAPSEURS IN THE SERVER */
     DatabaseService().updateMatchWaitingToBeValidatedData(
         this.player1.capseur.uid,
