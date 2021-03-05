@@ -44,8 +44,8 @@ class _ValidateMatchState extends State<ValidateMatch> {
       capseur1.bottlesEmptied + match.scorePlayer2 ~/ match.pointsPerBottle,
       capseur1.points +
           (match.scorePlayer1 > match.scorePlayer2
-              ? updatePointsWinner(winner, loser, match.pointsRequired)
-              : updatePointsloser(winner, loser, match.pointsRequired)),
+              ? updatePointsWinner(winner, loser, match.pointsRequired, match.pointsPerBottle)
+              : updatePointsloser(winner, loser, match.pointsRequired, match.pointsPerBottle)),
       (match.scorePlayer1 > match.scorePlayer2)
           ? capseur1.victorySerieActual + 1
           : 0,
@@ -69,8 +69,8 @@ class _ValidateMatchState extends State<ValidateMatch> {
       capseur2.bottlesEmptied + match.scorePlayer1 ~/ match.pointsPerBottle,
       capseur2.points +
           (match.scorePlayer2 > match.scorePlayer1
-              ? updatePointsWinner(winner, loser, match.pointsRequired)
-              : updatePointsloser(winner, loser, match.pointsRequired)),
+              ? updatePointsWinner(winner, loser, match.pointsRequired, match.pointsPerBottle)
+              : updatePointsloser(winner, loser, match.pointsRequired, match.pointsPerBottle)),
       (match.scorePlayer2 > match.scorePlayer1)
           ? capseur2.victorySerieActual + 1
           : 0,
@@ -85,18 +85,20 @@ class _ValidateMatchState extends State<ValidateMatch> {
     );
   }
 
-  double updatePointsWinner(Capseur winner, Capseur loser, int pointsRequired) {
+  double updatePointsWinner(Capseur winner, Capseur loser, int pointsRequired, int pointsPerBottle) {
     double gapPointsATP = loser.points - winner.points;
     double addToWinner = theWinningAlgo(gapPointsATP);
     double reliabilityCoeff = theBonusAlgo(pointsRequired);
-    return addToWinner * reliabilityCoeff;
+    double drinkingCoeff = anotherBonusAlgo(pointsPerBottle);
+    return addToWinner * reliabilityCoeff * drinkingCoeff;
   }
 
-  double updatePointsloser(Capseur winner, Capseur loser, int pointsRequired) {
+  double updatePointsloser(Capseur winner, Capseur loser, int pointsRequired, int pointsPerBottle) {
     double gapPointsATP = loser.points - winner.points;
     double removeToLoser = theLoosingAlgo(gapPointsATP);
     double reliabilityCoeff = theBonusAlgo(pointsRequired);
-    return -removeToLoser * reliabilityCoeff;
+    double drinkingCoeff = anotherBonusAlgo(pointsPerBottle);
+    return -removeToLoser * reliabilityCoeff * drinkingCoeff;
   }
 
   double theWinningAlgo(double gapATP) {
@@ -127,6 +129,27 @@ class _ValidateMatchState extends State<ValidateMatch> {
       return 1 / 16 * pointsRequired;
     } else {
       return 2;
+    }
+  }
+
+  double anotherBonusAlgo(int pointsPerBottle){
+    //correspond au coefficient de "buvabilité" un match en 16 sur 4 kro est coefficienté 1 tadis qu'un match en 16 sur 2 kros 0.66
+    if (pointsPerBottle==1){
+      return 4.5;
+    } else if (pointsPerBottle==2){
+      return 2.2;
+    } else if (pointsPerBottle==3){
+      return 1.55;
+    } else if (pointsPerBottle==4){
+      return 1;
+    }else if (4<pointsPerBottle && pointsPerBottle<=8){
+      return -1/12*pointsPerBottle + 4/3;
+    }else if (8<pointsPerBottle && pointsPerBottle<=16){
+      return -1/24*pointsPerBottle + 1;
+    } else if (16<pointsPerBottle && pointsPerBottle<=32){
+      return -2/(15*16)*pointsPerBottle + 7/15;
+    } else {
+      return 1/5;
     }
   }
 
