@@ -89,7 +89,7 @@ class _RankingListState extends State<RankingList> {
         return capseur.ratio.toString() + '%';
         break;
       case Filter.KROEMPTIED:
-        return capseur.bottlesEmptied.toString();
+        return capseur.bottlesEmptied.toStringAsFixed(1);
         break;
       case Filter.VICTORYSERIEMAX:
         return capseur.victorySerieMax.toString();

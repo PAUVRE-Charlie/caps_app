@@ -223,10 +223,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                   : '')),
                           DataItemProfile(
                               dataName: 'Kros bues',
-                              dataValue: capseur.bottlesEmptied.toString()),
+                              dataValue:
+                                  capseur.bottlesEmptied.toStringAsFixed(1)),
                           DataItemProfile(
                               dataName: 'Serie victoire',
-                              dataValue: capseur.victorySerieActual.toString() + ' (max: ' + capseur.victorySerieMax.toString() + ')'),
+                              dataValue: capseur.victorySerieActual.toString() +
+                                  ' (max: ' +
+                                  capseur.victorySerieMax.toString() +
+                                  ')'),
                           DataItemProfile(
                               dataName: 'Max reverse',
                               dataValue: capseur.maxReverse.toString()),
