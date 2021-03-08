@@ -310,15 +310,19 @@ class _CreateTournamentFormState extends State<CreateTournamentForm> {
                       onPressed: () async {
                         bool cantCreateBecausePoolsNotComplete = false;
                         List<Pool> pools;
+                        int countParticipants = 0;
                         if (withPools && !randomPool) {
                           pools = _poolsCreationKey.currentState.pools;
                           for (Pool pool in pools) {
-                            if (pool.participants.length < numberPlayersPerPool)
+                            countParticipants += pool.participants.length;
+                            if (pool.participants.length <
+                                numberPlayersPerPool - 1)
                               cantCreateBecausePoolsNotComplete = true;
                           }
                         }
                         if (_formKey.currentState.validate() &&
-                            !cantCreateBecausePoolsNotComplete) {
+                            !cantCreateBecausePoolsNotComplete &&
+                            countParticipants == capseurs.length) {
                           Uuid uuid = Uuid();
                           setState(() {
                             loading = true;

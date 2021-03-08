@@ -42,6 +42,20 @@ class _VerifyPageState extends State<VerifyPage> {
       appBar: AppBar(
         backgroundColor: kBackgroundBaseColor,
         shadowColor: Colors.transparent,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.power_settings_new,
+              color: kSecondaryColor,
+              size: 30,
+            ),
+            onPressed: () async {
+              setState(() {
+                auth.signOut();
+              });
+            },
+          )
+        ],
         title: Text(
           "Confirmation d'email",
           style: TextStyle(

@@ -159,7 +159,8 @@ class _RankingListState extends State<RankingList> {
                             _searchController.value.text.toLowerCase()) &&
                         !this.containsCapseur(widget.noShowCapseurs, capseur) &&
                         (widget.justThemCapseurs == null ||
-                            this.containsCapseur(capseurs, capseur))
+                            this.containsCapseur(
+                                widget.justThemCapseurs, capseur))
                     ? GestureDetector(
                         onTap: () {
                           if (widget.onPressed != null)

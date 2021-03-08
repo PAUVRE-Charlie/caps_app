@@ -140,6 +140,8 @@ class TournamentPage extends StatelessWidget {
                       pool.uid,
                       participant.capseurUid,
                       j);
+                  participant.setFinalBoardPosition(j);
+                  tournament.finalBoard.addParticipant(participant);
                 } else {
                   j += 2;
                   if (j ==

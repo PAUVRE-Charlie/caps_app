@@ -50,4 +50,8 @@ class Participant {
   Capseur getCapseur(List<Capseur> capseurs) {
     return capseurs.firstWhere((capseur) => capseur.uid == this._capseurUid);
   }
+
+  void setFinalBoardPosition(int position) {
+    this._finalBoardPosition = position;
+  }
 }
