@@ -435,7 +435,10 @@ class _AlertDialogNewMatchState extends State<AlertDialogNewMatch> {
                   Background(),
                   Container(
                     padding: EdgeInsets.only(top: 40, left: 60, right: 60),
-                    child: RankingList(onPressed: selectOpponent),
+                    child: RankingList(
+                      onPressed: selectOpponent,
+                      noShowCapseurs: [widget.capseur],
+                    ),
                   )
                 ],
               ));
