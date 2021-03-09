@@ -322,7 +322,8 @@ class _CreateTournamentFormState extends State<CreateTournamentForm> {
                         }
                         if (_formKey.currentState.validate() &&
                             !cantCreateBecausePoolsNotComplete &&
-                            countParticipants == capseurs.length) {
+                            (!(withPools && !randomPool) ||
+                                countParticipants == capseurs.length)) {
                           Uuid uuid = Uuid();
                           setState(() {
                             loading = true;
