@@ -28,6 +28,7 @@ class _PoolsViewState extends State<PoolsView> {
       return Center(
           child: Text(
         "Pas de poules dans ce tournoi",
+        textAlign: TextAlign.center,
         style: TextStyle(
             fontFamily: 'PirataOne', fontSize: 35, color: Colors.black),
       ));

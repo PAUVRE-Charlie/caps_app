@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:bidirectional_scroll_view/bidirectional_scroll_view.dart';
 import 'package:caps_app/components/loading.dart';
-import 'package:caps_app/components/matchsWaitingList.dart';
 import 'package:caps_app/data.dart';
 import 'package:caps_app/models/basicUser.dart';
 import 'package:caps_app/models/capseur.dart';
@@ -27,6 +26,7 @@ class FinalBoardView extends StatelessWidget {
       return Center(
           child: Text(
         "Encore en phase de poules",
+        textAlign: TextAlign.center,
         style: TextStyle(
             fontFamily: 'PirataOne', fontSize: 35, color: Colors.black),
       ));
