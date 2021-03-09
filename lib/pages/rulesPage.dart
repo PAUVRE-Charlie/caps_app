@@ -103,15 +103,18 @@ class RulesPage extends StatelessWidget {
                       color: kPrimaryColor),
                 ),
                 TextRules(
-                  "\nL'algorithme a été établi de la manière suivante.\nChaque nouveau joueur commence initialement avec 100 points. Si vous gagnez un match vous gagnez des points, si vous perdez, vous en perdez, simple.\nMais bien sûr, si vous gagnez contre un joueur mieux classé que vous, vous marquerez plus de points (« perf ») que si vous gagnez un joueur moins bien classé que vous. A contrario si vous perdez contre un joueur moins bien classé que vous, vous perderez plus de points (« contre-perf ») que si vous perdez contre un joueur mieux classé que vous.\nNotez que pour récompenser les joueurs jouant beaucoup, lors d'un match le perdant perds 80% des points gagnés par le gagnant.\nExemple : prenons 2 joueurs avec le même nombre de points qui font un match en 16 points. Le gagnant gagnera 5 points et le perdant perdra 4 points. Ainsi, le nombre de point total distribué augmentera avec le nombre de matchs joués. Enfin si le match se joue en 4 il y aura moins de points attribués (coefficient 0.25) qu'un match en 16 (coefficient 1) ou encore plus en 32 (coefficient 2) pour des raisons de fiabilité.\n Enfin, un coefficient de buvabilité entre aussi en jeu. Il valorise les matchs avec un faible nombre de points par kro et diminue l'importance d'un match avec un grand nombre de points par kro, le coefficient 1 étant pour 4 points par kro.\n ",
+                  "\nL'algorithme a été établi de la manière suivante.\nChaque nouveau joueur commence initialement avec 100 points. Si vous gagnez un match vous gagnez des points, si vous perdez, vous en perdez, simple.\nMais bien sûr, si vous gagnez contre un joueur mieux classé que vous, vous marquerez plus de points (« perf ») que si vous gagnez un joueur moins bien classé que vous. A contrario si vous perdez contre un joueur moins bien classé que vous, vous perderez plus de points (« contre-perf ») que si vous perdez contre un joueur mieux classé que vous.\nNotez que pour récompenser les joueurs jouant beaucoup, lors d'un match le perdant perds 80% des points gagnés par le gagnant.\nExemple : prenons 2 joueurs avec le même nombre de points qui font un match en 16 points. Le gagnant gagnera 5 points et le perdant perdra 4 points. Ainsi, le nombre de point total distribué augmentera avec le nombre de matchs joués. Enfin si le match se joue en 4 il y aura moins de points attribués (coefficient 0.25) qu'un match en 16 (coefficient 1) ou encore plus en 32 (coefficient 2) pour des raisons de fiabilité.\n Enfin, un coefficient de buvabilité entre aussi en jeu. Il valorise les matchs avec un faible nombre de points par kro et diminue l'importance d'un match avec un grand nombre de points par kro, le coefficient 1 étant pour 4 points par kro.",
                 ),
                 TextRules(
-                  "\nGain points victoire = Gain de points en fonction de l'écart * coefficient de fiabilité * coefficient de buvabilité",
-                  textToEmphasize : "Victoire  : ",
+                  "\nGain points = Gain de points en fonction de l'écart * coefficient de fiabilité * coefficient de buvabilité",
+                  textToEmphasize : "Victoire : ",
                 ),
-                TextRules(
-                  "\nPerte points défaite = Gain points victoire * 0.8",
-                  textToEmphasize : "Défaite  : ",
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextRules(
+                    "\nPerte points = Gain points victoire * 0.8",
+                    textToEmphasize : "Défaite : ",
+                  ),
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 30),

@@ -102,7 +102,45 @@ class RulesPageEnglish extends StatelessWidget {
                       color: kPrimaryColor),
                 ),
                 TextRules(
-                  "\nEach new player begins with 100 points. If you win a match you'll earn points, if you lose you'll lose points, it's easy, isn't it ?\nObviously, if you win against a player with more points than you, you'll earn more points compared to a victory against a player with less points than you. Conversely, if you lose against a player with less points than you, you'll lose more points compared to a defeat against a player which have more points than you.\nIt's important to notice that in order to reward players who play a lot, at the outcome of a match the loser loses 80% of the points earned by the winner.\nExample: let's take 2 players with the same number of points. They make a match in 16 points. The winner will earn 5 points while the loser will lose 4 points. Thus, the total of points in the whole app increases with each match. Eventually, if the match is played in 4 points, there will have less points attributed to the winner (0.25 coefficient) compare to a match played in 32 points (2 coefficient). These coefficients simulates the reliability of the match score.",
+                  "\nEach new player begins with 100 points. If you win a match you'll earn points, if you lose you'll lose points, it's easy, isn't it ?\nObviously, if you win against a player with more points than you, you'll earn more points compared to a victory against a player with less points than you. Conversely, if you lose against a player with less points than you, you'll lose more points compared to a defeat against a player which have more points than you.\nIt's important to notice that in order to reward players who play a lot, at the outcome of a match the loser loses 80% of the points earned by the winner.\nExample: let's take 2 players with the same number of points. They make a match in 16 points. The winner will earn 5 points while the loser will lose 4 points. Thus, the total of points in the whole app increases with each match. Eventually, if the match is played in 4 points, there will have less points attributed to the winner (0.25 coefficient) compare to a match played in 32 points (2 coefficient). These coefficients simulates the reliability of the match score. Eventually, a drinking coefficient is added. It add value to matches with a low number of points per bottle, and it remove value to matches with a high number of points per bottles, there is a 1 coefficient for a match with 4 points per bottle.",
+                ),
+                TextRules(
+                  "\nPoints gained = gain regarding the points gap * reliability coefficient * drinking coefficient",
+                  textToEmphasize : "Victory : ",
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextRules(
+                    "\nPoints lose = Victory points gained * 0.8",
+                    textToEmphasize : "Defeat : ",
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 30),
+                  child: Center(
+                    child: Image.asset(
+                      "assets/images/courbesGains.png",
+                      width: MediaQuery.of(context).size.width * 5 / 6,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 30),
+                  child: Center(
+                    child: Image.asset(
+                      "assets/images/coeffFiabilite.png",
+                      width: MediaQuery.of(context).size.width * 5 / 6,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 30),
+                  child: Center(
+                    child: Image.asset(
+                      "assets/images/coeffBuvabilite.png",
+                      width: MediaQuery.of(context).size.width * 5 / 6,
+                    ),
+                  ),
                 ),
                 SizedBox(
                   height: 30,
