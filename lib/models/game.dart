@@ -300,9 +300,9 @@ class Game {
                 height: 10,
               ),
               Text(
-                this.player1.score.toString() +
+                min(this.player1.score,this.pointsRequired).toString() +
                     ' - ' +
-                    this.player2.score.toString(),
+                    min(this.player2.score, this.pointsRequired).toString(),
                 style: TextStyle(fontFamily: 'PirataOne', fontSize: 30),
               ),
               SizedBox(

@@ -169,7 +169,6 @@ class PlayButton extends StatelessWidget {
     return TextButton(
       child: Text(
         isAlreadyPlayed ? "A valider..." : "Jouer",
-        style: TextStyle(color: isAlreadyPlayed ? null : kPrimaryColor),
       ),
       onPressed: !isAlreadyPlayed
           ? () {
