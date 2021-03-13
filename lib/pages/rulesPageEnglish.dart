@@ -4,6 +4,8 @@ import 'package:caps_app/components/arrowBackAppBar.dart';
 import 'package:caps_app/components/background.dart';
 import 'package:flutter/material.dart';
 
+import 'dart:io' show Platform;
+
 import '../data.dart';
 import 'rulesPage.dart';
 
@@ -36,7 +38,7 @@ class RulesPageEnglish extends StatelessWidget {
       body: Stack(
         children: [
           Background(
-            image: "assets/images/bottle_32deg.png",
+            image: Platform.isIOS ? "assets/images/ios_bottle_32deg.png" : "assets/images/bottle_32deg.png",
           ),
           SingleChildScrollView(
             child: Column(
@@ -45,10 +47,12 @@ class RulesPageEnglish extends StatelessWidget {
                     "Both players (aka capseurs) facing each other, sit down on the floor. The distance between players is determined by the length of their stretched legs.",
                     index: 1),
                 TextRules(
-                    "Each player opens his beer bottle, puts down the bottle between his legs and place the cap upside down on the top of the bottle.",
+                    Platform.isIOS ? "Each player place a bottle between his legs and place the cap upside down on the top of the bottle."
+                        : "Each player opens his beer bottle, puts down the bottle between his legs and place the cap upside down on the top of the bottle.",
                     index: 2),
                 Image.asset(
-                  "assets/images/match_bottle_wcaps.png",
+                  Platform.isIOS ? "assets/images/ios_match_bottle_wcaps.png"
+                  : "assets/images/match_bottle_wcaps.png",
                   height: MediaQuery.of(context).size.height / 7,
                 ),
                 TextRules("in order to play, you need 3 caps at least.",
@@ -69,23 +73,26 @@ class RulesPageEnglish extends StatelessWidget {
                   ),
                 ),
                 TextRules(
-                    "When a player 1 hits the player 2's cap and drops the caps from the bottle, the player 2 has to counter. Thus, player 2 throws a cap and there are two possibilities :\nIf he/she doesn't hit the player 1's cap, then player 2 drinks 1 part of his beer (usually one quarter of the bottle but you can change this value as you want) and player 1 scores 1 point.\nElse, if he/she hits the player 2's cap, then there is now 2 points at stake.\nThen, repeat the pattern as many times as needed : player 1 throws a cap and there are again 2 possibilities. If he/she doesn't hit the player 2's cap, then player 1 drinks 2 parts of his beer (usually two quarter) and player 2 scores 2 points.\nElse, if he/she hits the player 1's cap, then there are now 3 points at stake...etc...",
+                  Platform.isIOS ? "When a player 1 hits the player 2's cap and drops the caps from the bottle, the player 2 has to counter. Thus, player 2 throws a cap and there are two possibilities :\nIf he/she doesn't hit the player 1's cap, then player 2 drinks 1 part of his bottle (usually one quarter of the bottle but you can change this value as you want) and player 1 scores 1 point.\nElse, if he/she hits the player 2's cap, then there is now 2 points at stake.\nThen, repeat the pattern as many times as needed : player 1 throws a cap and there are again 2 possibilities. If he/she doesn't hit the player 2's cap, then player 1 drinks 2 parts of his bottle (usually two quarter) and player 2 scores 2 points.\nElse, if he/she hits the player 1's cap, then there are now 3 points at stake...etc..."
+                      : "When a player 1 hits the player 2's cap and drops the caps from the bottle, the player 2 has to counter. Thus, player 2 throws a cap and there are two possibilities :\nIf he/she doesn't hit the player 1's cap, then player 2 drinks 1 part of his beer (usually one quarter of the bottle but you can change this value as you want) and player 1 scores 1 point.\nElse, if he/she hits the player 2's cap, then there is now 2 points at stake.\nThen, repeat the pattern as many times as needed : player 1 throws a cap and there are again 2 possibilities. If he/she doesn't hit the player 2's cap, then player 1 drinks 2 parts of his beer (usually two quarter) and player 2 scores 2 points.\nElse, if he/she hits the player 1's cap, then there are now 3 points at stake...etc...",
                     index: 5),
                 TextRules(
-                  "You are able to choose the number of points per bottle and number of bottles in a match, usually you'll play in 12 or 16 points with 4 points per bottle (so 3 or 4 beers). After it's up to you to play with other configurations.",
+                  Platform.isIOS ? "You are able to choose the number of points per bottle and number of bottles in a match, usually you'll play in 12 or 16 points with 4 points per bottle (so 3 or 4 bottles). After it's up to you to play with other configurations."
+                  : "You are able to choose the number of points per bottle and number of bottles in a match, usually you'll play in 12 or 16 points with 4 points per bottle (so 3 or 4 beers). After it's up to you to play with other configurations.",
                   textToEmphasize: "BE CAREFUL: ",
                 ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 30),
-                  child: Center(
-                    child: Image.asset(
-                      "assets/images/drinkBeer.gif",
-                      width: MediaQuery.of(context).size.width * 5 / 6,
+                Platform.isIOS ? Container()
+                    : Container(
+                      margin: EdgeInsets.symmetric(vertical: 30),
+                      child: Center(
+                        child: Image.asset(
+                          "assets/images/drinkBeer.gif",
+                          width: MediaQuery.of(context).size.width * 5 / 6,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
                 TextRules(
-                    "End of the game : when a player reaches or exceeds the number of points required (without counting the reverse count currently at stake), the other player loses and has to finish to drink all his beers.",
+                    "End of the game : when a player reaches or exceeds the number of points required (without counting the reverse count currently at stake), the other player loses and has to finish to drink all his bottles.",
                     index: 6),
                 TextRules(
                   "some contentious situations could appear but they are ellucidated in this section.The goal of the game is to hit the opponent's cap and make it drop on the floor, there is no other way to mark a point. For instance, if you violently hit the bottle which make the cap drop on the floor, it doesn't count (it's call the lumberman shot). As well, if you hit the caps after a bounce on the oponnent's player for instance, it doesn't count. Finally if you just brush the cap without make it drop from the top of the bottle, it doesn't count.",
@@ -152,7 +159,8 @@ class RulesPageEnglish extends StatelessWidget {
                       fontSize: 25,
                       color: kPrimaryColor),
                 ),
-                TextRules(
+                Platform.isIOS ? Container()
+                : TextRules(
                     "\n(We are not responsible for the issues related to your alcohol consumption )"),
                 SizedBox(
                   height: 50,

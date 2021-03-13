@@ -5,6 +5,8 @@ import 'package:caps_app/components/background.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'dart:io' show Platform;
+
 import '../data.dart';
 
 class RulesPage extends StatelessWidget {
@@ -36,7 +38,7 @@ class RulesPage extends StatelessWidget {
       body: Stack(
         children: [
           Background(
-            image: "assets/images/bottle_32deg.png",
+            image: Platform.isIOS ? "assets/images/ios_bottle_32deg.png" : "assets/images/bottle_32deg.png",
           ),
           SingleChildScrollView(
             child: Column(
@@ -45,10 +47,12 @@ class RulesPage extends StatelessWidget {
                     "Les 2 joueurs s'installent par terre l'un en face de l’autre. Pour la distance, il suffit que les deux joueurs s'assoient et tendent leurs jambes.",
                     index: 1),
                 TextRules(
-                    "Chaque joueur décapsule sa bouteille de bière, la pose entre ses jambes, et pose la capsule sur la bouteille, à l'envers.",
+                  Platform.isIOS ? "Chaque joueur place une bouteille entre ses jambes, puis pose une capsule dessus. A noter que le mot \"kro\" est aussi employé pour signifier une bouteille"
+                      : "Chaque joueur décapsule sa bouteille de bière, la pose entre ses jambes, et pose la capsule sur la bouteille, à l'envers.",
                     index: 2),
                 Image.asset(
-                  "assets/images/match_bottle_wcaps.png",
+                  Platform.isIOS ? "assets/images/ios_match_bottle_wcaps.png"
+                      : "assets/images/match_bottle_wcaps.png",
                   height: MediaQuery.of(context).size.height / 7,
                 ),
                 TextRules(
@@ -73,23 +77,26 @@ class RulesPage extends StatelessWidget {
                     "Lorsqu’un joueur 1 enlève la caps de son adversaire (joueur 2) celui ci se doit de riposter. Viens alors 2 possibilités. Soit le joueur 2 riposte mais ne fait pas tomber la caps, alors celui ci boit une gorgée. Soit le joueur 2 riposte et fait tomber la cap’s du joueur, c’est alors que nous avons 2 gorgées en jeu. Ainsi c’est au joueur 1 de riposter. Viens alors 2 possibilités (que vous avez compris j’espère). Soit le joueur 1 rate son coup, il boit alors 2 gorgées, soit il réussit et nous passons donc à 3 gorgées mise en jeu. Ainsi de suite jusqu’à ce qu’un joueur, ayant trop de pression, loupe son coup.",
                     index: 5),
                 TextRules(
-                  "lorsque je dis \"une gorgée\" je veux dire une fois le nombre de gorgée à boire. Par exemple, s'il a été fixé que une bière valait 4 points, une \"gorgée\" correspond alors à un quart de la bouteille. Le nombre de points par bouteille ainsi que le nombre de bouteilles à boire sont à fixer avant le début de la partie.",
+                  Platform.isIOS ?
+                  "lorsque je dis \"une gorgée\" je veux dire une fois le nombre de gorgée à boire. Par exemple, s'il a été fixé que une bouteille valait 4 points, une \"gorgée\" correspond alors à un quart de la bouteille. Le nombre de points par bouteille ainsi que le nombre de bouteilles à boire sont à fixer avant le début de la partie."
+                  : "lorsque je dis \"une gorgée\" je veux dire une fois le nombre de gorgée à boire. Par exemple, s'il a été fixé que une bière valait 4 points, une \"gorgée\" correspond alors à un quart de la bouteille. Le nombre de points par bouteille ainsi que le nombre de bouteilles à boire sont à fixer avant le début de la partie.",
                   textToEmphasize: "ATTENTION : ",
                 ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 30),
-                  child: Center(
-                    child: Image.asset(
-                      "assets/images/drinkBeer.gif",
-                      width: MediaQuery.of(context).size.width * 5 / 6,
+                Platform.isIOS ? Container()
+                    : Container(
+                      margin: EdgeInsets.symmetric(vertical: 30),
+                      child: Center(
+                        child: Image.asset(
+                          "assets/images/drinkBeer.gif",
+                          width: MediaQuery.of(context).size.width * 5 / 6,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
                 TextRules(
                     "Pour chaque \"gorgée\" bue par un joueur, son adversaire marque un point. Une fois qu'un joueur a fini de boire toutes ses bouteilles il a perdu.",
                     index: 6),
                 TextRules(
-                  "je tiens à signaler à tous les bourrins que le but du jeu n’est pas de faire tomber une caps en jetant sa caps de toute ses forces contre la bouteille (fer contre verre ne compte évidemment pas). Un coup est validé si la caps s’est faite éjectée par une caps directement (fer contre fer). Vous entendrez alors ce somptueux son : « POUM! »",
+                  "je tiens à signaler à tous les bourrins que le but du jeu n’est pas de faire tomber une caps en jetant sa caps de toute ses forces contre la bouteille. Un coup est validé si la caps s’est faite éjectée par une caps directement (fer contre fer). Vous entendrez alors ce somptueux son : « POUM! »",
                   textToEmphasize: "ATTENTION : ",
                 ),
                 SizedBox(
@@ -153,7 +160,8 @@ class RulesPage extends StatelessWidget {
                       fontSize: 25,
                       color: kPrimaryColor),
                 ),
-                TextRules(
+                Platform.isIOS ? Container()
+                    : TextRules(
                     "\n(Nous déclinons toute responsabilité en cas de problèmes liés à votre consommation d'alcool)"),
                 SizedBox(
                   height: 50,

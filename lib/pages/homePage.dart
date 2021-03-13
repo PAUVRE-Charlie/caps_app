@@ -11,6 +11,7 @@ import 'package:caps_app/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:provider/provider.dart';
+import 'dart:io' show Platform;
 
 import '../data.dart';
 import '../models/game.dart';
@@ -75,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                       body: Stack(
                         children: [
                           Background(
-                            image: "assets/images/bottle_homePage.png",
+                            image: Platform.isIOS ? "assets/images/ios_bottle_homePage.png" : "assets/images/bottle_homePage.png",
                             height: MediaQuery.of(context).size.height * 2 / 3,
                           ),
                           MenuOrValidateMatch(

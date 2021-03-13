@@ -2,12 +2,11 @@ import 'package:caps_app/components/arrowBackAppBar.dart';
 import 'package:caps_app/components/background.dart';
 import 'package:caps_app/components/matchsList.dart';
 import 'package:caps_app/models/capseur.dart';
-import 'package:caps_app/components/rankingList.dart';
 import 'package:caps_app/models/matchEnded.dart';
-import 'package:caps_app/pages/profilePage.dart';
 import 'package:caps_app/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:io' show Platform;
 
 import '../data.dart';
 
@@ -34,7 +33,7 @@ class LastMatchs extends StatelessWidget {
             body: Stack(
               children: [
                 Background(
-                  image: "assets/images/bottle_-15deg.png",
+                  image: Platform.isIOS ? "assets/images/ios_bottle_-15deg.png" : "assets/images/bottle_-15deg.png",
                 ),
                 SingleChildScrollView(
                   child: MatchList(
