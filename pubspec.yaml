@@ -49,7 +49,7 @@ dependencies:
   auto_size_text: ^2.1.0
   # https://pub.dev/packages/auto_size_text, MIT license:Copyright (c) 2018 Simon Leier
   
-  fluttertoast: ^7.1.6
+  fluttertoast: 7.1.6
   # https://pub.dev/packages/fluttertoast, MIT license: Copyright (c) 2020 Karthik Ponnam
   
   keyboard_visibility: ^0.5.6

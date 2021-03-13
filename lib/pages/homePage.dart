@@ -28,8 +28,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final user = Provider.of<BasicUser>(context);
 
-    Future.delayed(
-        Duration(milliseconds: 500), () => displayDisclamer(context));
+    if (Platform.isAndroid)
+      Future.delayed(
+          Duration(milliseconds: 500), () => displayDisclamer(context));
 
     if (user == null) return LoadingWidget();
 
@@ -76,7 +77,9 @@ class _HomePageState extends State<HomePage> {
                       body: Stack(
                         children: [
                           Background(
-                            image: true ? "assets/images/ios_bottle_homePage.png" : "assets/images/bottle_homePage.png",
+                            image: Platform.isIOS
+                                ? "assets/images/ios_bottle_homePage.png"
+                                : "assets/images/bottle_homePage.png",
                             height: MediaQuery.of(context).size.height * 2 / 3,
                           ),
                           MenuOrValidateMatch(
