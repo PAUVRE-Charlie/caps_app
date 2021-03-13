@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:math';
 
 import 'package:caps_app/models/capseur.dart';
@@ -12,8 +11,7 @@ import '../data.dart';
 import 'matchResults.dart';
 
 class ValidateMatch extends StatefulWidget {
-  ValidateMatch(this.capseurs, this.matchWaitingToBeValidated, {Key key})
-      : super(key: key);
+  ValidateMatch(this.capseurs, this.matchWaitingToBeValidated, {Key key}) : super(key: key);
 
   final List<Capseur> capseurs;
   final MatchWaitingToBeValidated matchWaitingToBeValidated;
@@ -23,8 +21,7 @@ class ValidateMatch extends StatefulWidget {
 }
 
 class _ValidateMatchState extends State<ValidateMatch> {
-  void updateCapseursStats(
-      MatchWaitingToBeValidated match, Capseur capseur1, Capseur capseur2) {
+  void updateCapseursStats(MatchWaitingToBeValidated match, Capseur capseur1, Capseur capseur2) {
     Capseur winner;
     Capseur loser;
     if (match.scorePlayer1 > match.scorePlayer2) {
@@ -42,24 +39,15 @@ class _ValidateMatchState extends State<ValidateMatch> {
       capseur1.matchsWon + (match.scorePlayer1 > match.scorePlayer2 ? 1 : 0),
       capseur1.capsHit + match.player1CapsHitInThisGame,
       capseur1.capsThrow + match.player1CapsThrowInThisGame,
-      capseur1.bottlesEmptied.toDouble() +
-          match.scorePlayer2 / match.pointsPerBottle,
-      capseur1.points +
-          (match.scorePlayer1 > match.scorePlayer2
-              ? updatePointsWinner(winner, loser, match.pointsRequired, match.pointsPerBottle)
-              : updatePointsloser(winner, loser, match.pointsRequired, match.pointsPerBottle)),
+      capseur1.bottlesEmptied + match.scorePlayer2 ~/ match.pointsPerBottle,
+      capseur1.points + (match.scorePlayer1 > match.scorePlayer2 ? updatePointsWinner(winner, loser, match.pointsRequired) : updatePointsloser(winner, loser, match.pointsRequired)),
+      (match.scorePlayer1 > match.scorePlayer2) ? capseur1.victorySerieActual + 1 : 0,
       (match.scorePlayer1 > match.scorePlayer2)
           ? capseur1.victorySerieActual + 1
-          : 0,
-      ((match.scorePlayer1 > match.scorePlayer2)
-                  ? capseur1.victorySerieActual + 1
-                  : 0) >
-              capseur1.victorySerieMax
-          ? capseur1.victorySerieActual + 1
-          : capseur1.victorySerieMax,
-      (match.maxGameReverse > capseur1.maxReverse)
-          ? match.maxGameReverse
-          : capseur1.maxReverse,
+          : 0 > capseur1.victorySerieMax
+              ? capseur1.victorySerieActual + 1
+              : capseur1.victorySerieMax,
+      (match.maxGameReverse > capseur1.maxReverse) ? match.maxGameReverse : capseur1.maxReverse,
     );
 
     DatabaseService().updateCapseurData(
@@ -69,40 +57,30 @@ class _ValidateMatchState extends State<ValidateMatch> {
       capseur2.matchsWon + (match.scorePlayer2 > match.scorePlayer1 ? 1 : 0),
       capseur2.capsHit + match.player2CapsHitInThisGame,
       capseur2.capsThrow + match.player2CapsThrowInThisGame,
-      capseur2.bottlesEmptied.toDouble() +
-          match.scorePlayer1 / match.pointsPerBottle,
-      capseur2.points +
-          (match.scorePlayer2 > match.scorePlayer1
-              ? updatePointsWinner(winner, loser, match.pointsRequired, match.pointsPerBottle)
-              : updatePointsloser(winner, loser, match.pointsRequired, match.pointsPerBottle)),
-      (match.scorePlayer2 > match.scorePlayer1)
-          ? capseur2.victorySerieActual + 1
-          : 0,
+      capseur2.bottlesEmptied + match.scorePlayer1 ~/ match.pointsPerBottle,
+      capseur2.points + (match.scorePlayer2 > match.scorePlayer1 ? updatePointsWinner(winner, loser, match.pointsRequired) : updatePointsloser(winner, loser, match.pointsRequired)),
+      (match.scorePlayer2 > match.scorePlayer1) ? capseur2.victorySerieActual + 1 : 0,
       (match.scorePlayer2 > match.scorePlayer1)
           ? capseur2.victorySerieActual + 1
           : 0 > capseur2.victorySerieMax
               ? capseur2.victorySerieActual + 1
               : capseur2.victorySerieMax,
-      (match.maxGameReverse > capseur2.maxReverse)
-          ? match.maxGameReverse
-          : capseur2.maxReverse,
+      (match.maxGameReverse > capseur2.maxReverse) ? match.maxGameReverse : capseur2.maxReverse,
     );
   }
 
-  double updatePointsWinner(Capseur winner, Capseur loser, int pointsRequired, int pointsPerBottle) {
+  double updatePointsWinner(Capseur winner, Capseur loser, int pointsRequired) {
     double gapPointsATP = loser.points - winner.points;
     double addToWinner = theWinningAlgo(gapPointsATP);
     double reliabilityCoeff = theBonusAlgo(pointsRequired);
-    double drinkingCoeff = anotherBonusAlgo(pointsPerBottle);
-    return addToWinner * reliabilityCoeff * drinkingCoeff;
+    return addToWinner * reliabilityCoeff;
   }
 
-  double updatePointsloser(Capseur winner, Capseur loser, int pointsRequired, int pointsPerBottle) {
+  double updatePointsloser(Capseur winner, Capseur loser, int pointsRequired) {
     double gapPointsATP = loser.points - winner.points;
     double removeToLoser = theLoosingAlgo(gapPointsATP);
     double reliabilityCoeff = theBonusAlgo(pointsRequired);
-    double drinkingCoeff = anotherBonusAlgo(pointsPerBottle);
-    return -removeToLoser * reliabilityCoeff * drinkingCoeff;
+    return -removeToLoser * reliabilityCoeff;
   }
 
   double theWinningAlgo(double gapATP) {
@@ -136,27 +114,6 @@ class _ValidateMatchState extends State<ValidateMatch> {
     }
   }
 
-  double anotherBonusAlgo(int pointsPerBottle){
-    //correspond au coefficient de "buvabilité" un match en 16 sur 4 kro est coefficienté 1 tadis qu'un match en 16 sur 2 kros 0.66
-    if (pointsPerBottle==1){
-      return 4.5;
-    } else if (pointsPerBottle==2){
-      return 2.2;
-    } else if (pointsPerBottle==3){
-      return 1.55;
-    } else if (pointsPerBottle==4){
-      return 1;
-    }else if (4<pointsPerBottle && pointsPerBottle<=8){
-      return -1/12*pointsPerBottle + 4/3;
-    }else if (8<pointsPerBottle && pointsPerBottle<=16){
-      return -1/24*pointsPerBottle + 1;
-    } else if (16<pointsPerBottle && pointsPerBottle<=32){
-      return -2/(15*16)*pointsPerBottle + 7/15;
-    } else {
-      return 1/5;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -171,38 +128,23 @@ class _ValidateMatchState extends State<ValidateMatch> {
               textAlign: TextAlign.center,
               text: TextSpan(
                 text: "Si vous avez joué ce match, appuyez sur ",
-                style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
-                    fontFamily: "NotoSansJP"),
+                style: TextStyle(fontSize: 18, color: Colors.black, fontFamily: "NotoSansJP"),
                 children: [
                   TextSpan(
                     text: "VALIDER",
-                    style: TextStyle(
-                        color: Colors.green,
-                        fontFamily: "PirataOne",
-                        fontSize: 20),
+                    style: TextStyle(color: Colors.green, fontFamily: "PirataOne", fontSize: 20),
                   ),
                   TextSpan(text: ", sinon appuyer sur "),
                   TextSpan(
                     text: "REFUSER",
-                    style: TextStyle(
-                        color: kPrimaryColor,
-                        fontFamily: "PirataOne",
-                        fontSize: 20),
+                    style: TextStyle(color: kPrimaryColor, fontFamily: "PirataOne", fontSize: 20),
                   )
                 ],
               ),
             ),
           ),
           MatchResults(
-            match: new MatchEnded(
-                widget.matchWaitingToBeValidated.uid,
-                widget.matchWaitingToBeValidated.player1,
-                widget.matchWaitingToBeValidated.player2,
-                widget.matchWaitingToBeValidated.date,
-                widget.matchWaitingToBeValidated.scorePlayer1,
-                widget.matchWaitingToBeValidated.scorePlayer2),
+            match: new MatchEnded(widget.matchWaitingToBeValidated.uid, widget.matchWaitingToBeValidated.player1, widget.matchWaitingToBeValidated.player2, widget.matchWaitingToBeValidated.date, widget.matchWaitingToBeValidated.scorePlayer1, widget.matchWaitingToBeValidated.scorePlayer2),
             capseurs: widget.capseurs,
           ),
           SizedBox(
@@ -216,41 +158,17 @@ class _ValidateMatchState extends State<ValidateMatch> {
                 children: [
                   RaisedButton(
                     onPressed: () {
-                      updateCapseursStats(
-                          widget.matchWaitingToBeValidated,
-                          widget.capseurs.firstWhere((capseur) =>
-                              capseur.uid ==
-                              widget.matchWaitingToBeValidated.player1),
-                          widget.capseurs.firstWhere((capseur) =>
-                              capseur.uid ==
-                              widget.matchWaitingToBeValidated.player2));
+                      updateCapseursStats(widget.matchWaitingToBeValidated, widget.capseurs.firstWhere((capseur) => capseur.uid == widget.matchWaitingToBeValidated.player1), widget.capseurs.firstWhere((capseur) => capseur.uid == widget.matchWaitingToBeValidated.player2));
 
-                      if (widget.matchWaitingToBeValidated.tournamentUid !=
-                          null) {
+                      if (widget.matchWaitingToBeValidated.tournamentUid != null) {
                         Uuid uuid = Uuid();
                         String matchUid = uuid.v4();
-                        DatabaseService().updateMatchData(
-                            widget.matchWaitingToBeValidated.player1,
-                            widget.matchWaitingToBeValidated.player2,
-                            widget.matchWaitingToBeValidated.date,
-                            widget.matchWaitingToBeValidated.scorePlayer1,
-                            widget.matchWaitingToBeValidated.scorePlayer2,
-                            matchUid: matchUid);
-                        DatabaseService().updateMatchOfTournamentData(matchUid,
-                            widget.matchWaitingToBeValidated.tournamentUid,
-                            poolUid: widget.matchWaitingToBeValidated.poolUid,
-                            finalBoardPosition: widget
-                                .matchWaitingToBeValidated.finalBoardPosition);
+                        DatabaseService().updateMatchData(widget.matchWaitingToBeValidated.player1, widget.matchWaitingToBeValidated.player2, widget.matchWaitingToBeValidated.date, widget.matchWaitingToBeValidated.scorePlayer1, widget.matchWaitingToBeValidated.scorePlayer2, matchUid: matchUid);
+                        DatabaseService().updateMatchOfTournamentData(matchUid, widget.matchWaitingToBeValidated.tournamentUid, poolUid: widget.matchWaitingToBeValidated.poolUid, finalBoardPosition: widget.matchWaitingToBeValidated.finalBoardPosition);
                       } else {
-                        DatabaseService().updateMatchData(
-                            widget.matchWaitingToBeValidated.player1,
-                            widget.matchWaitingToBeValidated.player2,
-                            widget.matchWaitingToBeValidated.date,
-                            widget.matchWaitingToBeValidated.scorePlayer1,
-                            widget.matchWaitingToBeValidated.scorePlayer2);
+                        DatabaseService().updateMatchData(widget.matchWaitingToBeValidated.player1, widget.matchWaitingToBeValidated.player2, widget.matchWaitingToBeValidated.date, widget.matchWaitingToBeValidated.scorePlayer1, widget.matchWaitingToBeValidated.scorePlayer2);
                       }
-                      DatabaseService().deleteMatchWaitingToBeValidated(
-                          widget.matchWaitingToBeValidated.uid);
+                      DatabaseService().deleteMatchWaitingToBeValidated(widget.matchWaitingToBeValidated.uid);
                     },
                     color: Colors.green,
                     child: Icon(
@@ -260,10 +178,7 @@ class _ValidateMatchState extends State<ValidateMatch> {
                   ),
                   Text(
                     "VALIDER",
-                    style: TextStyle(
-                        color: Colors.green,
-                        fontFamily: "PirataOne",
-                        fontSize: 20),
+                    style: TextStyle(color: Colors.green, fontFamily: "PirataOne", fontSize: 20),
                   )
                 ],
               ),
@@ -272,8 +187,7 @@ class _ValidateMatchState extends State<ValidateMatch> {
                 children: [
                   RaisedButton(
                     onPressed: () {
-                      DatabaseService().deleteMatchWaitingToBeValidated(
-                          widget.matchWaitingToBeValidated.uid);
+                      DatabaseService().deleteMatchWaitingToBeValidated(widget.matchWaitingToBeValidated.uid);
                     },
                     color: kPrimaryColor,
                     child: Icon(
@@ -283,10 +197,7 @@ class _ValidateMatchState extends State<ValidateMatch> {
                   ),
                   Text(
                     "REFUSER",
-                    style: TextStyle(
-                        color: kPrimaryColor,
-                        fontFamily: "PirataOne",
-                        fontSize: 20),
+                    style: TextStyle(color: kPrimaryColor, fontFamily: "PirataOne", fontSize: 20),
                   )
                 ],
               )
