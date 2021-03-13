@@ -6,6 +6,7 @@ import 'package:caps_app/pages/createTournamentPage.dart';
 import 'package:caps_app/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:io' show Platform;
 
 import '../data.dart';
 
@@ -43,7 +44,7 @@ class TournamentsMenuPage extends StatelessWidget {
         body: Stack(
           children: [
             Background(
-              image: "assets/images/bottle_-15deg.png",
+              image: Platform.isIOS ? "assets/images/bottle_-15deg.png" : "assets/images/bottle_-15deg.png",
             ),
             TournamentList()
           ],

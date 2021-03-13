@@ -1,11 +1,9 @@
-import 'dart:async';
-
-import 'package:caps_app/components/arrowBackAppBar.dart';
 import 'package:caps_app/components/background.dart';
-import 'package:caps_app/pages/homePage.dart';
 import 'package:caps_app/wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
+
 
 import '../data.dart';
 
@@ -65,7 +63,7 @@ class _VerifyPageState extends State<VerifyPage> {
       body: Stack(
         children: [
           Background(
-            image: "assets/images/bottle_-15deg.png",
+            image: Platform.isIOS ? "assets/images/ios_bottle_-15deg.png" : "assets/images/bottle_-15deg.png",
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,

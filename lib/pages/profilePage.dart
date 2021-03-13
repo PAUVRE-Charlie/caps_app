@@ -13,6 +13,7 @@ import 'package:caps_app/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:io' show Platform;
 
 import '../data.dart';
 
@@ -180,7 +181,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 body: Stack(
                   children: [
                     Background(
-                      image: "assets/images/bottle_32deg.png",
+                      image: Platform.isIOS ? "assets/images/ios_bottle_32deg.png" : "assets/images/bottle_32deg.png",
                     ),
                     SingleChildScrollView(
                       child: Column(

@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:caps_app/models/player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
 
 import '../data.dart';
 
@@ -39,7 +40,7 @@ class _PlayerSideState extends State<PlayerSide> {
                       child: Image(
                           height: MediaQuery.of(context).size.height * 1 / 5,
                           image: AssetImage(
-                              'assets/images/match_bottle_wcaps.png')),
+                              Platform.isIOS ? 'assets/images/ios_match_bottle_wcaps.png' : 'assets/images/match_bottle_wcaps.png')),
                     ),
                   ),
                   Center(
@@ -75,7 +76,7 @@ class _PlayerSideState extends State<PlayerSide> {
                                   ? 0.2
                                   : 1,
                           child: Image(
-                              image: AssetImage('assets/images/bottle.png')),
+                              image: AssetImage(Platform.isIOS ? 'assets/images/ios_bottle.png' : 'assets/images/bottle.png')),
                         );
                       },
                     ),
@@ -112,7 +113,7 @@ class _PlayerSideState extends State<PlayerSide> {
                                   ? 0.2
                                   : 1,
                           child: Image(
-                              image: AssetImage('assets/images/bottle.png')),
+                              image: AssetImage(Platform.isIOS ? 'assets/images/ios_bottle.png' : 'assets/images/bottle.png')),
                         );
                       },
                     ),

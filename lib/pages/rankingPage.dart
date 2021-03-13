@@ -6,6 +6,7 @@ import 'package:caps_app/pages/profilePage.dart';
 import 'package:caps_app/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:io' show Platform;
 
 import '../data.dart';
 
@@ -92,7 +93,7 @@ class _RankingPageState extends State<RankingPage> {
           body: Stack(
             children: [
               Background(
-                image: "assets/images/bottle_-15deg.png",
+                image: Platform.isIOS ? "assets/images/ios_bottle_-15deg.png" : "assets/images/bottle_-15deg.png",
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 40),

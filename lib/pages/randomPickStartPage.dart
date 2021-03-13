@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:caps_app/components/background.dart';
 import 'package:caps_app/components/loading.dart';
-import 'package:caps_app/components/playerSide.dart';
 import 'package:caps_app/models/capseur.dart';
 import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
 
 import '../data.dart';
 import 'matchPage.dart';
@@ -130,7 +130,7 @@ class _RandomPickStartPageState extends State<RandomPickStartPage> {
       body: Stack(
         children: [
           Background(
-            image: "assets/images/bottle_32deg.png",
+            image: Platform.isIOS ? "assets/images/ios_bottle_32deg.png" : "assets/images/bottle_32deg.png",
           ),
           Center(
             child: widgetToShow,
