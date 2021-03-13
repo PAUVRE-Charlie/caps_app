@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                       body: Stack(
                         children: [
                           Background(
-                            image: Platform.isIOS ? "assets/images/ios_bottle_homePage.png" : "assets/images/bottle_homePage.png",
+                            image: true ? "assets/images/ios_bottle_homePage.png" : "assets/images/bottle_homePage.png",
                             height: MediaQuery.of(context).size.height * 2 / 3,
                           ),
                           MenuOrValidateMatch(
